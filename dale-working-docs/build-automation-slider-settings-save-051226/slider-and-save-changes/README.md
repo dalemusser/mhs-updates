@@ -21,29 +21,7 @@ The fixes in this package solve three observed problems:
    (e.g. `MouseSensitivity: 1.2033`) comes back from
    `/api/settings/load`, but by the time the user opens the Settings
    panel, the variable has been overwritten and the slider sits at
-   max. The cause is a structural one: settings data is being saved
-   into **both** the dedicated settings collection **and** the game
-   state collection, and the two diverge. The screenshots below show
-   the same user's data in each collection at the same point in time —
-   the dedicated `player_settings` record has `MouseSensitivity =
-   1.483173131942749` (the value the user actually applied), while the
-   `saved_games` record's embedded `SettingsSaver` block has
-   `MouseSensitivity = 2.0`. On every game launch both collections are
-   loaded; the state-load fires after the settings-load and overwrites
-   the correct value with the stale state-save copy, which SOAP then
-   clamps to the slider's max (2). The settings system is working
-   correctly — the state system is silently writing over it.
-
-   `saved_games` collection (state save) for `mhs_developer` — note
-   the `SettingsSaver` block embedded inside the state payload,
-   with `MouseSensitivity: 2.0`:
-
-   ![State save data with embedded settings showing MouseSensitivity = 2.0](player-state-data-with-settings.png)
-
-   `player_settings` collection (dedicated settings save) for the
-   same user — `MouseSensitivity: 1.483173131942749`:
-
-   ![Dedicated settings save showing MouseSensitivity = 1.483173131942749](player-settings-data.png)
+   max.
 
 All three are fixed by the changes in this handoff. The package
 contains four documents and touches **four files** total in the
@@ -53,36 +31,6 @@ project tree (two C# files, one ScriptableObject `.asset`, two
 The handoff snapshot has been **verified working** in a local WebGL
 build: sensitivity persists correctly across launches; the 400 no
 longer fires; the slider initializes at the user's saved value.
-
----
-
-## Reference snapshot — the MHS 2.0 project at the time of these fixes
-
-A zipped snapshot of the full Mission HydroSci 2.0 Unity project,
-captured at the exact state the changes documented here were
-developed and verified against, is available on the shared Google
-Drive:
-
-**<https://drive.google.com/file/d/1sHyFe1XvPOf3W32AayyrOCFAQAcTqQR9/view?usp=drive_link>**
-
-Two roles for this snapshot:
-
-* **Reference** — when applying a change to the active Perforce
-  mainline, open the snapshot to see the surrounding code, prefab
-  structure, asset references, or any other context that isn't
-  reproduced verbatim in the per-change docs in this folder. The
-  snapshot is the most complete source-of-truth for "what did the
-  rest of the file look like when this fix was made."
-* **Proof of fix** — the snapshot is the same version the fixes
-  were built and verified against. If you want to confirm that a
-  given change produces the expected behavior before landing it,
-  open the project from the snapshot, build it, and run it as a
-  sanity check.
-
-The snapshot is a working copy and is not itself an active
-development branch — the canonical source of truth remains the
-team's Perforce mainline. The snapshot is here for context and
-verification only.
 
 ---
 

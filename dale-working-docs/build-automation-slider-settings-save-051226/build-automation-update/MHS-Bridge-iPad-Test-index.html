@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Mission HydroSci</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #1a1a2e; }
+    #unity-container { width: 100%; height: 100%; position: relative; }
+    #unity-canvas { width: 100%; height: 100%; background: #1a1a2e; }
+    #loading-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-system, sans-serif;
+      z-index: 10;
+    }
+    #loading-overlay.hidden { display: none; }
+    #loading-text { font-size: 1.1rem; margin-bottom: 16px; }
+    #loading-bar-track {
+      width: 280px; height: 6px; background: #333; border-radius: 3px; overflow: hidden;
+    }
+    #loading-bar {
+      width: 0%; height: 100%; background: #2563eb; border-radius: 3px;
+      transition: width 0.2s ease;
+    }
+    #config-status {
+      margin-top: 20px; font-size: 0.85rem; color: #888;
+      max-width: 400px; text-align: center; line-height: 1.4;
+    }
+    #error-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-system, sans-serif;
+      z-index: 20;
+    }
+    #error-overlay.visible { display: flex; }
+    #error-message { font-size: 1rem; max-width: 500px; text-align: center; line-height: 1.6; }
+    #error-message a { color: #60a5fa; }
+  </style>
+</head>
+<body>
+  <div id="unity-container">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="loading-overlay">
+      <div id="loading-text">Loading...</div>
+      <div id="loading-bar-track"><div id="loading-bar"></div></div>
+      <div id="config-status"></div>
+    </div>
+    <div id="error-overlay">
+      <div id="error-message"></div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    // =========================================================================
+    // Configuration
+    //
+    // StrataHub instance to fetch identity and game config from.
+    // Change this if using a different StrataHub deployment.
+    // =========================================================================
+    var STRATAHUB_BASE = 'https://adroit.games';
+    var GAME_ID = 'mhs';
+
+    // =========================================================================
+    // Crash reporting
+    //
+    // Captures Unity/WASM crashes and sends them to stratalog.
+    // No game changes required — these handlers run on the host page.
+    // =========================================================================
+    var crashPhase = 'loading';
+    var crashReported = false;
+
+    function reportCrash(type, message, stack, phase) {
+      if (crashReported) return;
+      crashReported = true;
+
+      var config = window.__mhsBridgeConfig;
+      var logUrl = config && config.services && config.services.log_submit ? config.services.log_submit.url : null;
+      var logAuth = config && config.services && config.services.log_submit ? config.services.log_submit.auth : null;
+
+      // Match the device format used by Unity game log events
+      var device = {
+        os: navigator.platform || '',
+        platform: 'UnityWebGL',
+        processors: navigator.hardwareConcurrency || 0,
+        memory: navigator.deviceMemory ? navigator.deviceMemory * 1024 : 0,
+        resolution: {
+          width: screen.width || 0,
+          height: screen.height || 0
+        },
+        userAgent: navigator.userAgent || '',
+        online: navigator.onLine
+      };
+      if (performance && performance.memory) {
+        device.jsHeapUsedMB = Math.round(performance.memory.usedJSHeapSize / 1048576);
+        device.jsHeapTotalMB = Math.round(performance.memory.totalJSHeapSize / 1048576);
+      }
+
+      // Detect unit from URL path (e.g., /unit3/index.html → unit3)
+      var pathParts = window.location.pathname.replace(/\/index\.html$/, '').split('/');
+      var detectedUnit = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2] || 'unknown';
+
+      var payload = {
+        game: 'mhs',
+        playerId: config && config.identity ? config.identity.user_id : 'unknown',
+        eventType: 'crash',
+        version: 'unknown',
+        data: {
+          type: type || 'unknown',
+          message: String(message || '').substring(0, 2000),
+          stack: String(stack || '').substring(0, 4000),
+          phase: phase || crashPhase,
+          unitId: detectedUnit,
+          workspace: window.location.hostname.split('.')[0],
+          isPWA: false
+        },
+        device: device
+      };
+
+      console.error('MHS crash report:', payload);
+
+      if (!logUrl) {
+        console.warn('MHS crash: no log endpoint configured (localhost or config fetch failed)');
+        return;
+      }
+
+      var body = JSON.stringify(payload);
+      // Use fetch with keepalive for reliability during page unload.
+      // sendBeacon can't set Authorization headers and triggers CORS issues.
+      try {
+        fetch(logUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': logAuth },
+          body: body,
+          keepalive: true
+        }).catch(function() {});
+      } catch (e) {
+        fetch(logUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': logAuth },
+          body: body
+        }).catch(function() {});
+      }
+    }
+
+    window.onerror = function(message, source, lineno, colno, error) {
+      reportCrash('runtime_error', message, error && error.stack ? error.stack : (source + ':' + lineno + ':' + colno), crashPhase);
+    };
+
+    window.onunhandledrejection = function(event) {
+      var reason = event.reason || {};
+      reportCrash('unhandled_rejection', reason.message || String(reason), reason.stack || '', crashPhase);
+    };
+
+    // =========================================================================
+    // Detect Unity build files
+    //
+    // Unity WebGL builds produce files named after the build target.
+    // We detect the loader script automatically from the Build/ directory.
+    // =========================================================================
+    var buildUrl = 'Build';
+    var loaderScript = null;
+    var configStatus = document.getElementById('config-status');
+    var errorOverlay = document.getElementById('error-overlay');
+    var errorMessage = document.getElementById('error-message');
+
+    function showError(msg) {
+      errorMessage.innerHTML = msg;
+      errorOverlay.classList.add('visible');
+    }
+
+    // =========================================================================
+    // Step 1: Fetch identity and game config from StrataHub
+    // =========================================================================
+
+    function fetchIdentity() {
+      return fetch(STRATAHUB_BASE + '/api/user', { credentials: 'include' })
+        .then(function(r) {
+          if (!r.ok) throw new Error('Not authenticated (HTTP ' + r.status + ')');
+          return r.json();
+        })
+        .then(function(data) {
+          if (!data.isAuthenticated) throw new Error('Not authenticated');
+          return { user_id: data.user_id || data.login_id || data.email, name: data.name || '' };
+        });
+    }
+
+    function fetchGameConfig() {
+      return fetch(STRATAHUB_BASE + '/api/game-config?game=' + GAME_ID, { credentials: 'include' })
+        .then(function(r) {
+          if (!r.ok) throw new Error('Game config not available (HTTP ' + r.status + ')');
+          return r.json();
+        })
+        .then(function(data) {
+          return data.services || {};
+        });
+    }
+
+    function isLocalhost() {
+      var host = window.location.hostname;
+      return host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0' || host === '::1';
+    }
+
+    function loadLocalDefaults() {
+      window.__mhsBridgeConfig = {
+        identity: { user_id: 'mhs_developer', name: 'MHS Developer' },
+        services: {
+          log_submit:    { url: 'https://log.adroit.games/api/log/submit',       auth: 'Bearer LEARN_FAST' },
+          state_save:    { url: 'https://save.adroit.games/api/state/save',      auth: 'Bearer LEARN_FAST' },
+          state_load:    { url: 'https://save.adroit.games/api/state/load',      auth: 'Bearer LEARN_FAST' },
+          settings_save: { url: 'https://save.adroit.games/api/settings/save',   auth: 'Bearer LEARN_FAST' },
+          settings_load: { url: 'https://save.adroit.games/api/settings/load',   auth: 'Bearer LEARN_FAST' }
+        },
+        navigation: {}
+      };
+      configStatus.textContent = 'Localhost detected — using development defaults (mhs_developer)';
+      console.log('MHSBridge: localhost detected, using development defaults');
+      return Promise.resolve(true);
+    }
+
+    function loadConfig() {
+      if (isLocalhost()) {
+        return loadLocalDefaults();
+      }
+
+      configStatus.textContent = 'Connecting to StrataHub...';
+
+      return Promise.all([fetchIdentity(), fetchGameConfig()])
+        .then(function(results) {
+          var identity = results[0];
+          var services = results[1];
+
+          window.__mhsBridgeConfig = {
+            identity: identity,
+            services: services,
+            navigation: {}
+          };
+
+          configStatus.textContent = 'Connected as ' + identity.user_id;
+          console.log('MHSBridge config loaded:', identity.user_id);
+          return true;
+        })
+        .catch(function(err) {
+          console.warn('MHSBridge config fetch failed:', err.message);
+          console.warn('Config fetch failed — no identity or service config available');
+          configStatus.textContent = 'Not connected to StrataHub — no identity available';
+
+          return false;
+        });
+    }
+
+    // =========================================================================
+    // Step 2: Find and load Unity build
+    // =========================================================================
+
+    function findLoaderScript() {
+      // Unity names the loader after the build: BuildName.loader.js
+      // We try to detect it by looking for a script tag hint or by convention.
+      // The developer should ensure the Build/ folder contains exactly one .loader.js file.
+      //
+      // Convention: if there's a <meta name="unity-loader"> tag, use its content.
+      // Otherwise, we scan for common patterns.
+      var meta = document.querySelector('meta[name="unity-loader"]');
+      if (meta && meta.content) {
+        return meta.content;
+      }
+
+      // If not specified, the developer must set it below.
+      // This will be filled in by the build detection logic or manually.
+      return null;
+    }
+
+    function startUnity(loaderUrl) {
+      var loadingOverlay = document.getElementById('loading-overlay');
+      var loadingText = document.getElementById('loading-text');
+      var loadingBar = document.getElementById('loading-bar');
+
+      var script = document.createElement('script');
+      script.src = loaderUrl;
+      script.onload = function() {
+        // Detect build name from loader filename: "BuildName.loader.js" → "BuildName"
+        var loaderFile = loaderUrl.split('/').pop();
+        var buildName = loaderFile.replace('.loader.js', '');
+        crashPhase = 'compiling';
+
+        var config = {
+          dataUrl: buildUrl + '/' + buildName + '.data.unityweb',
+          frameworkUrl: buildUrl + '/' + buildName + '.framework.js.unityweb',
+          codeUrl: buildUrl + '/' + buildName + '.wasm.unityweb',
+          streamingAssetsUrl: 'StreamingAssets',
+          companyName: 'DefaultCompany',
+          productName: 'MissionHydroSci',
+          productVersion: '1.0',
+        };
+
+        var canvas = document.getElementById('unity-canvas');
+
+        createUnityInstance(canvas, config, function(progress) {
+          loadingBar.style.width = (progress * 100) + '%';
+          if (progress < 0.5) {
+            loadingText.textContent = 'Loading...';
+          } else if (progress < 0.9) {
+            loadingText.textContent = 'Compiling...';
+            crashPhase = 'compiling';
+          } else {
+            loadingText.textContent = 'Almost ready...';
+          }
+        }).then(function(instance) {
+          crashPhase = 'running';
+          loadingOverlay.classList.add('hidden');
+          canvas.focus();
+          console.log('Unity instance started');
+        }).catch(function(err) {
+          loadingText.textContent = 'Error: ' + err.message;
+          loadingBar.style.width = '100%';
+          loadingBar.style.background = '#ef4444';
+          console.error('Unity load error:', err);
+          reportCrash('load_error', err.message, err.stack || '', crashPhase);
+        });
+      };
+      script.onerror = function() {
+        reportCrash('load_error', 'Failed to load Unity loader script: ' + loaderUrl, '', 'loading');
+        showError(
+          'Failed to load Unity build.<br><br>' +
+          'Looking for: <code>' + loaderUrl + '</code><br><br>' +
+          'Make sure the Build/ folder contains the Unity WebGL build files.'
+        );
+      };
+      document.body.appendChild(script);
+    }
+
+    // =========================================================================
+    // Step 3: Detect build files and launch
+    // =========================================================================
+
+    // Try to detect the loader script by fetching a directory listing or using a known name.
+    // Since we can't list S3 directories from the browser, the developer has two options:
+    //
+    // Option A: Add a meta tag to this file:
+    //   <meta name="unity-loader" content="Build/MyBuild.loader.js">
+    //
+    // Option B: The script below tries common Unity build naming patterns.
+    //           Edit UNITY_BUILD_NAME if your build uses a different name.
+
+    var UNITY_BUILD_NAME = null; // Set this to your build name, e.g., "unit1" or "loader"
+
+    // Fallback: Unity replaces the LOADER_FILENAME placeholder below at
+    // build time with the actual loader filename (e.g. "Unit2.loader.js") for
+    // any WebGL build that uses this template. When the page is served as a
+    // shared parent that was NOT produced by a Unity build (e.g. a wrapper
+    // index hosted above a /<unit>/ tree), the placeholder is never replaced
+    // and the leftover brace characters let us detect that and skip this
+    // branch. NOTE: Unity's WebGL preprocessor parses the triple-brace
+    // placeholder pattern anywhere in this file (including JS strings and
+    // comments), so this file must contain exactly one such pattern — the
+    // legitimate substitution target on the next line. Detection of an
+    // un-substituted placeholder is done by checking for a "{" character,
+    // which never appears in a real loader filename.
+    function tryUnityLoaderFilename() {
+      var unityLoaderFilename = '{{{ LOADER_FILENAME }}}';
+      if (unityLoaderFilename && unityLoaderFilename.indexOf('{') === -1) {
+        startUnity(buildUrl + '/' + unityLoaderFilename);
+        return true;
+      }
+      return false;
+    }
+
+    function detectAndLaunch() {
+      // Check meta tag first
+      var detected = findLoaderScript();
+      if (detected) {
+        startUnity(detected);
+        return;
+      }
+
+      // Check if UNITY_BUILD_NAME is set
+      if (UNITY_BUILD_NAME) {
+        startUnity(buildUrl + '/' + UNITY_BUILD_NAME + '.loader.js');
+        return;
+      }
+
+      // Auto-detect: try the folder name as the build name
+      // e.g., if this page is at .../unit1/index.html, try "unit1"
+      var pathParts = window.location.pathname.replace(/\/index\.html$/, '').split('/');
+      var folderName = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2];
+
+      if (folderName) {
+        // Try the folder name as build name
+        var testUrl = buildUrl + '/' + folderName + '.loader.js';
+        fetch(testUrl, { method: 'HEAD' })
+          .then(function(r) {
+            if (r.ok) {
+              startUnity(testUrl);
+            } else {
+              // Last-resort fallback: Unity-replaced LOADER_FILENAME.
+              if (tryUnityLoaderFilename()) return;
+              showError(
+                'Could not find Unity loader script.<br><br>' +
+                'Tried: <code>' + testUrl + '</code><br><br>' +
+                'Set <code>UNITY_BUILD_NAME</code> in index.html or add:<br>' +
+                '<code>&lt;meta name="unity-loader" content="Build/YourBuild.loader.js"&gt;</code>'
+              );
+            }
+          })
+          .catch(function() {
+            // Last-resort fallback: Unity-replaced LOADER_FILENAME.
+            if (tryUnityLoaderFilename()) return;
+            showError(
+              'Could not detect Unity build files.<br><br>' +
+              'Set <code>UNITY_BUILD_NAME</code> at the top of the &lt;script&gt; section in index.html.'
+            );
+          });
+      } else {
+        // No folder name in URL (e.g. served at root by "Build and Run").
+        // Last-resort fallback: Unity-replaced LOADER_FILENAME.
+        if (tryUnityLoaderFilename()) return;
+        showError(
+          'Could not determine build name from URL.<br><br>' +
+          'Set <code>UNITY_BUILD_NAME</code> at the top of the &lt;script&gt; section in index.html.'
+        );
+      }
+    }
+
+    // =========================================================================
+    // Launch sequence: load config, then start Unity
+    // =========================================================================
+
+    loadConfig().then(function() {
+      detectAndLaunch();
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

@@ -191,33 +191,6 @@ position (2.0) on every game launch.
 [DiagPass1] FloatVariable bounds: min=0.5, max=2, isClamped=True, defaultValue=1
 ```
 
-Server-side confirmation came from inspecting the user's data in
-MongoDB directly. The same user has **two separate records** with
-**two different mouse sensitivity values**, and the values diverge:
-
-The `saved_games` collection (state save) for user `mhs_developer`
-contains a `SettingsSaver` block embedded inside the state payload —
-this block should not be there at all (state is supposed to be game
-progress, not user preferences). The embedded block has
-`MouseSensitivity: 2.0`:
-
-![State save data with embedded SettingsSaver block showing MouseSensitivity = 2.0](player-state-data-with-settings.png)
-
-The `player_settings` collection (the dedicated settings save) for
-the same user has the value the user actually applied via the
-Settings panel: `MouseSensitivity: 1.483173131942749`:
-
-![Dedicated settings save showing MouseSensitivity = 1.483173131942749](player-settings-data.png)
-
-So the data on the server is split-brained: the dedicated settings
-collection has the correct, user-applied value, and the state
-collection has a stale copy that has drifted away (and has been
-clamped to the slider's max because the underlying SOAP variable
-clamps writes to its `[_min, _max]` range). On every launch both
-records are read; the state-side load happens last and overwrites
-the freshly-applied settings-side value. The user sees the slider
-pegged at max regardless of what they actually saved.
-
 ### Root cause
 
 `SettingsSaver` inherits from `PixelCrushers.Saver` (`SettingsSaver.cs:10`).

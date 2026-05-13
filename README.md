@@ -19,10 +19,44 @@ Each update folder contains:
   alongside the docs — so the applying developer can compare to
   their active branch, or copy directly into place if their branch
   has not also touched the file.
+* A link to a **reference snapshot** of the MHS 2.0 Unity project
+  as it was when the changes in that folder were developed and
+  verified. See "Reference snapshots" below.
 
 Folder names include a date suffix (`-MMDDYY`) so the sequence of
 updates is clear and so the same area can be revisited later
 without overwriting prior handoffs.
+
+---
+
+## Reference snapshots
+
+Each update folder's `README.md` includes a link to a zipped
+snapshot of the full MHS 2.0 Unity project on the shared Google
+Drive — captured at the state the changes in that folder were
+developed and verified against.
+
+Two reasons the snapshot matters:
+
+* **Reference for application** — the per-change docs describe the
+  edits precisely, but they don't reproduce every file's surrounding
+  context. If a dev needs to see what the rest of a file looked like
+  when the fix was made, or how a prefab is wired together, the
+  snapshot is the most complete source of truth.
+* **Proof of fix** — the snapshot is the same project that was
+  built, run, and confirmed working with the changes applied. A
+  dev who wants to verify expected behavior before landing a change
+  in the active Perforce mainline can open the snapshot, build it,
+  and exercise it as a sanity check.
+
+**Each update has its own snapshot.** Snapshots are taken at the
+time of a handoff, not maintained as a live branch — the canonical
+source of truth remains the team's Perforce mainline. As new
+updates are added to this repo over time, new snapshots are
+captured for each one and the link lives in that update's folder
+`README.md`. To find the snapshot link for a given update, open the
+folder and look for the "Reference snapshot" section near the top
+of its README.
 
 ---
 

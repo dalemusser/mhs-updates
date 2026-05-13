@@ -132,29 +132,6 @@ the current settings to `/api/settings/save`. Meanwhile, any number of
 gameplay events trigger state saves that capture the same settings into
 `/api/state/save`. The two endpoints can — and do — drift apart over time.
 
-Direct evidence from MongoDB for user `mhs_developer`, same user, two
-different records, two different mouse-sensitivity values:
-
-The `saved_games` collection — the embedded `SettingsSaver` block
-inside the state-save payload carries `MouseSensitivity: 2.0`. (The
-fact that this block is here at all is the structural bug: state
-should be game progress, not user preferences.)
-
-![saved_games collection: SettingsSaver block embedded inside the state-save payload, with MouseSensitivity = 2.0](player-state-data-with-settings.png)
-
-The `player_settings` collection — the dedicated settings record for
-the same user has `MouseSensitivity: 1.483173131942749`, which is
-the value the user actually applied via the Settings panel.
-
-![player_settings collection: dedicated settings record with MouseSensitivity = 1.483173131942749](player-settings-data.png)
-
-Two values, same user, captured at the same point in time. The
-divergence is not theoretical — it's the live state of the system.
-On every launch both records are read; the state-side load happens
-last and overwrites the freshly-applied settings-side value, so the
-user perpetually sees a stale value (here `2.0`, which is also the
-slider's clamped max) regardless of what they actually saved.
-
 ### 2. Two read paths writing to the same in-memory variables
 
 On game load, both `LoadSettings` (from `OnLoadSettings`) and

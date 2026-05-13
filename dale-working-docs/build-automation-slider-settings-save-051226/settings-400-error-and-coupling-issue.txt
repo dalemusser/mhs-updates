@@ -1,0 +1,84 @@
+The logs reveal the cause clearly. Let me trace it through.
+                                                                                   
+  Critical findings:                                                         
+                                                         
+  First call:  playerId='' (len=0)         → 400 "Missing required fields"
+  Second call: playerId='mhs_developer'    → 200, body returns MouseSensitivity=1.2033
+  Later call:  playerId='mhs_developer'    → 200, body returns MouseSensitivity=1.3344
+                                                                          
+  So:                                                                                                                      
+  1. The 400 is caused by an early LoadSettings firing before playerId.Value has been populated.
+  2. The dedicated settings endpoint is actually working — once playerId is set, the server responds 200 with a valid      
+  MouseSensitivity: 1.2033 (then later 1.3344 after Apply). Both values are inside the new [0.5, 2] range.           
+  3. The slider still shows max=2 at GameplaySettings.Awake even though the settings-load returns 1.2033. That confirms the
+   structural state-coupling problem from the doc: after the settings load applies 1.2033, the state load runs and         
+  overwrites it via SettingsSaver.ApplyData (the PixelCrushers coupling). 
+                                                                                                                           
+  Two real bugs visible in the logs:                                                     
+                                                                                                                           
+  - Bug 1: early loadSettings.Raise() with empty playerId — that's the 400.                                                
+  - Bug 2: state load overwrites settings on load — that's the value=2 despite the server returning 1.2033.
+                                                                                                                           
+  Let me find what fires the early settings load.                                        
+                                                                                                                           
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)                                 
+                                                                                                                           
+⏺ Found the cause of the 400. CharacterCustomization_DataController.OnSceneLoaded (Assets/Scripts/Character 
+  Customization/CharacterCustomization_DataController.cs:81) raises loadSettings.Raise() on every non-customization scene  
+  load. This fires when the first scene loads — before AuthManager has run its identity check and populated playerId.Value.
+   So SettingsSaveManager.LoadSettings runs with playerId="", the server's "Missing required fields" guard triggers, 400.  
+                                                                                                                           
+  Once AuthManager.OnUserIdentityFetched runs ~moments later, it sets playerId.Value = "mhs_developer" and raises          
+  loadSettings.Raise() again. The second call succeeds with 200 and MouseSensitivity: 1.2033 (later 1.3344 after your      
+  Apply).                                                                                
+                                                                                                                           
+  Two confirmed bugs from this run                                                                                         
+                                                                                                                           
+  1. 400 on first settings/load — early raise before auth                                                                  
+                                                                                         
+  Two raisers of loadSettings:                                                                                             
+  - CharacterCustomization_DataController.cs:81 (on every scene-load that isn't the customization scene)
+  - AuthManager.cs:82 (after identity fetch succeeds)                                                                      
+                                                                                         
+  The first fires too early. Cleanest fix is a defensive guard in SettingsSaveManager.LoadSettings: if playerId.Value is
+  empty/null, skip the POST. Same logic should apply to SaveSettings for symmetry. That way no matter who raises the event
+  prematurely, we never send an invalid request.                                                                           
+                                                                          
+  2. Settings get overwritten by state-load — structural coupling confirmed                                                
+                                                                                         
+  The diagnostic logs prove this conclusively:                                                                             
+                                                                                         
+  - [DiagSettingsLoad] body=…"MouseSensitivity":1.2033… — settings endpoint returns valid 1.2033.                          
+  - [DiagPass1] GameplaySettings.Awake — mouseSensitivity.Value = 2 — but the variable is 2 by the time the panel opens.   
+                                                                                                                           
+  The settings endpoint is working correctly. The value gets overwritten because the state-load (/api/state/load →         
+  SaveSystem.ApplySavedGameData → SettingsSaver.ApplyData via PixelCrushers registration) fires after the settings-load and
+   clamps the legacy out-of-range value back to 2. Exactly what docs/settings-state-coupling-via-pixelcrushers.md
+  describes.                                                                                                               
+                                                                                         
+  You can also see Apply working:                                                                                          
+                                                                                         
+  - [DiagPass1] ApplyGameplayChanges — snapshotting mouseSensitivity.Value = 1.334401 (after you dragged the slider and    
+  clicked Apply).                                                                                                          
+  - Subsequent settings/load returns "MouseSensitivity":1.3344… — your value reached the server and came back.             
+                                                                                                                           
+  So the dedicated settings save/load is healthy. The issue is the state-load overwriting it on subsequent launches.
+                                                                                
+  Proposed actions                                                                                                         
+                                                                                
+  Now (small, safe): Add the empty-playerId guard to SettingsSaveManager.LoadSettings and SaveSettings. Stops the 400,     
+  doesn't change anything else. Document the fix.                                        
+                                                                                                                           
+  Later (after talking to the original dev): Apply the structural fix from settings-state-coupling-via-pixelcrushers.md    
+  (Option A — decouple SettingsSaver from PixelCrushers SaveSystem). Without this, even with the 400 gone, mhs_developer   
+  and any other existing user will continue to see their settings reverted to the legacy state-save value on every reload. 
+                                                                                                                           
+  Want me to:                                                                            
+                                                                                                                           
+  1. Apply the empty-playerId guard now, removing the now-redundant [DiagSettingsLoad] and [DiagPass1] logging (we have our
+   answer), and write a small docs/05-… entry for the fix; and                                                             
+  2. Leave the PixelCrushers decoupling pending your conversation with the original dev (per the                           
+  settings-state-coupling-via-pixelcrushers.md doc) — so you can verify Pass 1/Pass 2 with a clean account after the 400
+  fix?                                                                                                                     
+                                                                                         
+  Or apply both fixes now if you'd rather get the full chain working before that conversation?

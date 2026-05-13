@@ -1,0 +1,157 @@
+Timeline on every launch                                                                                                
+                                                                                                                           
+  1.  First /api/settings/load (empty playerId) → 400, no effect                                                           
+  2.  /api/state/load fires                                                                                                
+  3.  /api/settings/load #2 (with playerId) → 200, body: MouseSensitivity=1.2033                                           
+  4.  Settings-load applies: SettingsSaver.ApplyData() writes 1.2033 to variable                                         
+  5.  /api/state/load #2 response arrives                                                                                  
+  6.  DatabaseSaver → SaveSystem.ApplySavedGameData(saveData) iterates                   
+      every registered Saver, including SettingsSaver                     
+  7.  SettingsSaver.ApplyData() runs AGAIN with the state-save's old data       
+      → tries to write the legacy (pre-Pass-1) MouseSensitivity value     
+  8.  SOAP's FloatVariable clamps it to max (2)                                                                            
+  9.  Variable is now 2                                                                                                    
+  10. You open the settings panel → slider at max                                                                          
+                                                                                                                           
+  The settings-load is doing exactly what it should. It successfully fetches 1.2033 and applies it to the variable. But
+  step 6–8 then overwrites it with the stale state-save value. The state-load runs after the settings-load (slightly slower
+   because the response payload is larger), so it wins.                                  
+                                                                                                                           
+  Why /api/state/save still has the stale value                                                                            
+                                                                                                                           
+  You'd reasonably expect: "I clicked Apply with 1.334, that should have updated everything." Apply fires four handlers:   
+                                                                                                                           
+  1. AudioSettings.ApplyAudioChanges("PauseMenu")                                                                          
+  2. GraphicsSettings.ApplyGraphicsChanges            
+  3. GameplaySettings.ApplyGameplayChanges  (snapshots in memory only)                                                     
+  4. OnSaveSettings.Raise  → /api/settings/save POSTs 1.334  ✓                           
+  5. (another scriptable event raise)                                           
+                                                                          
+  Apply does not raise OnSaveGame. So /api/state/save is not updated when you change settings. It's only updated when      
+  gameplay events fire (scrap pickup, quest milestone, scene transition, etc.). And those events capture whatever value the
+   variable has at that moment — which, because of step 8 above, is 2 (the clamped legacy value), not your 1.334.          
+                                                                                         
+  So:                                                                                                                      
+                                                                                                                           
+  - /api/settings/save has your new value (1.334)                                                                          
+  - /api/state/save has the legacy value (> 2, clamped to 2 on load)                                                       
+  - On every launch, state-load wins → slider at 2                                                                         
+  - Even if a state-save fires after you change settings, it captures the variable at that moment, which is typically still
+   2 because the state-load overwrites happen first. So the legacy data tends to perpetuate itself.                        
+                                                                                         
+  What this means for the value you see                                   
+                                                                                
+  When the console shows [DiagSettingsLoad] body=…"MouseSensitivity":1.2033… followed by [DiagPass1] GameplaySettings.Awake
+   — mouseSensitivity.Value = 2, the variable was briefly 1.2033 (between steps 4 and 8), then got overwritten before the
+  panel opened. The settings system is working — the result just doesn't survive the state-load.                           
+                                                                                         
+  Options to actually see your changes persist                                                                             
+                                                                                         
+  In rough order of size:                                                                                                  
+                                                                                         
+  1. Quickest test: clear mhs_developer's state save on the server (one-time admin action). That removes the legacy stale  
+  data. Your first new state-save after that will capture the current value, and from then on settings will persist
+  correctly for this user.                                                                                                 
+  2. Quickest code patch (interim): have the Apply button also raise OnSaveGame. That forces /api/state/save to update in
+  lock-step with /api/settings/save. Side effect: every Apply becomes a full state-save (heavier). Doesn't address the     
+  architecture but eliminates the visible bug.                                  
+  3. Migration shim in SettingsSaver.ApplyData (interim, defensive): if the loaded MouseSensitivity is outside [0.5, 2],   
+  treat as legacy garbage and use the default. Self-heals stale state data on first load for affected users. Easy five-line
+   change, ships safely.                                                                                                   
+  4. The real fix: decouple SettingsSaver from PixelCrushers (Option A in                
+  docs/settings-state-coupling-via-pixelcrushers.md). After that, /api/state/* no longer touches settings, the load-order  
+  race goes away, and settings flow exclusively through /api/settings/*.                 
+                                                                                                                           
+  You wanted to hold #4 pending a conversation with the original dev. Would you like me to do #3 (migration shim) now as a
+  safe interim? It's small enough to land alongside the other Issue A fix (empty-playerId guard), it'll let you actually   
+  verify Pass 1/Pass 2 behavior on mhs_developer without server-side cleanup, and it doesn't preclude the full decoupling  
+  in #4 later — the shim becomes a no-op once decoupling is applied.
+  
+  
+  Just so I understand something: in " 7.  SettingsSaver.ApplyData() runs AGAIN with the state-save's old data             
+        → tries to write the legacy (pre-Pass-1) MouseSensitivity value" where is it getting the old value from if the     
+  settings has been changed?     
+  
+  
+  Good question to drill into. The "old value" lives in a different Mongo collection on save.adroit.games — not in the
+  settings collection at all.                                                      
+                                                                                                                           
+  Two separate server-side collections                   
+                                                                                                                           
+  The save server (stratasave) has two independent MongoDB collections:                                       
+                                                                                                                           
+  ┌─────────────────┬────────────────────────────────────────────────────────────────────┬─────────────────────────────┐   
+  │   Collection    │                           What it stores                           │         Touched by          │   
+  ├─────────────────┼────────────────────────────────────────────────────────────────────┼─────────────────────────────┤   
+  │                 │ Just the settings: audio bus levels, mouse sensitivity, character  │ /api/settings/save          │   
+  │ player_settings │ customization                                                      │ (writes),                   │
+  │                 │                                                                    │ /api/settings/load (reads)  │
+  ├─────────────────┼────────────────────────────────────────────────────────────────────┼─────────────────────────────┤   
+  │                 │ The entire game-state blob produced by PixelCrushers               │ /api/state/save (writes),   │
+  │ saved_games     │ SaveSystem.RecordSavedGameData() — which includes a SettingsSaver  │ /api/state/load (reads)     │   
+  │                 │ sub-entry containing settings values too                           │                             │
+  └─────────────────┴────────────────────────────────────────────────────────────────────┴─────────────────────────────┘
+                                         
+  These two collections are never synchronized server-side. Two separate documents, two separate write paths, two separate
+  read paths.                                                                                                              
+                                                                          
+  What's in each for mhs_developer right now                                                                               
+                                                                                         
+  player_settings — has your new value (MouseSensitivity = 1.3344, your latest Apply). Your /api/settings/load log confirms
+   this:                                                                                 
+                                                                          
+  body='{"id":"…","user_id":"mhs_developer",…,"settings_data":{                                                            
+     …,"MouseSensitivity":1.3344013690948486,…}}'                               
+                                                                                                                           
+  saved_games — has the old value. This document was last written at some point before Pass 1 changed the slider range.    
+  Inside its save_data blob is a SettingsSaver entry that contains MouseSensitivity = <some legacy value, probably > 2>. We
+   didn't capture a [DiagStateLoad] log so I can't show you the exact number, but the symptom (clamps to exactly 2 every   
+  time) is consistent with the stored value being out of [0.5, 2].                       
+                                                                                                                           
+  Why your Apply click didn't update saved_games                                                                           
+                                                                                                                           
+  The Apply button's onClick list (from Canvas_Gameplay_Settings.prefab:8652-8702) raises OnSaveSettings — which fires     
+  SettingsSaveManager.SaveSettingsToDatabase → POST to /api/settings/save.                                                 
+                                                                                                                           
+  It does not raise OnSaveGame — which would fire DatabaseSaver.SaveGameToDatabase → POST to /api/state/save.              
+                                                                                         
+  So player_settings got 1.334. saved_games was untouched by the Apply click.
+                                                                                
+  saved_games only updates when an OnSaveGame raiser fires. Those raisers are gameplay events: scrap pickups, quest
+  milestones, scene transitions, the debug menu, mini-game completions, etc. (I counted at least a dozen across scenes and 
+  prefabs earlier.)                                                       
+                                                                                                                           
+  Why the stale value tends to perpetuate itself                                                                           
+                                                
+  Even when a state-save event does eventually fire, the value it captures isn't necessarily your fresh one. The sequence  
+  inside a typical play session:                                                         
+                                                                                                                           
+  1. Game loads. State-load applies the stale value → SOAP clamps to 2 → variable is 2.  
+  2. Settings-load applies 1.334 → variable becomes 1.334.                                                                 
+  3. State-load apply happens just after (load-order race) → variable goes back to 2.    
+  4. You walk around and pick up scrap. OnSaveGame raises. SettingsSaver.RecordData() captures the current variable value,
+  which is 2. POST to /api/state/save writes 2 back.                            
+  5. saved_games is now updated — to 2, the clamped value. The legacy data has effectively replaced itself with the clamped
+   form of itself.                                                        
+  6. Next launch: state-load returns 2 → variable becomes 2 → state-load wins the race → slider at max forever.            
+                                                                                                                           
+  The only way the system would heal itself is if OnSaveGame fires between the settings-load apply (step 2) and the
+  state-load apply (step 3) — a narrow window of milliseconds during initial load — or if you click Apply during gameplay  
+  and OnSaveGame happens to fire while the variable is briefly 1.334 before the next load cycle. Neither is likely in      
+  practice.                                                                                                                
+                                                                                                                           
+  What changes that                                                                                                        
+                                                                                         
+  Three things would break the loop:                                                                                       
+                                                                                                                           
+  - Clear the saved_games document for mhs_developer server-side. Next state-save will write whatever the variable is at   
+  that moment (which, immediately after a successful settings-load, is the fresh value).                                   
+  - Migration shim in SettingsSaver.ApplyData that treats out-of-[0.5, 2] loaded values as legacy garbage and substitutes
+  the default. Self-heals on next state-save after that load.
+  - Decouple SettingsSaver from PixelCrushers (Option A in the standalone doc). saved_games stops carrying settings data at
+   all. The race goes away because state-load no longer touches the FloatVariable.
+                                                                                                                           
+  The structural answer is the third one. The first two are interim mitigations.   
+  
+  
+  

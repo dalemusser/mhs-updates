@@ -11,36 +11,6 @@ should land them together.
 
 ---
 
-## Reference snapshot — the MHS 2.0 project at the time of these fixes
-
-A zipped snapshot of the full Mission HydroSci 2.0 Unity project,
-captured at the exact state the changes documented here were
-developed and verified against, is available on the shared Google
-Drive:
-
-**<https://drive.google.com/file/d/1sHyFe1XvPOf3W32AayyrOCFAQAcTqQR9/view?usp=drive_link>**
-
-Two roles for this snapshot:
-
-* **Reference** — when applying a change to the active Perforce
-  mainline, open the snapshot to see the surrounding code, prefab
-  structure, asset references, or any other context that isn't
-  reproduced verbatim in the per-change docs in this folder. The
-  snapshot is the most complete source-of-truth for "what did the
-  rest of the file look like when this fix was made."
-* **Proof of fix** — the snapshot is the same version the fixes
-  were built and verified against. If you want to confirm that a
-  given change produces the expected behavior before landing it,
-  open the project from the snapshot, build it, and run it as a
-  sanity check.
-
-The snapshot is a working copy and is not itself an active
-development branch — the canonical source of truth remains the
-team's Perforce mainline. The snapshot is here for context and
-verification only.
-
----
-
 ## Two fixes in this package
 
 ### Fix 1 — `OnPostprocessBuild` callback robustness
