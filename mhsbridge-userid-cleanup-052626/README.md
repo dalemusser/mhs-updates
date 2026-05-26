@@ -1,4 +1,4 @@
-# MHSBridge `user_id` Cleanup — 2026-05-25
+# MHSBridge `user_id` Cleanup — 2026-05-26
 
 This drop fixes a logging-side bug in Mission HydroSci and makes the MHSBridge identity contract self-documenting at the call site.
 

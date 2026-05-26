@@ -117,10 +117,8 @@ public class MHSBridge : MonoBehaviour
         //
         // The sentinel user_id "000000000000000000000001" matches the host page's
         // local-development fallback (mhs-updates/build-automation-update-051226/
-        // MHS-Bridge-index.html). For round-tripping editor builds against the live
-        // services (log.adroit.games / save.adroit.games), a stratahub.users
-        // document with _id = ObjectId("000000000000000000000001") must exist in
-        // the shared adroit.games stratahub. See DIRECTIONS.md.
+        // MHS-Bridge-index.html). The matching stratahub.users document is seeded
+        // automatically by stratahub at startup.
         _userId = "000000000000000000000001";
         _userName = "MHS Developer";
         _config = new BridgeConfig

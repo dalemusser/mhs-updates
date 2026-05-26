@@ -217,7 +217,7 @@ The game reads this at startup. It does NOT make any network calls for identity 
 
 **Developer builds (URL mode):** The provided replacement `index.html` fetches identity from StrataHub's `/api/user` and service config from `/api/game-config?game=mhs`, assembles `__mhsBridgeConfig`, then starts Unity. You must be logged into StrataHub in your browser for this to work.
 
-**Localhost:** The replacement `index.html` detects localhost and uses development defaults automatically — `GetUserID()` returns `"000000000000000000000001"` and all service configs return production endpoint URLs. No StrataHub login required. (A stratahub.users document with `_id = ObjectId("000000000000000000000001")` must exist in the shared adroit.games stratahub — see DIRECTIONS.md.)
+**Localhost:** The replacement `index.html` detects localhost and uses development defaults automatically — `GetUserID()` returns `"000000000000000000000001"` and all service configs return production endpoint URLs. No StrataHub login required. The matching `stratahub.users` document is seeded automatically by stratahub at startup.
 
 **Editor:** Development defaults are built into `MHSBridge.cs` — same as localhost.
 

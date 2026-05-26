@@ -1,18 +1,8 @@
 # Directions
 
-## 0. Prerequisite — one shared stratahub user record
+## Background — the editor/localhost sentinel
 
-There is no separate "local stratahub". Editor builds and localhost browser launches both talk to the live stratahub at **adroit.games**, which is the single shared instance used by everyone.
-
-For the development-mode sentinel `user_id` to round-trip through stratalog and stratasave, the following document must exist in the shared `stratahub.users` collection:
-
-```js
-{ _id: ObjectId("000000000000000000000001"),  /* + your usual user fields */ }
-```
-
-If it isn't there yet, please ask Dale to seed it. Without this row, editor and localhost launches will be authenticated as a non-existent user; stratalog/stratasave will still accept the payloads (the format is valid) but mhsgrader joins will turn up empty.
-
-The production / classroom path is unaffected — real users get their own ObjectID from stratahub at login.
+Editor builds and localhost browser launches both talk to the live stratahub at **adroit.games**, the single shared instance everyone uses. To make those launches round-trip through stratalog and stratasave, MHSBridge falls back to a sentinel `user_id` of `000000000000000000000001` (which is exposed via `MHSBridge.GetUserID()`). The matching `stratahub.users` document is seeded automatically by stratahub at startup, so you don't have to do anything — it's just here so you understand where that ID comes from when you see it in stratalog or stratasave responses. The production / classroom path is unaffected; real users get their own ObjectID at login.
 
 ## 1. Replace the bridge files (2 files)
 

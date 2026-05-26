@@ -29,7 +29,7 @@ The editor-mode development sentinel also changed:
 |--------|-------|
 | `GetPlayerID()` returned `"mhs_developer"` in the Unity Editor | `GetUserID()` returns `"000000000000000000000001"` in the Unity Editor |
 
-This matches what `MHS-Bridge-index.html` already sends when launched from `localhost`. A stratahub user with `_id = ObjectId("000000000000000000000001")` must exist in the shared adroit.games stratahub for editor/localhost log and save round-trips to succeed — see top-level `DIRECTIONS.md`.
+This matches what `MHS-Bridge-index.html` already sends when launched from `localhost`. The matching `stratahub.users` document is seeded automatically by stratahub at startup, so editor/localhost log and save round-trips work out of the box.
 
 ---
 
