@@ -13,7 +13,7 @@ This drop fixes a logging-side bug in Mission HydroSci and makes the MHSBridge i
 | Folder | Purpose |
 |--------|---------|
 | `Bridge/` | Cleaned `MHSBridge.cs` + unchanged `MHSBridge.jslib` + updated integration guide + per-folder change notice. |
-| `WebGL-Template/` | Latest `MHS-Bridge-index.html` (the host page that wraps Unity builds and provides `__mhsBridgeConfig`). This file lives in `mhs-updates/build-automation-update-051226/` but was rewritten on 2026-05-24 during the de-identification cutover — that's when its identity contract changed to `user_id` (ObjectID hex) and the localhost path picked up the `000000000000000000000001` sentinel. Copied in here so this folder is a complete unit and so the localhost sentinel is documented next to the editor sentinel it pairs with. |
+| `WebGL-Template/` | Updated `MHS-Bridge-index.html` — the host page that wraps Unity builds and provides `__mhsBridgeConfig`. On `localhost` it now sets `user_id` to the `000000000000000000000001` sentinel so editor/localhost dev sessions round-trip through the seeded stratahub user. |
 | `Game-Code/` | The three Unity scripts inside the MHS project that need to change. Tree mirrors `Assets/Scripts/Systems/` so you can drop them in place. |
 | `DIRECTIONS.md` | Step-by-step install instructions and the one setup note about the shared adroit.games stratahub user record. |
 | `WHATS-CHANGED.md` | Line-level summary of every change in this drop. |

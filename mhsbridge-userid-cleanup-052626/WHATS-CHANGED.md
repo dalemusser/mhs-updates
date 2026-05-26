@@ -58,7 +58,7 @@ The internal `_userId` field, the JSON `BridgeIdentity.user_id` field, and the `
 ## What did NOT change
 
 - `MHSBridge.jslib` — byte-identical to the 2026-04-15 drop.
-- `MHS-Bridge-index.html` — no changes in *this* drop. The host page was already rewritten on 2026-05-24 during the de-identification cutover (when the identity contract became `user_id` and the localhost path started using the `000000000000000000000001` sentinel). The file in `mhs-updates/build-automation-update-051226/` still bears the 2026-05-12 folder name, but its contents are from that May 24 rewrite.
+- `MHS-Bridge-index.html` — no change in this drop; the `000000000000000000000001` localhost sentinel is already wired in. Shipped in `WebGL-Template/` for completeness.
 - The host page contract (`window.__mhsBridgeConfig` shape).
 - Stratalog/stratasave URLs, auth headers, and payload shape (except for the field-name fix that's the whole point of this drop).
 - Any of the eight `LogXxxEvent` wrapper methods in `GameLogger.cs` — they all flow through `LogEvent`, which is where the fix lives.
