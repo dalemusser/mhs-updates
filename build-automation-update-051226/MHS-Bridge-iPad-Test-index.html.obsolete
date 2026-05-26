@@ -103,9 +103,17 @@
       var pathParts = window.location.pathname.replace(/\/index\.html$/, '').split('/');
       var detectedUnit = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2] || 'unknown';
 
+      // Identity must be present — stratalog requires a 24-char user_id.
+      // Without it we silently drop the crash report rather than synthesizing
+      // a fake identity.
+      if (!config || !config.identity || !config.identity.user_id) {
+        console.warn('MHS crash: skipping report — no user_id');
+        return;
+      }
+
       var payload = {
         game: 'mhs',
-        playerId: config && config.identity ? config.identity.user_id : 'unknown',
+        user_id: config.identity.user_id,
         eventType: 'crash',
         version: 'unknown',
         data: {
@@ -184,7 +192,8 @@
         })
         .then(function(data) {
           if (!data.isAuthenticated) throw new Error('Not authenticated');
-          return { user_id: data.user_id || data.login_id || data.email, name: data.name || '' };
+          if (!data.user_id) throw new Error('No user_id from StrataHub');
+          return { user_id: data.user_id, name: data.name || '' };
         });
     }
 
@@ -205,8 +214,11 @@
     }
 
     function loadLocalDefaults() {
+      // Local-dev identity. The hex value is a sentinel ObjectID reserved
+      // for development; it cannot collide with a real Mongo-generated
+      // ObjectID (timestamp byte = 0 = Unix epoch 1970).
       window.__mhsBridgeConfig = {
-        identity: { user_id: 'mhs_developer', name: 'MHS Developer' },
+        identity: { user_id: '000000000000000000000001', name: 'MHS Developer' },
         services: {
           log_submit:    { url: 'https://log.adroit.games/api/log/submit',       auth: 'Bearer LEARN_FAST' },
           state_save:    { url: 'https://save.adroit.games/api/state/save',      auth: 'Bearer LEARN_FAST' },
@@ -216,8 +228,8 @@
         },
         navigation: {}
       };
-      configStatus.textContent = 'Localhost detected — using development defaults (mhs_developer)';
-      console.log('MHSBridge: localhost detected, using development defaults');
+      configStatus.textContent = 'Localhost detected — using development defaults (MHS Developer)';
+      console.log('MHSBridge: localhost detected, using development defaults (user_id 000...001)');
       return Promise.resolve(true);
     }
 
