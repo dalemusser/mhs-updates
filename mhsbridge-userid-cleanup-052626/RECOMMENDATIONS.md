@@ -79,7 +79,19 @@ Defer this until you do #1; they touch the same files and rationale.
 
 ---
 
+## Do not change — log data is a stable contract
+
+The JSON shape produced by `GameLogger.LogEvent` and its eight `LogXxxEvent` wrappers is a stable contract with stratalog and every downstream consumer of that data: mhsgrader, analytics, member reports, hand-written investigation queries. Renaming any property below would silently invalidate every event recorded before the rename, because old and new rows wouldn't join under a common field name. Even a rename that looks purely cosmetic (e.g., `"PlayerPositionEvent"` → `"AvatarPositionEvent"`) breaks the contract.
+
+Property names that MUST NOT change:
+
+- **Top-level keys:** `game`, `user_id`, `version`, `sceneName`, `timestamp`, `eventType`, `eventKey`, `data`, `device`.
+- **`eventType` string vocabulary:** `DialogueNodeEvent`, `DialogueEvent`, `TopographicMapEvent`, `ArgumentationEvent`, `ArgumentationNodeEvent`, `ArgumentationToolEvent`, `PlayerPositionEvent`, `QuestEvent`. Analytics filters target these by exact match.
+- **Keys inside `data`:** `conversationId`, `nodeId`, `dialogueEventType`, `featureUsed`, `actionType`, `location.{x,y,z}`, `title`, `description`, `nodeName`, `tool.{name,state}`, `position.{x,y,z}`, `questEventType`, `questId`, `questName`, `questSF`.
+- **Keys inside `device`:** `platform`, `processors`, `memory`, `gdName`, `gMemory`, `gdApiType`, `resolution.{width,height,refreshRate}`, `dpi`, `os`.
+
+If a property name truly needs to change, do it as an additive migration: emit both old and new for a deprecation window, give downstream consumers time to switch, then retire the old one — never flip in place. The `user_id` field added by this drop is the one exception, and only because it replaces `playerId` server-side under an explicit `DEPRECATED_FIELD` rejection — i.e., the contract change was driven by stratalog itself, not by the game side.
+
 ## What I'd skip
 
-- **Renaming event-type strings like `"PlayerPositionEvent"`, `"DialogueNodeEvent"`** in `GameLogger.cs`. Stratalog doesn't validate event-type names; these are gameplay-domain labels (the player character's position), not identity fields. Renaming them would break any saved query/filter that targets them in the Log Browser without producing any contract benefit.
 - **Replacing `UserIdentity.user_id` (snake_case) with a C# `UserId` property.** The snake_case is intentional — it matches what `JsonUtility.FromJson` looks for in `/api/user`'s response and what the bridge config sends. Adding a wrapper property would just be a second name for the same value.
