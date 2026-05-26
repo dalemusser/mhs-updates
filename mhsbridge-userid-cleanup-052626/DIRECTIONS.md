@@ -10,10 +10,12 @@ Copy from `Bridge/` over the corresponding files in the Unity project:
 
 | Source | Destination in MHS project |
 |--------|---------------------------|
-| `Bridge/MHSBridge.cs` | `Assets/Scripts/MHSBridge.cs` |
+| `Bridge/MHSBridge.cs` | `Assets/Sandbox/Brian/MHS Bridge Testing/MHSBridge.cs` *(current location — see follow-up note)* |
 | `Bridge/MHSBridge.jslib` | `Assets/Plugins/WebGL/MHSBridge.jslib` |
 
 The `.jslib` is unchanged from the 2026-04-15 drop. It's included so this folder is a complete unit; if you already have the latest `.jslib` you can skip it.
+
+> **Follow-up:** `MHSBridge.cs` should move out of `Assets/Sandbox/Brian/MHS Bridge Testing/` and into `Assets/Scripts/` (or `Assets/Scripts/Systems/Bridge/`) so its path matches its production-critical role and the location of the other system scripts in this drop. We kept the current path here to avoid bundling a file move with a code change. See `MHSBridge-Integration-Guide.md` § Files for the rationale.
 
 ## 2. Replace the WebGL host page (1 file)
 
@@ -21,7 +23,7 @@ The `.jslib` is unchanged from the 2026-04-15 drop. It's included so this folder
 |--------|-------------|
 | `WebGL-Template/MHS-Bridge-index.html` | Each unit's `index.html` in your WebGL build output, replacing Unity's default `index.html`. |
 
-If you're already on the 2026-05-12 build-automation drop, this file is identical to what you have.
+Replacing this file is required for the game-side fixes to take effect — an older version of this host page injects identity under a different key, which would leave `MHSBridge.GetUserID()` returning empty.
 
 ## 3. Replace the three game scripts (3 files)
 

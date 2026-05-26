@@ -1,4 +1,4 @@
-# MHSBridge Integration Guide (2026-05-25)
+# MHSBridge Integration Guide (2026-05-26)
 
 ## Overview
 
@@ -14,9 +14,17 @@ MHSBridge operates in two modes, determined automatically:
 
 | File | Location in Unity Project | Purpose |
 |------|--------------------------|---------|
-| `MHSBridge.cs` | `Assets/Scripts/MHSBridge.cs` | C# bridge script |
+| `MHSBridge.cs` | `Assets/Sandbox/Brian/MHS Bridge Testing/MHSBridge.cs` *(current — see note below)* | C# bridge script |
 | `MHSBridge.jslib` | `Assets/Plugins/WebGL/MHSBridge.jslib` | JavaScript plugin for browser interop |
 | `index.html` | Each unit's build folder (replaces Unity-generated index.html) | Host page for URL-launched builds |
+
+> **Note on `MHSBridge.cs`'s current location.** `MHSBridge.cs` currently lives at `Assets/Sandbox/Brian/MHS Bridge Testing/MHSBridge.cs`. This drop keeps it there because bundling a file move with a code change makes the diff hard to review, but the file should be moved to `Assets/Scripts/MHSBridge.cs` as a follow-up — ideally before the next non-trivial change to it.
+>
+> Why the current path is a problem:
+>
+> - **It mislabels the file's role.** "Sandbox / one developer's testing folder" is what the path communicates. The reality is that `MHSBridge` is the canonical, production-critical seam for game identity, logging, saving, and unit navigation. A reader who trusts the path will misjudge the file's importance — including readers tempted to delete or rewrite "sandbox" content during cleanup.
+> - **It hurts discoverability and ownership.** A path naming one developer reads as a personal working copy, not shared infrastructure. If that developer moves teams or off the project, the file looks orphaned. New developers searching for "the bridge" will scan `Assets/Scripts/` and the feature folders, and won't think to check `Sandbox/` — leading to duplicated implementations or mistaken assumptions about the architecture.
+> - **It's inconsistent with everything else this drop touches.** `GameLogger.cs`, `AuthManager.cs`, and `IdentityBridge.cs` all live under `Assets/Scripts/Systems/`. `MHSBridge.cs` belongs in the same neighborhood — most naturally at `Assets/Scripts/MHSBridge.cs` or `Assets/Scripts/Systems/Bridge/MHSBridge.cs`.
 
 ## GameObject Setup
 

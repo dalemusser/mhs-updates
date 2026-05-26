@@ -15,13 +15,13 @@ This drop fixes a logging-side bug in Mission HydroSci and makes the MHSBridge i
 | `Bridge/` | Cleaned `MHSBridge.cs` + unchanged `MHSBridge.jslib` + updated integration guide + per-folder change notice. |
 | `WebGL-Template/` | Updated `MHS-Bridge-index.html` — the host page that wraps Unity builds and provides `__mhsBridgeConfig`. On `localhost` it now sets `user_id` to the `000000000000000000000001` sentinel so editor/localhost dev sessions round-trip through the seeded stratahub user. |
 | `Game-Code/` | The three Unity scripts inside the MHS project that need to change. Tree mirrors `Assets/Scripts/Systems/` so you can drop them in place. |
-| `DIRECTIONS.md` | Step-by-step install instructions and the one setup note about the shared adroit.games stratahub user record. |
+| `DIRECTIONS.md` | Step-by-step install instructions and verification steps. |
 | `WHATS-CHANGED.md` | Line-level summary of every change in this drop. |
 | `DEAD-CODE.md` | One unused file (`LogManager.cs`) that can be removed. |
 | `RECOMMENDATIONS.md` | Not required by this fix, but suggested follow-ups (asset renames, fallback URL hygiene, etc.). Take them as separate commits. |
 
 ## Where to start
 
-1. Read **`DIRECTIONS.md`** for the install order and the one mandatory setup note.
+1. Read **`DIRECTIONS.md`** for the install order.
 2. Read **`WHATS-CHANGED.md`** if you want to know exactly what's different before you copy files.
-3. The cleaned `MHSBridge.cs` lives in `Bridge/`. The three updated game scripts live under `Game-Code/Systems/`. File names and paths match what's in `Assets/Scripts/` today so you can copy each one over its counterpart.
+3. The cleaned `MHSBridge.cs` lives in `Bridge/`; its install path is the sandbox location it currently occupies (see `DIRECTIONS.md` step 1). The three updated game scripts live under `Game-Code/Systems/`, mirroring `Assets/Scripts/Systems/` in the project so each file copies over its counterpart in place.

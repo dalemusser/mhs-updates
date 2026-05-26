@@ -1,4 +1,4 @@
-# MHSBridge Change Notice — 2026-05-25
+# MHSBridge Change Notice — 2026-05-26
 
 This drop renames two public MHSBridge methods and updates the editor-mode development sentinel. It is the **second** drop of MHSBridge (the first being the 2026-04-15 dev-handoff). If you already integrated the earlier drop, only the items in **Migration** below need attention.
 
@@ -46,7 +46,7 @@ This matches what `MHS-Bridge-index.html` already sends when launched from `loca
 
 | File | Action |
 |------|--------|
-| `MHSBridge.cs` | **Replace** `Assets/Scripts/MHSBridge.cs` with this file. |
+| `MHSBridge.cs` | **Replace** the existing `MHSBridge.cs` with this file. Currently at `Assets/Sandbox/Brian/MHS Bridge Testing/MHSBridge.cs` — the top-level `DIRECTIONS.md` explains why and recommends a follow-up move under `Assets/Scripts/`. |
 | `MHSBridge.jslib` | **Replace** `Assets/Plugins/WebGL/MHSBridge.jslib` with this file. (Identical to the 2026-04-15 drop — included for completeness.) |
 | `MHSBridge-Integration-Guide.md` | Reference documentation. Supersedes the 2026-04-15 guide. |
 | `CHANGE-NOTICE.md` | This file. |

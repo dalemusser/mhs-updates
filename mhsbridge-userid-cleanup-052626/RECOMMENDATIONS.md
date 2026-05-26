@@ -7,7 +7,7 @@ These items are not necessary to fix the logging bug or to make this drop compil
 ## 1. Rename the `playerId` / `playerName` BindableVariable assets
 
 **Files involved:**
-- `Assets/Scripts/Systems/Authentication/AuthManager.cs` — `[SerializeField] private StringVariable playerId;` and `playerName;` (lines 12-13)
+- `Assets/Scripts/Systems/Authentication/AuthManager.cs` — `[SerializeField] private StringVariable playerId;` and `playerName;` (lines 18-19)
 - `Assets/Scripts/Systems/Save Load System/CustomSavers/DatabaseSaver.cs` — `[SerializeField] private StringVariable playerId;` (line 24)
 - `Assets/Scripts/Systems/Save Load System/SettingsSaveManager.cs` — `[SerializeField] private StringVariable playerId;` (line 39)
 - The two Obvious.Soap ScriptableObject asset files in `Assets/.../Resources/` (or wherever your bindables live) named `playerId.asset` and `playerName.asset`.
@@ -57,7 +57,7 @@ A failing-loud fallback ("logging disabled — bridge config not loaded") is usu
 
 ## 4. Clean out the commented-out `LogManager` block in `SaveLoadManager.cs`
 
-**File:** `Assets/Scripts/Systems/Save Load System/SaveLoadManager.cs` — lines 11, 15, 23, 32 (the commented-out `[RequireComponent(typeof(LogManager))]`, the commented `playerId` field, the commented `Awake`/`SaveGame` bodies).
+**File:** `Assets/Scripts/Systems/Save Load System/SaveLoadManager.cs` — lines 12, 15, 23, 32 (the commented-out `[RequireComponent(typeof(LogManager))]`, the commented `playerId` field, the commented `Awake`/`SaveGame` bodies).
 
 **Why:** If you're removing `LogManager.cs` per `DEAD-CODE.md`, the comments referencing it become orientation noise for the next reader. They suggest there's a meaningful relationship between `SaveLoadManager` and `LogManager` when in fact there hasn't been one for a long time.
 
@@ -68,8 +68,8 @@ A failing-loud fallback ("logging disabled — bridge config not loaded") is usu
 ## 5. Rename `playerOverrideId` and `oldPlayerId` for consistency
 
 **File:** `Assets/Scripts/Systems/Authentication/AuthManager.cs`
-- Line 16: `public string playerOverrideId;` → `public string userOverrideId;`
-- Line 73 (inside `OnUserIdentityFetched`): `var oldPlayerId = playerId.Value;` → `var oldUserId = playerId.Value;`
+- Line 22: `public string playerOverrideId;` → `public string userOverrideId;`
+- Line 74 (inside `OnUserIdentityFetched`): `var oldPlayerId = playerId.Value;` → `var oldUserId = playerId.Value;`
 
 **Why:** Same reasoning as #1 — these names describe a "player ID" but the value is a user_id. The `playerOverrideId` is also a public field exposed in the Inspector, so renaming it would surface in tooling (and you'd need to re-set it in any scene that has it populated, since Unity tracks `[SerializeField] public` fields by name, not GUID).
 
