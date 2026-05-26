@@ -16,9 +16,9 @@ Stratalog's `/api/log/submit` rejects this with HTTP 400:
 { "error": "'playerId' is not accepted; submit 'user_id' instead", "code": "DEPRECATED_FIELD" }
 ```
 
-That single line is the entire reason MHS isn't logging right now. Every other piece of the stack was already correct: the host page sets `__mhsBridgeConfig.identity.user_id` to the ObjectID hex, `MHSBridge` parses it into `BridgeIdentity.user_id`, and `AuthManager` propagates it down. But `GameLogger.LogEvent` then re-keys the value as `"playerId"` on the way out the door, so stratalog rejects the payload.
+That single line is the entire reason MHS isn't logging right now. The de-identification cutover fixed every other piece of the stack: the host page sets `__mhsBridgeConfig.identity.user_id` to the ObjectID hex, `MHSBridge` parses it into `BridgeIdentity.user_id`, and `AuthManager` propagates it down. But `GameLogger.LogEvent` was missed in that pass — it kept re-keying the value as `"playerId"`, which stratalog now rejects.
 
-## The fix, in three pieces
+## The fix
 
 ### 1. `Bridge/MHSBridge.cs`
 
@@ -55,10 +55,19 @@ The internal `_userId` field, the JSON `BridgeIdentity.user_id` field, and the `
 - The `[SerializeField] private StringVariable playerId;` and `playerName;` BindableVariable references on lines 12-13 are **intentionally unchanged** — see DIRECTIONS.md "Out of scope".
 - The `playerOverrideId` field name is **intentionally unchanged** for the same reason. Its tooltip was updated to require a 24-char lowercase hex value.
 
+### 5. `WebGL-Template/MHS-Bridge-index.html`
+
+The host page that wraps each Unity WebGL build. The version in this drop reflects the de-identification cutover:
+
+- Authenticated path: reads `user_id` from stratahub's `/api/user` and writes it into `__mhsBridgeConfig.identity.user_id`.
+- Localhost path: sets `__mhsBridgeConfig.identity.user_id` to the `000000000000000000000001` sentinel with name `"MHS Developer"`.
+- Crash-report payload uses `user_id` as the identity key.
+
+Drop into each unit's build folder, replacing Unity's default `index.html`. Without this file, the game-side fixes don't take effect end-to-end — `MHSBridge` reads `identity.user_id` from the bridge config, and an older host page injecting a different key would leave `GetUserID()` returning empty.
+
 ## What did NOT change
 
 - `MHSBridge.jslib` — byte-identical to the 2026-04-15 drop.
-- `MHS-Bridge-index.html` — no change in this drop; the `000000000000000000000001` localhost sentinel is already wired in. Shipped in `WebGL-Template/` for completeness.
 - The host page contract (`window.__mhsBridgeConfig` shape).
 - Stratalog/stratasave URLs, auth headers, and payload shape (except for the field-name fix that's the whole point of this drop).
 - Any of the eight `LogXxxEvent` wrapper methods in `GameLogger.cs` — they all flow through `LogEvent`, which is where the fix lives.
