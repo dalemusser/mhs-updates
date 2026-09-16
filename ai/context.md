@@ -52,6 +52,12 @@ mhs-updates/
 │   │       └── Characterization/CharacterCustomization_DataController.cs
 │   └── WebGL-Template/
 │       └── MHS-Bridge-index.html
+├── gamelogger-cache-overflow-091626/            # Dated update package 4
+│   ├── README.md
+│   ├── 01-gamelogger-cache-overflow.md          # Symptom → mechanism → required changes → verification
+│   └── Game-Code/
+│       └── Systems/
+│           └── Logging/GameLogger.cs            # Drop-in (bounded cache, no wedging, batch sends)
 └── dale-working-docs/                           # (Internal) working notes during development
     └── build-automation-slider-settings-save-051226/
 ```

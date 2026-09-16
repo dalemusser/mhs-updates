@@ -143,6 +143,32 @@ sensitivity control, contains visible spelling errors, generates a
 spurious 400 error on every launch, and never reflects the user's
 saved sensitivity across game restarts.
 
+### `gamelogger-cache-overflow-091626/` — 2026-09-16
+
+One fix to `Assets/Scripts/Systems/Logging/GameLogger.cs`. A Windows
+classroom machine began printing `Failed to save cached logs (WebGL):
+Could not store preference value` on every game event. The logger
+persists its **entire** unsent-log queue as a single PlayerPrefs
+string, and Unity caps WebGL PlayerPrefs (IndexedDB-backed) at 1 MB.
+The queue reached that size because the send loop retries the same
+head entry forever on anything except HTTP 400, so one POST that can
+never succeed (a blocked log host, a wedged entry) stalls everything
+behind it until the cache hits the cap; after that nothing new is
+persisted and every event logs the error. The drop-in bounds the cache
+(512 KB / 1,500 entries, oldest dropped first, with a
+`LogCacheOverflow` event reporting the gap once the server is
+reachable), drops entries only on 400/413, retries everything else
+with capped backoff, attaches the device block at send time instead of
+into the cached copy, coalesces cache writes to one per two seconds
+with a flush on pause/focus loss/quit, and drains backlogs through
+stratalog's batch endpoint. The cache loader reads the old format too,
+so entries cached by the current build are sent after the upgrade. The
+doc also gives the no-code remedy for an affected machine (clear site
+data for the game origin) and how to confirm the real cause in
+DevTools. The drop-in compiles against stubs of the Unity APIs it uses
+but has not been built in-project; the verification steps in the doc
+are required.
+
 ---
 
 ## How to consume an update
