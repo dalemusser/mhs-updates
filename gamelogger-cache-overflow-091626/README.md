@@ -25,7 +25,9 @@ a whole session's worth of events.
 | Path | Purpose |
 |------|---------|
 | `01-gamelogger-cache-overflow.md` | The full write-up: symptom, mechanism, why one machine, how to confirm, the immediate remedy for an affected machine, the five required changes with rationale, server-side facts, verification. **Start here.** |
-| `Game-Code/Systems/Logging/GameLogger.cs` | Drop-in replacement for `Assets/Scripts/Systems/Logging/GameLogger.cs`. Tree mirrors `Assets/Scripts/Systems/` as in the 2026-05-26 drop. |
+| `02-reproduction-and-specimen.md` | **Added 2026-09-18.** The failure reproduced on purpose in two minutes (block the log host at launch), the captured PlayerPrefs store, and the observed mechanism: an emptied dictionary at the head of the queue makes the send loop exit forever. Names the two additions the drop-in still needs. |
+| `specimen/` | The captured store (`PlayerPrefs-…bin`, Unity's own file), its cache decoded to JSON, and the browser's request list from the reproduction. |
+| `Game-Code/Systems/Logging/GameLogger.cs` | Drop-in replacement for `Assets/Scripts/Systems/Logging/GameLogger.cs`. Tree mirrors `Assets/Scripts/Systems/` as in the 2026-05-26 drop. Predates `02-…`; see its "What this changes in the fix" for the two additions still to make. |
 
 ## Where to start
 

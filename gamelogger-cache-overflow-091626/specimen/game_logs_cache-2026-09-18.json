@@ -1,0 +1,1159 @@
+[
+ {},
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "MainMenu",
+  "timestamp": "2026-09-18T06:43:26.7020000Z",
+  "eventType": "gameWindowFocusEvent",
+  "data": {
+   "": true
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "MainMenu",
+  "timestamp": "2026-09-18T06:43:26.7030000Z",
+  "eventType": "gameStartEvent",
+  "data": {
+   "": true
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:10.4180000Z",
+  "eventType": "DEBUGMenu",
+  "data": {
+   "actionType": "DebugMenuStateChanged",
+   "isOpened": false
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:10.4200000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:14.4670000Z",
+  "eventType": "DialogueEvent",
+  "data": {
+   "dialogueEventType": "DialogueNodeEvent",
+   "conversationId": 18,
+   "nodeId": 1
+  },
+  "eventKey": "DialogueNodeEvent:16:3"
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:14.4690000Z",
+  "eventType": "DialogueEvent",
+  "data": {
+   "dialogueEventType": "DialogueStartEvent",
+   "conversationId": 18
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:21.2140000Z",
+  "eventType": "DialogueEvent",
+  "data": {
+   "dialogueEventType": "DialogueFinishEvent",
+   "conversationId": 16
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:23.1960000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:33.1960000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:43.1950000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:53.1950000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:55.5030000Z",
+  "eventType": "InputEvent",
+  "data": {
+   "actionType": "Move",
+   "playerOrDrone": "Player",
+   "key": "w",
+   "Value": "pressed"
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:56.5680000Z",
+  "eventType": "InputEvent",
+  "data": {
+   "actionType": "Move",
+   "playerOrDrone": "Player",
+   "key": "w",
+   "Value": "pressed"
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:44:58.6840000Z",
+  "eventType": "InputEvent",
+  "data": {
+   "actionType": "Move",
+   "playerOrDrone": "Player",
+   "key": "w",
+   "Value": "pressed"
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:00.8000000Z",
+  "eventType": "InputEvent",
+  "data": {
+   "actionType": "Move",
+   "playerOrDrone": "Player",
+   "key": "w",
+   "Value": "pressed"
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:02.9180000Z",
+  "eventType": "InputEvent",
+  "data": {
+   "actionType": "Move",
+   "playerOrDrone": "Player",
+   "key": "w",
+   "Value": "pressed"
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:03.2010000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:05.0340000Z",
+  "eventType": "InputEvent",
+  "data": {
+   "actionType": "Move",
+   "playerOrDrone": "Player",
+   "key": "w",
+   "Value": "pressed"
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:13.2010000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:19.3170000Z",
+  "eventType": "InputEvent",
+  "data": {
+   "actionType": "Move",
+   "playerOrDrone": "Player",
+   "key": "w",
+   "Value": "pressed"
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:23.2010000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:33.2000000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:34.2370000Z",
+  "eventType": "DialogueEvent",
+  "data": {
+   "dialogueEventType": "DialogueNodeEvent",
+   "conversationId": 18,
+   "nodeId": 1
+  },
+  "eventKey": "DialogueNodeEvent:18:1"
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:34.2410000Z",
+  "eventType": "DialogueEvent",
+  "data": {
+   "dialogueEventType": "DialogueStartEvent",
+   "conversationId": 18
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:43.2000000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:45:53.1990000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:46:03.1980000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:46:13.1980000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:46:23.1980000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:46:33.1980000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:46:43.1970000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:46:53.1970000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:47:03.1980000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:47:13.1980000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:47:23.1970000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:47:33.1960000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:47:43.1970000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:47:53.1960000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:48:03.1950000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:48:13.1950000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:48:23.1940000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:48:33.1940000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:48:43.1940000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:48:53.1940000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:49:03.1940000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:49:13.1920000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:49:23.1910000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:49:33.1910000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:49:43.1930000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:49:53.1910000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:50:03.1910000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:50:13.1910000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:50:23.1910000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:50:33.1900000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:50:43.1900000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:50:53.1890000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:51:03.1900000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:51:13.1880000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:51:23.1890000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:51:33.1890000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:51:43.1880000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:51:53.1870000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:52:03.1870000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:52:13.2030000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:52:23.2030000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:52:33.2010000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:52:43.2030000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:52:53.2010000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:53:03.2010000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:53:13.2000000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:53:23.2010000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:53:33.2010000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:53:43.2010000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:53:53.1990000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:54:03.1990000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:54:13.1990000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:54:23.1990000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:54:33.1990000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ },
+ {
+  "game": "mhs",
+  "user_id": "ffffffff06ea48409d13c677",
+  "version": "20260914-",
+  "sceneName": "Unit 2 Prod (Refactor)",
+  "timestamp": "2026-09-18T06:54:43.1990000Z",
+  "eventType": "PlayerPositionEvent",
+  "data": {
+   "position": {
+    "x": 1098.68262,
+    "y": 153.120132,
+    "z": 1392.29407
+   }
+  }
+ }
+]
