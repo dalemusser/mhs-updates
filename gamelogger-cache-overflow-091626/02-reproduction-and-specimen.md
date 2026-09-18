@@ -100,6 +100,16 @@ implemented by **clearing the entry's dictionary instead of dequeuing it**
 (`logData.Clear()` or equivalent where `logQueue.Dequeue()` was meant). Look
 at the code that runs after a non-400 failure once a retry has been made.
 
+**Being fully offline is the same case.** A run with the browser reporting
+offline (`navigator.onLine === false`, run id beginning `ffffffff6952`):
+the game still made the attempt and the ten-second retry, both failed, and
+after the connection returned it never sent again; the failed entry was
+`{}` at the next cache write. The `IsNetworkAvailable()` check
+(`Application.internetReachability`) does not stop the loop on WebGL. So any
+interruption of the log path lasting more than about ten seconds during
+play, from any cause, ends logging on that browser profile until its site
+data is cleared.
+
 Why it does not bite every session: the first attempt normally succeeds or
 is rejected with 400 within a fraction of a second, and both paths dequeue
 the entry. It takes a network-level failure of the same entry twice, ten
