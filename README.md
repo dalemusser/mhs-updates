@@ -171,6 +171,22 @@ are required.
 
 ---
 
+### `end-of-game-ceremony-092426/` — 2026-09-24
+
+StrataHub now owns the end of the game: when Unit 5 completes, the
+player goes straight into an award ceremony (a web experience outside
+the Unity build) that recaps their journey and shows their stars. In
+build 2.8.1 the end of Unit 5 calls only `MHSBridge.EndGame()` from the
+Congratulations / Continue screen and never `CompleteUnit("unit5", …)`,
+so StrataHub never learned the unit was finished and the student came
+back to the launcher with no ceremony. The requested change is to remove
+that screen and, where Unit 5 ends, call `CompleteUnit("unit5", null)`
+followed by `EndGame()`, keeping every log and quest event as it is.
+Documentation only (a call sequence and a removed screen); the bridge
+files are unchanged.
+
+---
+
 ## How to consume an update
 
 Open the update folder, start with its `README.md`. The README
