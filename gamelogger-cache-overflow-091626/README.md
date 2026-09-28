@@ -26,6 +26,7 @@ a whole session's worth of events.
 |------|---------|
 | `01-gamelogger-cache-overflow.md` | The full write-up: symptom, mechanism, why one machine, how to confirm, the immediate remedy for an affected machine, the five required changes with rationale, server-side facts, verification. **Start here.** |
 | `02-reproduction-and-specimen.md` | **Added 2026-09-18.** The failure reproduced on purpose in two minutes (block the log host at launch), the captured PlayerPrefs store, and the observed mechanism: an emptied dictionary at the head of the queue makes the send loop exit forever. Names the two additions the drop-in still needs. |
+| `03-builds-12438-12446-test.md` | **Added 2026-09-28.** The builds with the new logger (20260921-12438, 20260925-12446) tested the same way: the two-failure wedge is fixed, but accepted batches are resent in a loop (every session, about 8 requests a second) and a refused batch is resent at once forever; a device wedged by the schools' build does not recover. The required changes and how to verify them. |
 | `specimen/` | The captured store (`PlayerPrefs-…bin`, Unity's own file), its cache decoded to JSON, and the browser's request list from the reproduction. |
 | `Game-Code/Systems/Logging/GameLogger.cs` | Drop-in replacement for `Assets/Scripts/Systems/Logging/GameLogger.cs`. Tree mirrors `Assets/Scripts/Systems/` as in the 2026-05-26 drop. Predates `02-…`; see its "What this changes in the fix" for the two additions still to make. |
 
