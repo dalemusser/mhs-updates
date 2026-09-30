@@ -143,6 +143,20 @@ sensitivity control, contains visible spelling errors, generates a
 spurious 400 error on every launch, and never reflects the user's
 saved sensitivity across game restarts.
 
+### `gamelogger-fix-093026/` — 2026-09-30 (in progress)
+
+The logging fixes made in the Unity project itself, to be tested in a
+build and handed over as changed files. `00-plan.md` is the working
+brief: the two project copies (the schools' build and the game team's
+new logger), every defect with its place in the source (the schools'
+send loop empties the queued entry it is retrying; the new loop keeps
+its batch list between passes and resends it; queued entries share one
+dictionary per logging component, so later events overwrite their
+details; the first event of a session has no user id; two logger
+instances), the fix for each, the seven checks a build must pass, and
+the delivery format. `tools/` holds the test scripts. `Game-Code/` will
+hold the changed files.
+
 ### `gamelogger-cache-overflow-091626/` — 2026-09-16
 
 One fix to `Assets/Scripts/Systems/Logging/GameLogger.cs`. A Windows
