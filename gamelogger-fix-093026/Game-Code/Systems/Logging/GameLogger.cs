@@ -136,10 +136,12 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
             // component, because the game object is shared with other
             // singletons that handle their own duplicates.
             isDuplicate = true;
+            Debug.Log($"GameLogger: a second logger component in scene '{SceneManager.GetActiveScene().name}' removed itself; the first one (id {_instance.GetInstanceID()}) stays.");
             Destroy(this);
             return;
         }
         _instance = this;
+        Debug.Log($"GameLogger: instance {GetInstanceID()} awake in scene '{SceneManager.GetActiveScene().name}'.");
 
         // Cache device info once at startup
         cachedDeviceInfo = BuildDeviceInfo();
@@ -846,11 +848,16 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
 
     private void LoadCachedLogsWebGL()
     {
-        if (!PlayerPrefs.HasKey(logCacheFile)) return;
+        if (!PlayerPrefs.HasKey(logCacheFile))
+        {
+            Debug.Log("GameLogger: no saved log queue in PlayerPrefs.");
+            return;
+        }
 
         try
         {
             string json = PlayerPrefs.GetString(logCacheFile);
+            Debug.Log($"GameLogger: saved log queue read from PlayerPrefs: {(json == null ? -1 : json.Length)} chars.");
             LoadEntries(ParseCache(json));
         }
         catch (Exception e)
@@ -901,6 +908,7 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
                     skipped++;
                 }
             }
+            Debug.Log($"GameLogger: log cache loaded: {entries.Count} entries read, {logQueue.Count} queued to send.");
             if (skipped > 0)
             {
                 Debug.LogWarning($"GameLogger: left {skipped} unsendable entries out of the loaded log cache (empty, or without an event type or user id); {logQueue.Count} kept.");

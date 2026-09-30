@@ -62,6 +62,24 @@ of its README.
 
 ## Updates in this repository
 
+### `gamelogger-fix-093026/` — 2026-09-30
+
+The fix for every known defect in the game's logging, made in the
+2026-09-28 project copy and proven with a Unit 1 build on the dev site:
+per-send state kept in fields (the empty entry that stopped the schools'
+build sending; the resend loop and refusal loop of the September builds),
+queued entries' details overwritten by later events (a shared
+dictionary per logging component, and in the position event), the
+session's first event sent without a user id, two logger instances, and
+the hardening from the September note (drop unsendable entries on load
+and before sending, remove sent entries by identity, pause after a
+refusal, request timeout, a capped unit-transition wait). Two files
+change: `Game-Code/Systems/Logging/GameLogger.cs` and
+`LoggingData.cs`. `00-plan.md` is the brief the work followed,
+`01-changes.md` the change-by-change description and the verification
+results, `tools/` the loop simulation, the browser recipe helpers and the
+read-only server-side queries.
+
 ### `build-automation-update-051226/` — 2026-05-12
 
 Two independent fixes to the WebGL build pipeline, bundled because

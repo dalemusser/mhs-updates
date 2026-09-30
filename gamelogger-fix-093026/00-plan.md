@@ -2,6 +2,8 @@
 
 **Date:** 2026-09-30
 **Purpose:** the working brief for the session that fixes the logging code in the Mission HydroSci Unity project, builds and tests it, and delivers the changed files to the game team.
+**Outcome (2026-09-30):** done. The fixed files are in `Game-Code/`, and `01-changes.md` has each defect's change and the verification results on the dev site (checks 1–7). Two test collections exist on the dev site (`20260930-logfix-LoggingFixTest`, `20260930-logfix2-LoggingFixTest`); nothing is active for students.
+
 **Start here** (new session, working directory `/Users/dale/Documents/catchupstratahub` so its memory loads): read this file, then `../gamelogger-cache-overflow-091626/03-builds-12438-12446-test.md` (what the last builds did) and `stratahub/docs/mission-hydrosci/mhs-game-logging-issues-092826.md` (the full issue list). Memory: `mhs-gamelogger-cache-overflow`, `mhs-log-details-overwritten`, `dev-mhs-test-member`.
 
 ## The goal and the flow

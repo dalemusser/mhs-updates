@@ -1,0 +1,77 @@
+# The logging fix: what changed, and how it was verified
+
+**Date:** 2026-09-30
+**Base:** the game team's project copy of 2026-09-28 (`20260928_CH12449_MHS 2.0`, the logger of builds 20260921-12438 and 20260925-12446), Unity 6000.0.74f1.
+**Files:** `Game-Code/Systems/Logging/GameLogger.cs` and `Game-Code/Systems/Logging/LoggingData.cs`, mirroring `Assets/Scripts/Systems/Logging/`. Nothing else changes: no prefab, asset, scene or host-page edit, and the public API of `GameLogger` (`Instance`, `LogEvent`, `SendToServer`, `SetUserId`, the eight `Log…Event` wrappers, `IsSendingLogs`, the `ICheckForUnitTransition` members) is the same. `AuthManager.cs` is unchanged.
+
+The defects are numbered as in `00-plan.md` and as G1–G6 in `stratahub/docs/mission-hydrosci/mhs-game-logging-issues-092826.md`.
+
+## The changes, defect by defect
+
+### 1 and 2. Per-send state kept in fields (G1)
+
+The 2026-09-14 build (v2.8.1) emptied the queued entry with `logData.Clear()` and then read the empty entry as an empty queue, so one request failing twice stopped all sending on that browser profile. The 2026-09-25 logger kept the batch list `toSend` as a field and never cleared it, so every accepted batch was sent again (about 8 requests a second, from the second request of every session) and a refused batch grew by one entry and was refused again, forever.
+
+**Change.** Every per-send value is local to the send coroutine: the batch list is a new list at the top of every pass, and the request body, the request and the endpoint config are locals. The fields `logData`, `toSend`, `jsonData`, `bodyRaw`, `logUrl`, `logAuth`, `logConfig` and `logList` are gone, with the commented-out code that used them. The loop exits only when the queue is empty.
+
+### 3. Queued entries' details overwritten by later events (G2)
+
+Each `LoggingData` entry kept one dictionary, cleared and refilled it on every event, and handed that same object to the logger, which stored the reference in the queued entry. While an entry waited to be sent, the next event from the same component overwrote its details. `LogPlayerPositionEvent` reused two dictionaries the same way. The "variable" entries also stored the Soap variable objects, not their values.
+
+**Change.** `LoggingData.ExecuteLogData` (both entry kinds) builds a new dictionary per call, and the variable entries add the variable's current `Value`. `LogPlayerPositionEvent` builds new dictionaries per call. As a backstop, `GameLogger.LogEvent` stores a copy of the caller's data (nested dictionaries and lists copied too), so no caller can change a queued entry.
+
+The shape of `data` does not change for any event type in use: the only assets with variable entries are the map's, whose events go through `LogTopoMapEvent` (unchanged). If a variable entry is ever logged through the generic path, `data` now carries the value where it used to carry a serialized `ScriptableObject`.
+
+### 4. The first event of a session has no user id (G4)
+
+The debug-menu controller logs before `AuthManager` has called `SetUserId` (in release builds it destroys itself in `Awake` under `NO_DEBUG`, and `OnDestroy` logs a "closed" event), so the entry went out with `user_id: null` and was refused.
+
+**Change.** `SetUserId` stamps the id onto every queued entry that has none, and the send loop does not send an entry that lacks only its user id while the id is unknown: it waits (one look per second, no request). The entry goes out with the id in the session's first batch. The cached backlog from earlier sessions, which carries ids, is sent meanwhile. If a session never learns its identity, its id-less entries stay in the cache and are dropped on the next launch (below).
+
+### 5. Two logger instances (G5)
+
+Both core-systems prefabs carry a `GameLogger` on the console-manager object, `Awake` never assigned `_instance`, and the duplicate check destroyed the shared game object.
+
+**Change.** `Awake` assigns `_instance`; a second component removes only itself (`Destroy(this)`) and does nothing else. `isSendingLogs` is an instance field (`IsSendingLogs` reads it from the instance), so a lost instance can never strand the flag. `OnDestroy` clears `_instance` and flushes the cache. The `Instance` getter still creates a logger if none exists, with a warning; console printing tolerates its unassigned debug-log setting.
+
+### 6. Hardening (G3)
+
+- **Load:** an entry with no fields, no `eventType` or no `user_id` is left out of the queue when the cache is loaded (with one warning giving the count), and the cleaned queue is written back at once. The `{}` that v2.8.1 leaves behind, and the id-less debug-menu entries of older builds, never produce a request.
+- **Before sending:** the same rule at the head of the queue and when a batch is built (an unsendable entry ends the batch and is dropped on the next pass). The device block is only ever attached to entries that are sent.
+- **Removal by identity:** after a 2xx (or a 400/413 on a single entry) the queue is dequeued while its head is one of the entries just sent. Entries the cache trimming dropped during the request are simply gone; entries that were not sent are never removed.
+- **Pause after a refusal:** one second after a 400 or 413 before the next request.
+- **Request timeout:** 30 s, after which the attempt counts as a failure and backs off.
+- **Batches:** at most 50 entries (the server's limit is 100), unchanged.
+- **The bounded cache, coalesced writes and backoff** (10 s doubling to 60 s) from the 2026-09-16 drop-in stay as they were.
+- **Unit transitions:** `CallToTransitionToNextUnit` reports ready when the queue is empty, when no send is running, or five seconds after the transition first asked; it flushes the cache when it says yes. With retry-forever, waiting on the logger without a limit would hold a unit change for as long as the log service is unreachable. Whatever is still queued is persisted and sent by the next unit's build.
+- **Endpoint:** the hard-coded fallback to the legacy `/logs` route and API key is removed. The endpoint comes from the host page through `MHSBridge`; if it is missing the loop waits and looks again every five seconds, and nothing is lost. An exception inside the coroutine can no longer leave `isSendingLogs` set (`try/finally`).
+
+### 7. Smaller things
+
+- `IsNetworkAvailable()` stays as an advisory check with a comment; nothing depends on it.
+- The build's version string: set `bundleVersion` in the release build profile (the test build used `20260930-logfix`); the pipeline's `-changelistNum` argument names the report file only.
+- The console errors seen in headless runs are covered in the verification below.
+
+## Verification
+
+All on 2026-09-30, on the dev site, with the dev test member account, in headless Chromium driven by playwright-cli, with the server-side counts read from the log service's database (read-only). The seven checks are the plan's (`00-plan.md` §"Testing the fix").
+
+**The builds.** Unit 1 from the release build profile (`Release Unit 1`: `SEPARATE_AUDIO_RESOURCES`, `RELEASE_BUILD`, `NO_DEBUG`, the same defines as the schools' build), Unity 6000.0.74f1 with Web Build Support, batch mode on a Mac. Two builds of the same fix: the first (uploaded as unit1 **v2.8.3**, collection `20260930-logfix-LoggingFixTest`, game version string `20260930-logfix`) and, after checks 1 and 2, a second with the `Awake` and cache-load log lines added (unit1 **v2.8.4**, collection `20260930-logfix2-LoggingFixTest`). The delivered `GameLogger.cs` is the second build's. Unity did not pick up the version-string change for the second build on the warm Library, so its entries also carry `20260930-logfix`; the two are told apart by time below. The built `global-metadata.dat` of each was read with `tools/extract_meta.py` + `meta.py`: the fixed logger's fields (`rejectedPauseSeconds`, `identityPollInterval`, `requestTimeoutSeconds`, `transitionMaxWaitSeconds`, `isDuplicate`) and methods (`RemoveSent`, `IsSendable`, `LoadEntries`, `CopyData`) are present, which is check 7.
+
+**Same-day baseline on the schools' build (v2.8.1)**, log host blocked from launch, Unit 1 into the scene, W and D held: two refused attempts (the entry and its retry ten seconds apart), then no request for the rest of the session; the saved queue in the old format with `{}` first and 16 events behind it; all 9 queued position events carrying the same, latest position. That is defects 1 and 3 as described.
+
+| # | Check | Result on the fixed build |
+|---|---|---|
+| 1 | Normal play, host reachable (v2.8.3, 20:53–20:56 UTC) | 17 requests, all `201`, one per batch or event; the store empty afterwards. Server: **35 entries, 35 distinct**, no event with more than one copy (16 of them the baseline's backlog, sent once in the first batch). The 10-second cadence while the player stands still is the game's own position event, not a resend. |
+| 2 | Host blocked for two minutes, then unblocked (v2.8.3, 20:56–21:00 UTC) | Attempts at 0, 10, 30, 70 and 130 s (10 → 20 → 40 → 60 s backoff); the game never went silent. The store while blocked: 17 entries, all real events, no `{}`, no device block. First attempt after the unblock accepted 13 s later (the pending 60-s wait), then one request per new event. Store empty afterwards. Server: **all 17 queued events arrived exactly once; 25 entries, 25 distinct**. |
+| 3 | A store wedged by v2.8.1 loaded before launch, the play page's repair disabled (v2.8.4, 21:23 UTC; the 2026-09-28 specimen: `{}` first, 37 events, one without an id) | Console: `GameLogger: instance 16648 awake in scene 'MainMenu'`, `saved log queue read from PlayerPrefs: 10024 chars`, `log cache loaded: 38 entries read, 36 queued to send`, one warning `left 2 unsendable entries out of the loaded log cache`. Then **two requests, both `201`**: the 36-entry batch and the session's opening events. No refusal, no loop; store empty afterwards. Server: the 36 arrived once each (52 backlog entries from v2.8.1 in the day's window, 52 distinct). |
+| 4 | The session's first event without a user id | The debug-menu event that release builds log before identity is known is the first entry of every session's first batch, **with the id** (`DEBUGMenu … isOpened:false`, then `gameWindowFocusEvent`, `gameStartEvent`). Server: **0 entries without a user id** in the window, **0 refused requests** carrying the test member's id or the fixed build's version string (today's 465 refusals at the log service are other devices on v2.8.1, `missing or invalid 'user_id'` for their sessions' first event, two `500`s before this work started, and one from the dev admin account's own v2.8.1 launch during setup; none mention the test member's id or the fixed build's version string). |
+| 5 | Details survive a burst and a backlog | The check 2 backlog (queued 2 min, sent late): input events `s` then `d` (on v2.8.1 a backlog's input events all show the same key), `questActiveEvent:28` ↔ `questID 28`, `DialogueNodeEvent:30:1` ↔ `conversationId 30, nodeId 1`; the position changed between consecutive events while the player could move (positions are constant once the intro dialogue freezes the player, in both builds). Server, both fixed builds: **3 dialogue-node entries, 0 disagree; 3 quest entries, 0 disagree**; 29 position events, 9 distinct positions; input keys `d s s d s d`. Puzzle-piece events were not reached in these runs. |
+| 6 | One logger instance | Console, one play-through (v2.8.4): `GameLogger: instance 16648 awake in scene 'MainMenu'` once, then `a second logger component in scene 'Unit 1 Dev' removed itself; the first one (id 16648) stays`; 11 requests, all `201`, one per batch. |
+| 7 | Built metadata | See "The builds" above. |
+
+**Also seen, not from the logger.** `ArgumentException: JSON must represent an object type.` is printed once right after each scene finishes loading (main menu, and twice on entering the gameplay scene), on v2.8.1 and on the fixed builds alike, about 300 ms after the logger's cache load and before its first response arrives; it follows the `Settings Load` / `Settings Save` calls of the save system. The logger no longer parses any response, so this is somewhere else (the save system's response parsing is the obvious place to look). The play page's own crash reporter posts a `crash` entry to the log service when the headless browser refuses pointer lock (`unhandled_rejection: The root document of this element is not valid for pointer lock`); that is one extra request per session in these tests and belongs to StrataHub, not the game.
+
+**Building on a fresh checkout.** The first build of the 2026-09-28 copy failed with 136 compile errors: `Assets/Imported/Samples/StarterAssets/InputSystem/PlayerInputs.inputactions` has *Generate C# Class* on with the wrapper path `Assets/Third Party/StarterAssets/InputSystem/PlayerInputs.cs`, a folder the zip does not contain, so the first import generated a second `PlayerInputs` class next to the checked-in one. The test copy removed the generated file and turned generation off for that asset; the team's own machines never re-import it. Worth fixing in the mainline before a CI build from a clean workspace. Also: the team's `BuildFromBuildProfiles` opens a folder dialog in a static initializer; in batch mode Unity cancels it with a warning, harmless.
+
+**Test tooling.** `tools/send-loop-simulation-fixed.py` is a port of the fixed loop's send, load and `SetUserId` logic with 12 checks (defects 2, 3, 4, 6 and the outage path); it passes. `tools/queries/*.js` are the read-only server-side counts used above.
