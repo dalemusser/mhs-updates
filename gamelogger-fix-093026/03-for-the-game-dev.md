@@ -21,7 +21,7 @@ The public API of `GameLogger` is unchanged (`Instance`, `LogEvent`, `SendToServ
 
 1. Build the units as usual (release profiles). Set `bundleVersion` in the release build profile to a distinct string (date plus build number, as for 20260925-12446) so this build's entries can be told apart on the server; our test builds used `20260930-logfix`.
 2. Upload the zip through MHS Builds on the dev site; that creates a collection.
-3. Tell us the collection name. We run the seven checks from `00-plan.md` on it (normal play, blocked log host, a store wedged by v2.8.1, the first event, details in a backlog, one instance, the built metadata). The same checks passed on our Unit 1 builds of these files on 2026-09-30 and 2026-10-01 (version 1.2 as unit1 v2.8.7 on the dev site).
+3. Tell us the collection name. We run the seven checks from `00-plan.md` on it (normal play, blocked log host, a store wedged by v2.8.1, the first event, details in a backlog, one instance, the built metadata). The same checks passed on our Unit 1 builds of these files on 2026-09-30 and 2026-10-01 (version 1.3 as unit1 v2.8.8 on the dev site).
 4. Only after that is the collection made active for students.
 
 ## One thing to fix in CI
