@@ -73,9 +73,11 @@ dictionary per logging component, and in the position event), the
 session's first event sent without a user id, two logger instances, and
 the hardening from the September note (drop unsendable entries on load
 and before sending, remove sent entries by identity, pause after a
-refusal, request timeout, a capped unit-transition wait). Two files
+refusal, request timeout, a capped unit-transition wait). Three files
 change: `Game-Code/Systems/Logging/GameLogger.cs` and
-`LoggingData.cs`. `00-plan.md` is the brief the work followed,
+`LoggingData.cs`, and `Game-Code/Systems/Save Load System/SettingsSaveManager.cs`
+for the console error on every scene load (the save service's `null`
+body for a player without saved settings). `00-plan.md` is the brief the work followed,
 `01-changes.md` the change-by-change description and the verification
 results, `tools/` the loop simulation, the browser recipe helpers and the
 read-only server-side queries.
