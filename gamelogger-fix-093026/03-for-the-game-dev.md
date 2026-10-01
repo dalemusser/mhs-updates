@@ -1,7 +1,7 @@
 # Logging fix: what to do in the game code
 
 **Date:** 2026-09-30
-**Short version:** replace three C# files, build, upload through MHS Builds. No prefab, asset, scene or host-page changes. The detailed write-up with the evidence and test results is `01-changes.md`; this page is only what you need to apply it.
+**Short version:** replace three C# files, build, upload through MHS Builds. No prefab, asset, scene or host-page changes. The detailed write-up with the evidence and test results is `01-changes.md`; this page is only what you need to apply it: the files, the build and hand-over steps, one CI fix, and then the background on what each file fixes.
 
 ## The three files
 
@@ -15,7 +15,18 @@ Copy each file from `Game-Code/` over the file of the same name in the project. 
 
 The public API of `GameLogger` is unchanged (`Instance`, `LogEvent`, `SendToServer`, `SetUserId`, the eight `Log…Event` wrappers, `IsSendingLogs`, the `ICheckForUnitTransition` members), so nothing that calls it needs to change.
 
-## What each file fixes
+## Build and hand-over
+
+1. Build the units as usual (release profiles). Set the version string as you normally do.
+2. Upload the zip through MHS Builds on the dev site; that creates a collection.
+3. Tell us the collection name. We run the seven checks from `00-plan.md` on it (normal play, blocked log host, a store wedged by v2.8.1, the first event, details in a backlog, one instance, the built metadata). The same checks passed on our Unit 1 build of these files on 2026-09-30.
+4. Only after that is the collection made active for students.
+
+## One thing to fix in CI
+
+A build from a clean checkout fails to compile: `Assets/Imported/Samples/StarterAssets/InputSystem/PlayerInputs.inputactions` has *Generate C# Class* on, with the wrapper path `Assets/Third Party/StarterAssets/InputSystem/PlayerInputs.cs`. That folder does not exist in a fresh checkout, so the first import generates a second `PlayerInputs` class next to the checked-in one (`Assets/Imported/Samples/StarterAssets/InputSystem/PlayerInputs.cs`). Either turn generation off for that asset or point the path at the checked-in file. Machines that have already imported the project never hit this.
+
+## What each file fixes (background, nothing to do here)
 
 ### `GameLogger.cs`
 
@@ -43,14 +54,3 @@ Also kept from the September drop-in: the bounded cache (512 KB / 1,500 entries,
 | Issue | What was wrong | What the new file does |
 |---|---|---|
 | `ArgumentException: JSON must represent an object type.` in the browser console on every scene load for players with no saved settings. | The save service answers the settings load with `200` and the body `null` when there are no settings; `JsonUtility.FromJson` throws on `null`. The coroutine died at that line, so the "No settings found, using defaults" branch and the callback never ran. | An empty or `null` body counts as "no settings" (the existing branch). Any other body `JsonUtility` cannot parse is reported to the debug console and counts as a failed load. Players with saved settings are unaffected. |
-
-## Build and hand-over
-
-1. Build the units as usual (release profiles). Set the version string as you normally do.
-2. Upload the zip through MHS Builds on the dev site; that creates a collection.
-3. Tell us the collection name. We run the seven checks from `00-plan.md` on it (normal play, blocked log host, a store wedged by v2.8.1, the first event, details in a backlog, one instance, the built metadata). The same checks passed on our Unit 1 build of these files on 2026-09-30.
-4. Only after that is the collection made active for students.
-
-## One thing to fix in CI
-
-A build from a clean checkout fails to compile: `Assets/Imported/Samples/StarterAssets/InputSystem/PlayerInputs.inputactions` has *Generate C# Class* on, with the wrapper path `Assets/Third Party/StarterAssets/InputSystem/PlayerInputs.cs`. That folder does not exist in a fresh checkout, so the first import generates a second `PlayerInputs` class next to the checked-in one (`Assets/Imported/Samples/StarterAssets/InputSystem/PlayerInputs.cs`). Either turn generation off for that asset or point the path at the checked-in file. Machines that have already imported the project never hit this.
