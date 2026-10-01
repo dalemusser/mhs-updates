@@ -1,6 +1,6 @@
 # Read-only queries against the log service's database
 
-Run them as in the `prod-db-readonly-query-recipe` memory: copy the script to
+Run them on the log service host (ssh), where `mongosh` and the database's read-only connection string are available: copy the script to
 the log host and run `mongosh --quiet "<URI>" script.js` there. Each script has
 its parameters (account id, time window, version string) at the top. All are
 read-only.

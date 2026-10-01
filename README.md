@@ -81,7 +81,7 @@ body for a player without saved settings). Delivered as version 1.2:
 1.0 was the fix, 1.1 added the changes from two independent reviews,
 1.2 added per-entry ids, a recovered flag, a sent-at time and 429
 handling so the log service can de-duplicate and date entries later
-without another game build. `03-for-the-game-dev.md` is the short page for the developer
+without another game build. Start with the folder's `README.md`; `03-for-the-game-dev.md` is the short page for the developer
 applying the fix (which files, what each one fixes, how to hand the build
 back); `00-plan.md` is the brief the work followed,
 `01-changes.md` the change-by-change description and the verification
@@ -171,20 +171,6 @@ without these four fixes the user-facing slider does not work as a
 sensitivity control, contains visible spelling errors, generates a
 spurious 400 error on every launch, and never reflects the user's
 saved sensitivity across game restarts.
-
-### `gamelogger-fix-093026/` — 2026-09-30 (in progress)
-
-The logging fixes made in the Unity project itself, to be tested in a
-build and handed over as changed files. `00-plan.md` is the working
-brief: the two project copies (the schools' build and the game team's
-new logger), every defect with its place in the source (the schools'
-send loop empties the queued entry it is retrying; the new loop keeps
-its batch list between passes and resends it; queued entries share one
-dictionary per logging component, so later events overwrite their
-details; the first event of a session has no user id; two logger
-instances), the fix for each, the seven checks a build must pass, and
-the delivery format. `tools/` holds the test scripts. `Game-Code/` will
-hold the changed files.
 
 ### `gamelogger-cache-overflow-091626/` — 2026-09-16
 

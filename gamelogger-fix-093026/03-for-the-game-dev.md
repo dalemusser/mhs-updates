@@ -5,7 +5,9 @@
 
 ## The three files
 
-Copy each file from `Game-Code/` over the file of the same name in the project. They were written against the project as of 2026-09-28 (the logger of builds 20260921-12438 and 20260925-12446). If you have changed any of these files since, diff before copying.
+Copy each file from `Game-Code/` over the file of the same name in the project. They were written against the project as of 2026-09-28 (changelist 12449, Unity 6000.0.74f1; the logger of builds 20260921-12438 and 20260925-12446). If you have changed any of these files since, diff before copying.
+
+`SettingsSaveManager.cs` is delivered with LF line endings and the project's copy is CRLF, so a plain diff shows every line; diff ignoring line endings (or let your VCS normalise them) and the only change is the guard around `JsonUtility.FromJson` in `LoadSettingsCoroutine`. The other two files have the same line endings as the project's.
 
 | From `Game-Code/` | To `Assets/Scripts/` |
 |---|---|
@@ -17,7 +19,7 @@ The public API of `GameLogger` is unchanged (`Instance`, `LogEvent`, `SendToServ
 
 ## Build and hand-over
 
-1. Build the units as usual (release profiles). Set the version string as you normally do.
+1. Build the units as usual (release profiles). Set `bundleVersion` in the release build profile to a distinct string (date plus build number, as for 20260925-12446) so this build's entries can be told apart on the server; our test builds used `20260930-logfix`.
 2. Upload the zip through MHS Builds on the dev site; that creates a collection.
 3. Tell us the collection name. We run the seven checks from `00-plan.md` on it (normal play, blocked log host, a store wedged by v2.8.1, the first event, details in a backlog, one instance, the built metadata). The same checks passed on our Unit 1 builds of these files on 2026-09-30 and 2026-10-01 (version 1.2 as unit1 v2.8.7 on the dev site).
 4. Only after that is the collection made active for students.
@@ -45,7 +47,7 @@ Added in version 1.1, from two independent reviews of version 1.0:
 
 | Issue | What was wrong | What the new file does |
 |---|---|---|
-| Sending stalls while the game is paused. | The send loop's waits used scaled time; the game sets `Time.timeScale = 0` in its pause and unfocused states, so a backoff or pause in progress never elapsed until the player unpaused. | All six waits are `WaitForSecondsRealtime`. |
+| Sending stalls while the game is paused. | The send loop's waits used scaled time; the game sets `Time.timeScale = 0` in its pause and unfocused states, so a backoff or pause in progress never elapsed until the player unpaused. | Every wait in the send loop is `WaitForSecondsRealtime` (verified by timing in headless runs, not under an actual pause). |
 | An entry that cannot be serialized would end the send loop and throw into the component that logged it. | Request-body and cache serialization were not guarded (no current caller triggers this; it was the rule "nothing unsendable goes out" applied to serialization). | Both are wrapped; the offending entry is found by serializing candidates one by one, dropped with a warning, and the loop carries on. |
 | The first batch waited for `AuthManager`'s identity fetch. | The host page gives `MHSBridge` the user id before the game starts, but the logger only learned it from `AuthManager` a few seconds later. | While an entry waits for its id, the loop asks `MHSBridge` for it (WebGL builds only; the Editor and standalone keep `AuthManager` as the source). |
 | Small guards. | — | No logger is created during application teardown; the sending flag is cleared if the object is deactivated; cached entries load ahead of anything already queued; the batch size grows back after a success once a 413 halved it; the transition gate treats a gap of over a second as a new request. |
@@ -55,7 +57,7 @@ Added in version 1.2 (nothing to do; the log service stores unknown top-level fi
 | Field or behaviour | Why |
 |---|---|
 | `session_id` (one per launch), `seq` (per-session counter) and `entry_id` (`session_id:seq`) on every entry | Lets the server de-duplicate, see gaps and order entries independently of the device clock, and gives analysts a hard key per entry, without another game build. |
-| `recovered: true` on entries loaded from the saved cache | Tells a live event from one sent after a reload or an outage. Such entries keep the id and sequence of the session that logged them. |
+| `recovered: true` on entries loaded from the saved cache | Tells a live event from one sent after a reload or an outage. Such entries keep the id and sequence of the session that logged them (entries cached by an earlier build get the flag but have no ids). |
 | `sent_at` on every sent copy (not persisted) | Measures a device's clock skew against the server's received time. |
 | A `429` with `Retry-After` is honoured as a pause of that length (1 to 300 s), otherwise the normal backoff | Lets a future server-side rate limit set the pace. |
 
@@ -66,7 +68,7 @@ Also kept from the September drop-in: the bounded cache (512 KB / 1,500 entries,
 | Issue | What was wrong | What the new file does |
 |---|---|---|
 | Queued events' details are overwritten by later events from the same component (about 2.5% of dialogue-node events, 43% of puzzle-piece events in normal play; nearly all of a backlog), in every build since February 2026. | Each entry kept one `logDictionary`, cleared and refilled it on every event, and handed the same object to the logger, which stored the reference. The variable entries also stored the Soap variable objects, not their values. | `ExecuteLogData` builds a new dictionary per call, and the variable entries add the variable's current `Value`. As a backstop, `GameLogger.LogEvent` now copies the data it is given. |
-| Version 1.1 tidy-ups. | — | The two variable-entry `eventKey` paths use the variables' values; `Vector3VariableEntry` checks the logger for null and passes a zero vector for an unassigned variable; `Vector2`/`Vector3` values on the generic paths are written as `{x, y, z}` objects, the shape the position and map wrappers already use. |
+| Version 1.1 tidy-ups. | — | The two variable-entry `eventKey` paths use the variables' values; `Vector3VariableEntry` checks the logger for null and passes a zero vector for an unassigned variable; `Vector3` values on the generic paths are written as `{x, y, z}` objects and `Vector2` values as `{x, y}`, the shape the position and map wrappers already use. |
 
 ### `SettingsSaveManager.cs`
 

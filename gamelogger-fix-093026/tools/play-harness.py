@@ -9,7 +9,7 @@
 import difflib, json, pathlib, re, subprocess, sys, time
 from playwright.sync_api import sync_playwright
 
-REPO = pathlib.Path('/Users/dale/Documents/catchupstratahub/stratahub')
+REPO = pathlib.Path(__file__).resolve().parents[3] / 'stratahub'   # the workspace that holds mhs-updates and stratahub
 TPL = 'internal/app/features/missionhydrosci/templates/missionhydrosci_play.gohtml'
 old_tpl = subprocess.run(['git', 'show', 'HEAD:' + TPL], cwd=REPO, capture_output=True, text=True, check=True).stdout.splitlines(keepends=True)
 new_tpl = (REPO / TPL).read_text().splitlines(keepends=True)
