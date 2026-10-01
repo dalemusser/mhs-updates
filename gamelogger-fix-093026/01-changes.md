@@ -1,6 +1,6 @@
 # The logging fix: what changed, and how it was verified
 
-**Date:** 2026-09-30
+**Version:** 1.2 (2026-10-01; version 1.0 on 2026-09-30, 1.1 after review the same day, 1.2 the same night).
 **Base:** the game team's project copy of 2026-09-28 (`20260928_CH12449_MHS 2.0`, the logger of builds 20260921-12438 and 20260925-12446), Unity 6000.0.74f1.
 **Files:** `Game-Code/Systems/Logging/GameLogger.cs` and `Game-Code/Systems/Logging/LoggingData.cs`, mirroring `Assets/Scripts/Systems/Logging/`, plus `Game-Code/Systems/Save Load System/SettingsSaveManager.cs` for the console error of §8 (mirroring `Assets/Scripts/Systems/Save Load System/`). Nothing else changes: no prefab, asset, scene or host-page edit, and the public API of `GameLogger` (`Instance`, `LogEvent`, `SendToServer`, `SetUserId`, the eight `Log…Event` wrappers, `IsSendingLogs`, the `ICheckForUnitTransition` members) is the same. `AuthManager.cs` is unchanged.
 
@@ -71,7 +71,7 @@ Two independent reviews of version 1 (one for logic and concurrency, one for Uni
 
 Accepted as is: `LogEvent`'s copy covers dictionaries and lists, not arbitrary objects (no caller passes any); the overflow report can over-count entries the cache trimmed while a request was in flight; a server `max_batch_size` below 50 would make batches cycle through single sends rather than loop; the removed fallback only matters for a page with no bridge config, which has no identity either; the 30-second timeout makes delivery at-least-once if the server answers very late. The settings file is delivered with LF line endings while the original is CRLF, so a whole-file diff appears unless the team's VCS normalises line endings.
 
-## Version 1.2 (2026-09-30, additions for the server side)
+## Version 1.2 (2026-09-30/10-01, additions for the server side)
 
 Four additions to `GameLogger.cs`, all additive: no existing field or behaviour changes, and the log service already stores unknown top-level fields as received. They exist because a game build is expensive to make and test, and these let the server side improve later without another one.
 

@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-30
 **Purpose:** the working brief for the session that fixes the logging code in the Mission HydroSci Unity project, builds and tests it, and delivers the changed files to the game team.
-**Outcome (2026-09-30):** done. The fixed files are in `Game-Code/`, and `01-changes.md` has each defect's change and the verification results on the dev site (checks 1–7). Two test collections exist on the dev site (`20260930-logfix-LoggingFixTest`, `20260930-logfix2-LoggingFixTest`); nothing is active for students.
+**Outcome (version 1.2, 2026-10-01):** done. The fixed files are in `Game-Code/` (three: `GameLogger.cs`, `LoggingData.cs`, and `SettingsSaveManager.cs` for the console error found on the way); `01-changes.md` has each defect's change, the version 1.1 review fixes, the version 1.2 fields for the log service, and the verification results on the dev site; `03-for-the-game-dev.md` is the short page for the developer applying it; `02-logging-redesign-if-starting-over.md` is the design note for a possible version 2. Five test collections exist on the dev site (`20260930-logfix-LoggingFixTest` v2.8.3 through `20260930-logfix5-LoggingFixTest-v1.2` v2.8.7); nothing is active for students. Next: the game team applies the three files and builds; the seven checks run again on their build before it is made active.
 
 **Start here** (new session, working directory `/Users/dale/Documents/catchupstratahub` so its memory loads): read this file, then `../gamelogger-cache-overflow-091626/03-builds-12438-12446-test.md` (what the last builds did) and `stratahub/docs/mission-hydrosci/mhs-game-logging-issues-092826.md` (the full issue list). Memory: `mhs-gamelogger-cache-overflow`, `mhs-log-details-overwritten`, `dev-mhs-test-member`.
 
