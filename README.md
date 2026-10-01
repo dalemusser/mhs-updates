@@ -77,7 +77,9 @@ refusal, request timeout, a capped unit-transition wait). Three files
 change: `Game-Code/Systems/Logging/GameLogger.cs` and
 `LoggingData.cs`, and `Game-Code/Systems/Save Load System/SettingsSaveManager.cs`
 for the console error on every scene load (the save service's `null`
-body for a player without saved settings). `00-plan.md` is the brief the work followed,
+body for a player without saved settings). `03-for-the-game-dev.md` is the short page for the developer
+applying the fix (which files, what each one fixes, how to hand the build
+back); `00-plan.md` is the brief the work followed,
 `01-changes.md` the change-by-change description and the verification
 results, `02-logging-redesign-if-starting-over.md` a design note for a
 possible version 2 of the game's logging (typed immutable records, a
