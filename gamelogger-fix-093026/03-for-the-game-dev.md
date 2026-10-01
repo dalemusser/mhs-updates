@@ -1,6 +1,6 @@
 # Logging fix: what to do in the game code
 
-**Version:** 1.2 (2026-10-01). Version 1.0 was the fix itself, 1.1 added the changes from two independent reviews, 1.2 added fields the log service can use later. All three are in the same three files; apply the files as they are.
+**Version:** 1.3 (2026-10-01). Version 1.0 was the fix itself, 1.1 added the changes from two independent reviews, 1.2 added fields the log service can use later, 1.3 added the findings of a second review. All are in the same three files; apply the files as they are.
 **Short version:** replace three C# files, build, upload through MHS Builds. No prefab, asset, scene or host-page changes. The detailed write-up with the evidence and test results is `01-changes.md`; this page is only what you need to apply it: the files, the build and hand-over steps, one CI fix, and then the background on what each file fixes.
 
 ## The three files
@@ -61,6 +61,16 @@ Added in version 1.2 (nothing to do; the log service stores unknown top-level fi
 | `sent_at` on every sent copy (not persisted) | Measures a device's clock skew against the server's received time. |
 | A `429` with `Retry-After` is honoured as a pause of that length (1 to 300 s), otherwise the normal backoff | Lets a future server-side rate limit set the pace. |
 
+Added in version 1.3, from a second review (nothing to do):
+
+| Issue | What the new file does |
+|---|---|
+| The serialization guard could blame good entries if the device block itself were the problem. | The device block is checked once in `Awake` and replaced by a minimal one if it cannot be written; entries are tested on their own; if no entry is at fault nothing is dropped and the loop backs off. |
+| A log call reaching a scene logger before its `Awake` could overwrite the saved backlog. | No cache write until the saved queue has been read. |
+| A malformed user id from the host page would have every entry refused and dropped. | `SetUserId` accepts only 24 lowercase hex characters, warns once otherwise, and keeps waiting. |
+| A malformed auth value from the host page would make request construction throw every pass. | The request is built inside a guard; a failure is treated like a missing endpoint. |
+| Small: the transition gate detects a new request by frame count rather than a one-second gap; the batch size grows back after two accepted batches rather than one; a single-send entry dropped for a serialization failure decrements the single-send counter. | — |
+
 Also kept from the September drop-in: the bounded cache (512 KB / 1,500 entries, oldest dropped first, with a `LogCacheOverflow` event reporting the gap), coalesced cache writes, and backoff from 10 s to 60 s.
 
 ### `LoggingData.cs`
@@ -74,4 +84,4 @@ Also kept from the September drop-in: the bounded cache (512 KB / 1,500 entries,
 
 | Issue | What was wrong | What the new file does |
 |---|---|---|
-| `ArgumentException: JSON must represent an object type.` in the browser console on every scene load for players with no saved settings. | The save service answers the settings load with `200` and the body `null` when there are no settings; `JsonUtility.FromJson` throws on `null`. The coroutine died at that line, so the "No settings found, using defaults" branch and the callback never ran. | An empty or `null` body counts as "no settings" (the existing branch). Any other body `JsonUtility` cannot parse is reported to the debug console and counts as a failed load. Players with saved settings are unaffected. |
+| `ArgumentException: JSON must represent an object type.` in the browser console on every scene load for players with no saved settings. | The save service answers the settings load with `200` and the body `null` when there are no settings; `JsonUtility.FromJson` throws on `null`. The coroutine died at that line, so the "No settings found, using defaults" branch and the callback never ran. | An empty or `null` body counts as "no settings" (the existing branch). Any other body `JsonUtility` cannot parse is reported to the debug console and counts as a failed load (version 1.3: the callback fires before the print, through a null-conditional). Players with saved settings are unaffected. |

@@ -1,7 +1,7 @@
 # The game's logging, if we started over
 
 **Date:** 2026-09-30
-**Status:** a design note, nothing implemented. The delivered fix (`01-changes.md`, the three files under `Game-Code/`) is version 1 (now 1.2) and stands on its own; this note is the basis for a possible version 2, to be picked up later as its own project.
+**Status:** a design note, nothing implemented. The delivered fix (`01-changes.md`, the three files under `Game-Code/`) is version 1 (now 1.3) and stands on its own; this note is the basis for a possible version 2, to be picked up later as its own project.
 **Audience:** the project lead and the game team.
 
 ## 1. What exists today

@@ -245,8 +245,8 @@ namespace MHS
                         }
                         catch (Exception e)
                         {
-                            ConsoleLogManager.Instance.PrintToConsole($"Settings load returned an unreadable body ({e.Message}): {body.Substring(0, Math.Min(body.Length, 120))}", enableDebugLogs.Value, ConsoleLogManager.ConsoleLogType.Warning);
                             callback?.Invoke(false);
+                            ConsoleLogManager.Instance?.PrintToConsole($"Settings load returned an unreadable body ({e.Message}): {body.Substring(0, Math.Min(body.Length, 120))}", enableDebugLogs != null && enableDebugLogs.Value, ConsoleLogManager.ConsoleLogType.Warning);
                             yield break;
                         }
                     }
