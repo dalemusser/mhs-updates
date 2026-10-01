@@ -79,7 +79,10 @@ change: `Game-Code/Systems/Logging/GameLogger.cs` and
 for the console error on every scene load (the save service's `null`
 body for a player without saved settings). `00-plan.md` is the brief the work followed,
 `01-changes.md` the change-by-change description and the verification
-results, `tools/` the loop simulation, the browser recipe helpers and the
+results, `02-logging-redesign-if-starting-over.md` a design note for a
+possible version 2 of the game's logging (typed immutable records, a
+testable transport core, no external JSON library; nothing implemented),
+`tools/` the loop simulation, the browser recipe helpers and the
 read-only server-side queries.
 
 ### `build-automation-update-051226/` — 2026-05-12
