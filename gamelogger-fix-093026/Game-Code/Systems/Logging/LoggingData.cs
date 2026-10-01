@@ -105,6 +105,25 @@ namespace MHS
     // from the same component. GameLogger.LogEvent copies the data as well,
     // so nothing here is shared with the queue.
 
+    // Values as they go into an entry's data: vectors become {x, y, z} objects
+    // (the shape LogTopoMapEvent and LogPlayerPositionEvent use) instead of a
+    // serializer's dump of the struct's properties.
+    internal static class LogValues
+    {
+        public static object ToLogValue(object value)
+        {
+            switch (value)
+            {
+                case Vector3 v3:
+                    return new Dictionary<string, object> { { "x", v3.x }, { "y", v3.y }, { "z", v3.z } };
+                case Vector2 v2:
+                    return new Dictionary<string, object> { { "x", v2.x }, { "y", v2.y } };
+                default:
+                    return value;
+            }
+        }
+    }
+
     [Serializable]
     public class ScriptableVariableEntry<TVar, TValue> :
         LoggingDataEntry where TVar : ScriptableVariable<TValue>
@@ -132,12 +151,12 @@ namespace MHS
                 logDictionary.Add(specificEventInformation[i].Key, specificEventInformation[i].Value);
                 if (specificEventInformation[i].Value == "DialogeNodeEvent")
                 {
-                    eventKey = $"{specificEventInformation[i].Value}:{logEntries[0].value}:{logEntries[1].value}";
+                    eventKey = $"{specificEventInformation[i].Value}:{ValueOf(logEntries[0].value)}:{ValueOf(logEntries[1].value)}";
                 }
 
                 if (eventType == "QuestEvent")
                 {
-                    eventKey = $"{specificEventInformation[i].Value}:{logEntries[0].value}";
+                    eventKey = $"{specificEventInformation[i].Value}:{ValueOf(logEntries[0].value)}";
                 }
             }
 
@@ -146,7 +165,7 @@ namespace MHS
             // time), the value is what it is now.
             foreach (EventLog entry in logEntries)
             {
-                logDictionary.Add(entry.key, entry.value != null ? (object)entry.value.Value : null);
+                logDictionary.Add(entry.key, LogValues.ToLogValue(ValueOf(entry.value)));
             }
 
             if (eventKey == string.Empty)
@@ -157,6 +176,11 @@ namespace MHS
             {
                 GameLogger.Instance.LogEvent(eventType, logDictionary, eventKey);
             }
+        }
+
+        protected static object ValueOf(TVar variable)
+        {
+            return variable != null ? (object)variable.Value : null;
         }
 
         public override void SetEventInformation(string key, string value, int index = 0)
@@ -201,7 +225,10 @@ namespace MHS
         {
             if (eventType == "TopographicMapEvent")
             {
-                GameLogger.Instance.LogTopoMapEvent(specificEventInformation[0].Value, specificEventInformation[1].Value, logEntries.Count > 0 ?  logEntries[0].value : null );
+                var logger = GameLogger.Instance;
+                if (logger == null) return;
+                Vector3 location = logEntries.Count > 0 && logEntries[0].value != null ? logEntries[0].value.Value : default;
+                logger.LogTopoMapEvent(specificEventInformation[0].Value, specificEventInformation[1].Value, location);
             }
             else
             {
@@ -255,7 +282,7 @@ namespace MHS
 
             foreach (EventLog entry in logEntries)
             {
-                logDictionary.Add(entry.key, entry.value);
+                logDictionary.Add(entry.key, LogValues.ToLogValue(entry.value));
             }
 
             if (eventKey == string.Empty)

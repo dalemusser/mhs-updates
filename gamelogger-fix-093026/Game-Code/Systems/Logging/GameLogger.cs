@@ -31,7 +31,10 @@ using MHS;
 //    gameplay core-systems prefab carries one too) removes only itself.
 //  - The log service is never flooded: a refused request is followed by a
 //    pause, network and server failures back off from 10 s to 60 s, and a
-//    request times out after 30 s.
+//    request times out after 30 s. All waits are real time, so a paused game
+//    (Time.timeScale = 0) does not stall sending.
+//  - An entry that cannot be serialized is dropped, never allowed to end the
+//    send loop or to throw into the component that logged it.
 //  - Sending never blocks a unit transition for more than a few seconds; the
 //    queue is persisted and the next unit's build sends it.
 public class GameLogger : MonoBehaviour, ICheckForUnitTransition
@@ -74,6 +77,7 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
     private const float transitionMaxWaitSeconds = 5f;
 
     private static GameLogger _instance;
+    private static bool isQuitting = false;
     private readonly Queue<Dictionary<string, object>> logQueue = new();
     private static readonly object queueLock = new object(); // Protect logQueue with a lock
     private Dictionary<string, object> cachedDeviceInfo;
@@ -100,6 +104,7 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
     // Unit transition state.
     private bool transitionPending = false;
     private float transitionRequestedAt = 0f;
+    private float lastTransitionCallTime = -1000f;
 
     public bool ReadyToTransition{get; set;}
     private readonly JsonSerializerSettings _settings = new()
@@ -112,7 +117,7 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
     {
         get
         {
-            if (_instance == null)
+            if (_instance == null && !isQuitting)
             {
                 _instance = FindFirstObjectByType<GameLogger>(); // Unity 2023+ compatible
                 if (_instance == null)
@@ -192,7 +197,24 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
 
     private void OnApplicationQuit()
     {
+        // No new logger is created during teardown (components logging from
+        // their own OnDestroy would otherwise resurrect one).
+        isQuitting = true;
         FlushCache();
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        isQuitting = false;
+    }
+
+    private void OnDisable()
+    {
+        if (isDuplicate) return;
+        // A deactivated game object stops its coroutines without running their
+        // finally blocks; the flag must not stay set with no loop behind it.
+        if (!gameObject.activeInHierarchy) isSendingLogs = false;
     }
 
     private void OnDestroy()
@@ -490,7 +512,17 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
 
                 if (waitForIdentity)
                 {
-                    yield return new WaitForSeconds(identityPollInterval);
+#if UNITY_WEBGL && !UNITY_EDITOR
+                    // The host page hands MHSBridge the identity before the game
+                    // starts; use it rather than wait for AuthManager's first fetch.
+                    string bridgeId = MHSBridge.Instance != null ? MHSBridge.Instance.GetUserID() : null;
+                    if (!string.IsNullOrEmpty(bridgeId))
+                    {
+                        SetUserId(bridgeId);
+                        continue;
+                    }
+#endif
+                    yield return new WaitForSecondsRealtime(identityPollInterval);
                     continue;
                 }
 
@@ -507,17 +539,35 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
                         endpointWarningShown = true;
                         Debug.LogWarning("GameLogger: no log endpoint configured (MHSBridge has no log_submit config); holding queued entries until it is.");
                     }
-                    yield return new WaitForSeconds(offlinePollInterval);
+                    yield return new WaitForSecondsRealtime(offlinePollInterval);
                     continue;
                 }
 
                 if (!IsNetworkAvailable())
                 {
-                    yield return new WaitForSeconds(offlinePollInterval);
+                    yield return new WaitForSecondsRealtime(offlinePollInterval);
                     continue;
                 }
 
-                string jsonData = BuildRequestBody(toSend);
+                string jsonData = null;
+                Exception serializeError = null;
+                try
+                {
+                    jsonData = BuildRequestBody(toSend);
+                }
+                catch (Exception e)
+                {
+                    serializeError = e;
+                }
+                if (serializeError != null)
+                {
+                    // An entry Newtonsoft cannot serialize must not end this loop.
+                    // Find it, drop it, and carry on with the rest.
+                    int dropped = DropUnserializableEntries(toSend);
+                    Debug.LogWarning($"GameLogger: could not serialize a batch ({serializeError.Message}); dropped {dropped} unserializable entries.");
+                    yield return new WaitForSecondsRealtime(rejectedPauseSeconds);
+                    continue;
+                }
 
                 using (UnityWebRequest request = new UnityWebRequest(logConfig.url, "POST"))
                 {
@@ -540,6 +590,7 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
                         RemoveSent(toSend);
                         if (singleSendRemaining > 0) singleSendRemaining--;
                         retryDelay = retryDelayInitial;
+                        if (batchSize < maxBatchEntries) batchSize = Math.Min(maxBatchEntries, batchSize * 2);
                         ReportDroppedEntriesIfAny();
                         continue;
                     }
@@ -564,7 +615,7 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
                             // only the bad one is dropped.
                             singleSendRemaining = toSend.Count;
                         }
-                        yield return new WaitForSeconds(rejectedPauseSeconds);
+                        yield return new WaitForSecondsRealtime(rejectedPauseSeconds);
                         continue;
                     }
 
@@ -581,14 +632,14 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
                             RemoveSent(toSend);
                             if (singleSendRemaining > 0) singleSendRemaining--;
                         }
-                        yield return new WaitForSeconds(rejectedPauseSeconds);
+                        yield return new WaitForSecondsRealtime(rejectedPauseSeconds);
                         continue;
                     }
 
                     // Anything else (connection failure, timeout, 401/403, 5xx):
                     // keep the entries and retry with backoff. The cache limits
                     // above bound how much can pile up while this goes on.
-                    yield return new WaitForSeconds(retryDelay);
+                    yield return new WaitForSecondsRealtime(retryDelay);
                     retryDelay = Mathf.Min(retryDelay * 2f, retryDelayMax);
                 }
             }
@@ -652,6 +703,44 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
             }
             MarkCacheDirty();
         }
+    }
+
+    // Finds the entries among the candidates that Newtonsoft cannot serialize,
+    // removes them from the queue, and returns how many. If none of them is at
+    // fault (so the failure lies elsewhere), the oldest candidate is removed so
+    // the loop still makes progress.
+    private int DropUnserializableEntries(IEnumerable<Dictionary<string, object>> candidates)
+    {
+        var bad = new HashSet<Dictionary<string, object>>();
+        Dictionary<string, object> first = null;
+        foreach (var entry in new List<Dictionary<string, object>>(candidates))
+        {
+            if (first == null) first = entry;
+            try
+            {
+                JsonConvert.SerializeObject(WithDevice(entry), _settings);
+            }
+            catch (Exception e)
+            {
+                bad.Add(entry);
+                Debug.LogWarning($"GameLogger: dropping an entry that cannot be serialized ({Describe(entry)}): {e.Message}");
+            }
+        }
+        if (bad.Count == 0 && first != null) bad.Add(first);
+        if (bad.Count == 0) return 0;
+
+        lock (queueLock)
+        {
+            var kept = new List<Dictionary<string, object>>(logQueue.Count);
+            foreach (var entry in logQueue)
+            {
+                if (!bad.Contains(entry)) kept.Add(entry);
+            }
+            logQueue.Clear();
+            foreach (var entry in kept) logQueue.Enqueue(entry);
+            cacheDirty = true;
+        }
+        return bad.Count;
     }
 
     // An entry the server could accept: it has fields, an event type and a
@@ -739,7 +828,27 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
     {
         cacheDirty = false;
         lastCacheSaveTime = Time.unscaledTime;
-        string json = SerializeQueueTrimmed();
+        string json;
+        try
+        {
+            json = SerializeQueueTrimmed();
+        }
+        catch (Exception e)
+        {
+            // Never let a bad entry throw out of the component that logged it.
+            int dropped = DropUnserializableEntries(logQueue);
+            Debug.LogWarning($"GameLogger: could not serialize the log cache ({e.Message}); dropped {dropped} unserializable entries.");
+            if (dropped == 0) return;
+            try
+            {
+                json = SerializeQueueTrimmed();
+            }
+            catch (Exception e2)
+            {
+                Debug.LogWarning($"GameLogger: the log cache still cannot be serialized ({e2.Message}); not saved this time.");
+                return;
+            }
+        }
 #if UNITY_WEBGL
         SaveCachedLogsWebGL(json);
 #else
@@ -896,6 +1005,8 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
         int skipped = 0;
         lock (queueLock)
         {
+            // Anything logged before Awake ran stays, behind the cached entries.
+            var alreadyQueued = logQueue.ToArray();
             logQueue.Clear();
             foreach (var entry in entries)
             {
@@ -908,6 +1019,7 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
                     skipped++;
                 }
             }
+            foreach (var entry in alreadyQueued) logQueue.Enqueue(entry);
             Debug.Log($"GameLogger: log cache loaded: {entries.Count} entries read, {logQueue.Count} queued to send.");
             if (skipped > 0)
             {
@@ -1028,11 +1140,15 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
     public void CallToTransitionToNextUnit()
     {
         float now = Time.unscaledTime;
-        if (!transitionPending)
+        // The loader polls every frame; a gap of over a second means a new
+        // transition is asking (the previous one may not have changed scene,
+        // for example when the host page did not navigate).
+        if (!transitionPending || now - lastTransitionCallTime > 1f)
         {
             transitionPending = true;
             transitionRequestedAt = now;
         }
+        lastTransitionCallTime = now;
 
         bool queueEmpty;
         lock (queueLock)

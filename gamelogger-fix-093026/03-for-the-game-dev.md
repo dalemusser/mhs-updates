@@ -1,6 +1,6 @@
 # Logging fix: what to do in the game code
 
-**Date:** 2026-09-30
+**Date:** 2026-09-30 (version 1.1, after review)
 **Short version:** replace three C# files, build, upload through MHS Builds. No prefab, asset, scene or host-page changes. The detailed write-up with the evidence and test results is `01-changes.md`; this page is only what you need to apply it: the files, the build and hand-over steps, one CI fix, and then the background on what each file fixes.
 
 ## The three files
