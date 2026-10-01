@@ -35,6 +35,12 @@ using MHS;
 //    (Time.timeScale = 0) does not stall sending.
 //  - An entry that cannot be serialized is dropped, never allowed to end the
 //    send loop or to throw into the component that logged it.
+//  - Every entry carries a session id, a sequence number and an entry id
+//    ("<session>:<seq>"), entries loaded from the cache carry "recovered":
+//    true, and every sent copy carries "sent_at". The log service stores these
+//    as they are; they let it de-duplicate, order and date entries later
+//    without another game build.
+//  - A 429 with Retry-After is honoured as a pause of that length.
 //  - Sending never blocks a unit transition for more than a few seconds; the
 //    queue is persisted and the next unit's build sends it.
 public class GameLogger : MonoBehaviour, ICheckForUnitTransition
@@ -78,6 +84,9 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
 
     private static GameLogger _instance;
     private static bool isQuitting = false;
+    // One id per launch of the game, and a counter for the entries it logs.
+    private static readonly string sessionId = Guid.NewGuid().ToString("N");
+    private static long sequence = 0;
     private readonly Queue<Dictionary<string, object>> logQueue = new();
     private static readonly object queueLock = new object(); // Protect logQueue with a lock
     private Dictionary<string, object> cachedDeviceInfo;
@@ -280,6 +289,12 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
         // The entry gets its own copy of the data. Several logging components
         // reuse one dictionary for every event they log; without the copy a
         // queued entry would show the details of a later event.
+        long seq;
+        lock (queueLock)
+        {
+            seq = ++sequence;
+        }
+
         Dictionary<string, object> json = new()
         {
             { "game", "mhs" },
@@ -288,7 +303,10 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
             { "sceneName", SceneManager.GetActiveScene().name },
             { "timestamp", DateTime.UtcNow.ToString("o") },
             { "eventType", eventType },
-            { "data", CopyData(data) }
+            { "data", CopyData(data) },
+            { "session_id", sessionId },
+            { "seq", seq },
+            { "entry_id", sessionId + ":" + seq }
         };
 
         if (eventKey != null)
@@ -636,6 +654,20 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
                         continue;
                     }
 
+                    if (code == 429)
+                    {
+                        // Asked to slow down: wait as long as the server says
+                        // (Retry-After in seconds), or the current backoff.
+                        float pause = retryDelay;
+                        string retryAfter = request.GetResponseHeader("Retry-After");
+                        if (!string.IsNullOrEmpty(retryAfter) && int.TryParse(retryAfter.Trim(), out int seconds))
+                        {
+                            pause = Mathf.Clamp(seconds, 1f, 300f);
+                        }
+                        yield return new WaitForSecondsRealtime(pause);
+                        continue;
+                    }
+
                     // Anything else (connection failure, timeout, 401/403, 5xx):
                     // keep the entries and retry with backoff. The cache limits
                     // above bound how much can pile up while this goes on.
@@ -685,6 +717,7 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
     {
         var copy = new Dictionary<string, object>(entry);
         copy["device"] = cachedDeviceInfo;
+        copy["sent_at"] = DateTime.UtcNow.ToString("o");
         return copy;
     }
 
@@ -1012,6 +1045,9 @@ public class GameLogger : MonoBehaviour, ICheckForUnitTransition
             {
                 if (IsSendable(entry))
                 {
+                    // Sent after a reload: the server and the analysts can tell
+                    // it from a live event.
+                    entry["recovered"] = true;
                     logQueue.Enqueue(entry);
                 }
                 else

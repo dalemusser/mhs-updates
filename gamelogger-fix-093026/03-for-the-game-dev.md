@@ -1,6 +1,6 @@
 # Logging fix: what to do in the game code
 
-**Date:** 2026-09-30 (version 1.1, after review)
+**Date:** 2026-09-30 (version 1.2)
 **Short version:** replace three C# files, build, upload through MHS Builds. No prefab, asset, scene or host-page changes. The detailed write-up with the evidence and test results is `01-changes.md`; this page is only what you need to apply it: the files, the build and hand-over steps, one CI fix, and then the background on what each file fixes.
 
 ## The three files
@@ -40,6 +40,8 @@ A build from a clean checkout fails to compile: `Assets/Imported/Samples/Starter
 | A unit transition could wait on the logger forever. | `CallToTransitionToNextUnit` reported not ready while sending; with retry-forever that is as long as the log host is unreachable. | Ready when the queue is empty, when no send is running, or five seconds after the transition first asked. The queue is persisted and the next unit's build sends it. |
 | The hard-coded fallback to the legacy `/logs` URL and API key. | It pointed at the old endpoint and could never work without a user id anyway. | Removed. The endpoint comes from the host page through `MHSBridge`; if it is missing the loop waits and looks again every five seconds. |
 | Queued position events all show the latest position. | `LogPlayerPositionEvent` reused two dictionary fields. | New dictionaries on every call. |
+
+New in version 1.2 (nothing to do): every entry also carries `session_id`, `seq`, `entry_id`, cache-loaded entries carry `recovered: true`, sent copies carry `sent_at`, and a `429` with `Retry-After` is honoured. The log service stores the new fields as they are.
 
 Also kept from the September drop-in: the bounded cache (512 KB / 1,500 entries, oldest dropped first, with a `LogCacheOverflow` event reporting the gap), coalesced cache writes, and backoff from 10 s to 60 s.
 

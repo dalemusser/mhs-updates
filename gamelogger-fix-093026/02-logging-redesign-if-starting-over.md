@@ -121,6 +121,8 @@ We own stratalog as well as the client, so some of the most valuable changes are
 8. **Soft schema checks per event type.** The server knows the event types; it validates `data` shapes against the typed records of §4 and records warnings in the ledger without refusing. That would have caught the `DialogeNodeEvent` typo on day one. It cannot detect the overwritten-details defect, whose values were well formed.
 9. **Lower priority.** The device block once per session (in the `session_start` entry) instead of on every entry: about 300 bytes each, a few hundred megabytes over the data so far, but the Devices tab and the grader read it per entry today and would join on the session id instead. A client "sent at" time so the server can measure and correct device clock skew. Compression of backlog bodies, which are small anyway.
 
+**Done on the client in version 1.2 of the fix (2026-09-30):** items 1, 3, 4 and the client half of 5 (`session_id`, `seq`, `entry_id`, `recovered`, `sent_at`, `429`/`Retry-After`). The server half of 1 (unique index, repeats ignored), 5 (rate limit, and `Access-Control-Expose-Headers: Retry-After`) and the queries for 4 can follow without a game build. Item 6 is deferred on purpose: a token that expires or fails to verify would stop a classroom's logging; the client already sends whatever `auth` string the host page supplies, so a long-lived per-user token can be introduced later from StrataHub and stratalog alone.
+
 Order of work: the server side of 1, 2 and 5 first (all backward compatible), then the client record of §4 carries `sessionId`, `seq`, `recovered` and uses per-entry results from the start; 6 and 7 with StrataHub when the bridge config next changes; 8 and 9 afterwards.
 
 ## 9. Decisions to make before starting
