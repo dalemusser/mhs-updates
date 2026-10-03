@@ -15,7 +15,7 @@ addition in the build.
 - Build 2.8.1 sends only `EndGame()` (from its Congratulations / Continue
   screen) and never `CompleteUnit("unit5", …)`. StrataHub copes with that
   today, so the current build reaches the ceremony; the request is to add
-  the missing call so the contract is complete.
+  the missing call so the dashboard works correctly.
 - The Congratulations screen is **your call**. If it stays, please change
   its copy: it no longer returns the student to Strata, it leads into the
   ceremony (recommended wording inside). If it goes, call both events at
