@@ -91,6 +91,23 @@ testable transport core, no external JSON library; nothing implemented),
 `tools/` the loop simulation, the browser recipe helpers and the
 read-only server-side queries.
 
+### `webgl-template-identity-100326/` — 2026-10-03
+
+One file: `Assets/WebGLTemplates/MHS Bridge - iPad Test/index.html`, the
+page the release profiles (and the Web Resize Test profiles) use when a
+build runs on its own (Build and Run, a local server, another host). The project's copy
+still had the identity code from before the user-id change of May 2026:
+its built-in developer identity for localhost was `mhs_developer`, which
+the log and save services refuse (they take only a 24-character hex
+user id), so a localhost run logged and saved nothing; its crash report
+carried `playerId`, which the log service refuses; and identity read
+from StrataHub could fall back to a login id or an email. The delivered
+file uses the developer id `000000000000000000000001` (the id the
+Editor defaults already use), sends `user_id` in the crash report, and
+takes only `user_id` from StrataHub. Builds uploaded through MHS Builds
+are not affected, because StrataHub runs the game inside its own page.
+Replace the one file; the folder's `README.md` has the check.
+
 ### `build-automation-update-051226/` — 2026-05-12
 
 Two independent fixes to the WebGL build pipeline, bundled because
