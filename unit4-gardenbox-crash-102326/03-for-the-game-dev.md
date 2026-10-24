@@ -16,7 +16,7 @@ IndexOutOfRangeException: Index was outside the bounds of the array.
 
 ## The two files
 
-Copy each file from `Game-Code/` over the file of the same name in the project. They were written against the project as of 2026-09-28 (changelist 12449, Unity 6000.0.74f1); both files are unchanged between that copy and the earlier 2026-09-21 copy, so if your copies still match, a straight replace is safe. Diff first if you have touched them since. Line endings are LF, as in the project.
+Copy each file from `Game-Code/` over the file of the same name in the project. They were written against the project as of 2026-09-28 (changelist 12449, Unity 6000.0.74f1), where the two files are dated 2026-05-18 and 2026-07-09, so every affected build carries the same code; if your copies still match, a straight replace is safe. Diff first if you have touched them since. Line endings are LF, as in the project.
 
 | From `Game-Code/` | To `Assets/Scripts/` |
 |---|---|

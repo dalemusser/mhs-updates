@@ -1,5 +1,13 @@
 # 02 — Hypothesis, repro, fix options, plan
 
+**Outcome (2026-10-23):** H1 confirmed in the editor exactly as described in §2 and §3 (an
+`IndexOutOfRangeException` at the `_inactiveCameraImagesToFlash[_selectedSoilIndex]` line when a
+box placed with soil −1 is re-opened after `FinishedPlacingCameras`); H2b confirmed as a latent
+crash of the same kind (`plantUsables[-1]` when the UI closes during the watering animation); H2
+and H3 were guarded. Fix options A and B are implemented, C is left as a proposal. The result is
+`03-for-the-game-dev.md`, `Game-Code/` and `tools/`. The rest of this page is the plan as written
+before the work.
+
 All paths are relative to the Unity project copy
 `mhs2/20260928_CH12449_MHS 2.0 modified - logging fix v1.3/MHS 2.0`. Line numbers are as of
 2026-10-23 and approximate (the files are short; search for the identifiers).
