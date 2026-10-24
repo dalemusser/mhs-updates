@@ -62,6 +62,24 @@ of its README.
 
 ## Updates in this repository
 
+### `gamesave-fix-102426/` — 2026-10-24 (investigation, fix pending)
+
+The game's saving reviewed the way its logging was. The logging fix of
+2026-09-30 found seven defects in the logger; reading the save code
+alongside it showed the same design with none of the hardening: one
+request per checkpoint with no timeout and no retry (a failed save is a
+toast and the progress since the previous checkpoint is lost on reload),
+a failed load at launch treated as "no save" (the unit starts over, and
+the next checkpoint saves the fresh start over the real progress), the
+unit transition waiting on the save flag with no cap, the auth header
+printed to the browser console, unguarded JSON parsing of the responses,
+and the old API key as a fallback. The package holds the brief for the
+session that does the analysis, the fix, the proof on the dev site and the
+hand-off (`00-plan.md`: what is known, the code map, the defects to check
+one by one, the evidence to gather read-only, reproduction on the dev
+site, the rules the fix must follow, delivery, open questions). Start with
+the folder's `README.md`.
+
 ### `unit4-gardenbox-crash-102326/` — 2026-10-23
 
 The Unit 4 crash students have been hitting since the September builds

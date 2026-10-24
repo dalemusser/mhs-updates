@@ -58,6 +58,9 @@ mhs-updates/
 │   └── Game-Code/
 │       └── Systems/
 │           └── Logging/GameLogger.cs            # Drop-in (bounded cache, no wedging, batch sends)
+├── gamesave-fix-102426/                      # Dated package 8: the game's saving reviewed like logging (investigation; fix pending)
+│   ├── README.md                                # Start here for the next session
+│   └── 00-plan.md                               # Brief: what is known, code map, defects to check, evidence, repro, rules, delivery
 ├── unit4-gardenbox-crash-102326/             # Dated package 7: Unit 4 "memory access out of bounds" at the garden boxes (fixed 2026-10-23)
 │   ├── README.md                                # Folder overview
 │   ├── 03-for-the-game-dev.md                   # Start here: two files, one prefab reference, build + hand-over, background
