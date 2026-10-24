@@ -1,0 +1,1695 @@
+runtime_error crash events: 15
+
+################ crash 1 — 2026-09-30 12:53:30 CT — student …8b6782 (member) — unit4 v2.8.1 build 2.8.1
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"os":"Linux x86_64","platform":"UnityWebGL","processors":4,"memory":4096,"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36","online":true,"jsHeapUsedMB":208,"jsHeapTotalMB":212,"resolution":{"width":1300,"height":730}}
+data keys: stack,phase,unitId,workspace,isPWA,type,message
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a8f805e:wasm-function[108509]:0x24df167
+   
+   at wasm://wasm/0a8f805e:wasm-function[3309]:0x143b2d
+   
+   at wasm://wasm/0a8f805e:wasm-function[59913]:0x11cf1cd
+   
+   at wasm://wasm/0a8f805e:wasm-function[3347]:0x145f40
+   
+   at wasm://wasm/0a8f805e:wasm-function[82466]:0x170453c
+   
+   at wasm://wasm/0a8f805e:wasm-function[83416]:0x17182aa
+   
+   at wasm://wasm/0a8f805e:wasm-function[110273]:0x2598735
+   
+   at invoke_iiii (blob:https://<workspace-host>/d4d17f7f-e42b-440e-8663-6236d8b30fa5:9:474038)
+   
+   at wasm://wasm/0a8f805e:wasm-function[83401]:0x171794a
+   
+   at wasm://wasm/0a8f805e:wasm-function[1942]:0xf5838
+   
+   at wasm://wasm/0a8f805e:wasm-function[109930]:0x255f709
+   
+   at wasm://wasm/0a8f805e:wasm-function[106236]:0x24b04bf
+   
+   at wasm://wasm/0a8f805e:wasm-function[84040]:0x173e5ce
+   
+   at wasm://wasm/0a8f805e:wasm-function[84039]:0x173e504
+   
+   at wasm://wasm/0a8f805e:wasm-function[104562]:0x23e3a49
+   
+   at wasm://wasm/0a8f805e:wasm-function[104548]:0x23dfb1e
+   
+   at wasm://wasm/0a8f805e:wasm-function[103926]:0x2354335
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x245857d
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x24585f2
+   
+   at wasm://wasm/0a8f805e:wasm-function[110008]:0x2567b3c
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at blob:https://<workspace-host>/d4d17f7f-e42b-440e-8663-6236d8b30fa5:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/d4d17f7f-e42b-440e-8663-6236d8b30fa5:9:23594)
+   
+   at wasm://wasm/0a8f805e:wasm-function[110009]:0x2567c4b
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at browserIterationFunc (blob:https://<workspace-host>/d4d17f7f-e42b-440e-8663-6236d8b30fa5:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/d4d17f7f-e42b-440e-8663-6236d8b30fa5:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/d4d17f7f-e42b-440e-8663-6236d8b30fa5:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/d4d17f7f-e42b-440e-8663-6236d8b30fa5:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  12:52:21.859  17:52:21.593  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:52:21.925  17:52:21.604  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":29}
+  12:52:21.993  17:52:21.609  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:52:24.970  17:52:24.763  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:52:27.533  17:52:27.323  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"upArrow","Value":"pressed","actionType":"Move"}
+  12:52:29.136  17:52:28.928  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect super orange","objectName":"Super Orange"}
+  12:52:29.261  17:52:28.931  InputEvent                 Unit 4 Dev                 {"key":"e","Value":"pressed","actionType":"Interact","playerOrDrone":"Player"}
+  12:52:30.964  17:52:30.756  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  12:52:31.764  17:52:31.556  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1554.96777,"y":-85.413475,"z":-709.154236}}
+  12:52:33.545  17:52:33.332  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  12:52:33.629  17:52:33.337  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:52:33.696  17:52:33.338  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Garden Box 3","actionType":"Press E To Place Cameras"}
+  12:52:33.757  17:52:33.347  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":30}
+  12:52:36.604  17:52:36.390  TerasGardenBox             Unit 4 Dev                 {"actionType":"","boxId":"2","soilType":"Gravel"}
+  12:52:38.812  17:52:38.594  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":67}
+  12:52:41.762  17:52:41.555  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1554.96777,"y":-85.413475,"z":-709.154236}}
+  12:52:43.834  17:52:43.622  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"upArrow","Value":"pressed","actionType":"Move"}
+  12:52:45.740  17:52:45.521  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  12:52:45.964  17:52:45.757  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:52:46.064  17:52:45.770  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":32,"dialogueEventType":"DialogueNodeEvent"}
+  12:52:46.159  17:52:45.773  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:52:46.226  17:52:45.778  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":32}
+  12:52:51.788  17:52:51.555  PlayerPositionEvent        Unit 4 Dev                 {"position":{"z":-705.651733,"x":1546.92981,"y":-85.42272}}
+  12:52:55.245  17:52:55.040  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":33,"dialogueEventType":"DialogueNodeEvent"}
+  12:52:57.872  17:52:57.660  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:53:01.777  17:53:01.554  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1546.92981,"y":-85.42272,"z":-705.651733}}
+  12:53:02.339  17:53:02.127  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 1"}
+  12:53:04.371  17:53:04.162  DialogueEvent              Unit 4 Dev                 {"nodeId":63,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  12:53:04.461  17:53:04.167  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:53:11.792  17:53:11.554  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1546.92981,"y":-85.42272,"z":-705.651733}}
+  12:53:14.710  17:53:14.494  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:53:16.762  17:53:16.554  InputEvent                 Unit 4 Dev                 {"key":"upArrow","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  12:53:18.246  17:53:17.959  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 2"}
+  12:53:20.165  17:53:19.959  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":61}
+  12:53:20.268  17:53:19.964  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:53:21.764  17:53:21.554  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1550.92725,"y":-85.41758,"z":-705.5202}}
+  12:53:25.403  17:53:25.195  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:53:26.799  17:53:26.587  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  12:53:28.633  17:53:28.424  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  12:53:30.635  17:53:30.427  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+--- 15 events after (first 15)
+  12:53:45.776  17:53:30.427  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+  12:53:45.874  17:53:30.432  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueStartEvent"}
+  12:53:45.984  17:53:32.343  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  12:53:46.091  17:53:32.349  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  12:53:46.233  17:53:45.621  gameWindowFocusEvent       MainMenu                   {"":true}
+  12:53:46.295  17:53:45.623  gameStartEvent             MainMenu                   {"":true}
+  12:53:50.011  17:53:49.805  DEBUGMenu                  Unit 4 Dev - Anderson Base {"actionType":"DebugMenuStateChanged","isOpened":false}
+  12:53:51.182  17:53:49.809  PlayerPositionEvent        Unit 4 Dev - Anderson Base {"position":{"x":-1.92,"y":28.66,"z":17.96}}
+  12:53:51.292  17:53:50.650  InputEvent                 Unit 4 Dev - Anderson Base {"actionType":"Ascend","playerOrDrone":"Drone","key":"space","Value":"pressed"}
+  12:53:51.340  17:53:50.659  questEvent                 Unit 4 Dev - Anderson Base {"questEventType":"questActiveEvent","questID":"36","questName":"Saving Cadet Anderson"}
+  12:53:51.406  17:53:50.909  InputEvent                 Unit 4 Dev - Anderson Base {"actionType":"Ascend","playerOrDrone":"Drone","key":"space","Value":"pressed"}
+  12:53:51.933  17:53:51.727  DialogueEvent              Unit 4 Dev - Anderson Base {"dialogueEventType":"DialogueNodeEvent","conversationId":82,"nodeId":41}
+  12:53:52.015  17:53:51.734  DialogueEvent              Unit 4 Dev - Anderson Base {"conversationId":82,"dialogueEventType":"DialogueStartEvent"}
+  12:54:00.911  17:54:00.702  PlayerPositionEvent        Unit 4 Dev - Anderson Base {"position":{"x":-1.92,"y":28.66,"z":17.96}}
+  12:54:03.987  17:54:03.778  DialogueEvent              Unit 4 Dev - Anderson Base {"dialogueEventType":"DialogueNodeEvent","conversationId":82,"nodeId":42}
+
+################ crash 2 — 2026-10-01 12:47:50 CT — student …8b678e (member) — unit4 v2.8.1 build 2.8.1
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"platform":"UnityWebGL","processors":4,"memory":4096,"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36","jsHeapUsedMB":211,"jsHeapTotalMB":212,"resolution":{"width":1517,"height":852},"online":true,"os":"Linux x86_64"}
+data keys: isPWA,type,message,stack,phase,unitId,workspace
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a8f805e:wasm-function[108509]:0x24df167
+   
+   at wasm://wasm/0a8f805e:wasm-function[3309]:0x143b2d
+   
+   at wasm://wasm/0a8f805e:wasm-function[59913]:0x11cf1cd
+   
+   at wasm://wasm/0a8f805e:wasm-function[3347]:0x145f40
+   
+   at wasm://wasm/0a8f805e:wasm-function[82466]:0x170453c
+   
+   at wasm://wasm/0a8f805e:wasm-function[83416]:0x17182aa
+   
+   at wasm://wasm/0a8f805e:wasm-function[110273]:0x2598735
+   
+   at invoke_iiii (blob:https://<workspace-host>/9e024b4a-63d6-4e8b-bed9-4ef87930b84f:9:474038)
+   
+   at wasm://wasm/0a8f805e:wasm-function[83401]:0x171794a
+   
+   at wasm://wasm/0a8f805e:wasm-function[1942]:0xf5838
+   
+   at wasm://wasm/0a8f805e:wasm-function[109930]:0x255f709
+   
+   at wasm://wasm/0a8f805e:wasm-function[106236]:0x24b04bf
+   
+   at wasm://wasm/0a8f805e:wasm-function[84040]:0x173e5ce
+   
+   at wasm://wasm/0a8f805e:wasm-function[84039]:0x173e504
+   
+   at wasm://wasm/0a8f805e:wasm-function[104562]:0x23e3a49
+   
+   at wasm://wasm/0a8f805e:wasm-function[104548]:0x23dfb1e
+   
+   at wasm://wasm/0a8f805e:wasm-function[103926]:0x2354335
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x245857d
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x24585f2
+   
+   at wasm://wasm/0a8f805e:wasm-function[110008]:0x2567b3c
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at blob:https://<workspace-host>/9e024b4a-63d6-4e8b-bed9-4ef87930b84f:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/9e024b4a-63d6-4e8b-bed9-4ef87930b84f:9:23594)
+   
+   at wasm://wasm/0a8f805e:wasm-function[110009]:0x2567c4b
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at browserIterationFunc (blob:https://<workspace-host>/9e024b4a-63d6-4e8b-bed9-4ef87930b84f:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/9e024b4a-63d6-4e8b-bed9-4ef87930b84f:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/9e024b4a-63d6-4e8b-bed9-4ef87930b84f:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/9e024b4a-63d6-4e8b-bed9-4ef87930b84f:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  12:46:04.211  17:46:03.735  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  12:46:04.268  17:46:03.739  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:46:04.319  17:46:03.740  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect cameras","objectName":"Cameras"}
+  12:46:04.383  17:46:03.744  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":20}
+  12:46:08.361  17:46:07.885  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:46:11.890  17:46:11.413  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1549.8479,"y":-85.41795,"z":-709.9282}}
+  12:46:12.975  17:46:12.501  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  12:46:13.054  17:46:12.504  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueStartEvent"}
+  12:46:13.118  17:46:12.505  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect ultra corn","objectName":"Ultra Corn"}
+  12:46:13.179  17:46:12.509  DialogueEvent              Unit 4 Dev                 {"nodeId":21,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  12:46:16.074  17:46:15.600  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:46:19.773  17:46:19.296  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  12:46:21.764  17:46:21.278  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"upArrow","Value":"pressed","actionType":"Move"}
+  12:46:21.886  17:46:21.413  PlayerPositionEvent        Unit 4 Dev                 {"position":{"z":-706.9637,"x":1550.57227,"y":-85.41771}}
+  12:46:23.726  17:46:23.234  DialogueEvent              Unit 4 Dev                 {"nodeId":0,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  12:46:23.800  17:46:23.237  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:46:23.870  17:46:23.238  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Garden Box 1","actionType":"Press E To Place Cameras"}
+  12:46:23.915  17:46:23.243  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":22,"dialogueEventType":"DialogueNodeEvent"}
+  12:46:31.888  17:46:31.412  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1550.75757,"y":-85.41771,"z":-705.907837}}
+  12:46:32.672  17:46:32.197  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":23}
+  12:46:41.888  17:46:41.412  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.41771,"z":-705.907837,"x":1550.75757}}
+  12:46:43.074  17:46:42.597  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":25}
+  12:46:51.358  17:46:50.882  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":65}
+  12:46:51.887  17:46:51.412  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1550.75757,"y":-85.41771,"z":-705.907837}}
+  12:46:53.938  17:46:53.462  TerasGardenBox             Unit 4 Dev                 {"boxId":"0","soilType":"None","actionType":"cameraPlaced"}
+  12:46:54.711  17:46:54.215  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 1"}
+  12:46:55.439  17:46:54.965  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:46:55.483  17:46:54.973  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":26}
+  12:46:55.548  17:46:54.975  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:47:01.125  17:47:00.649  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:47:01.891  17:47:01.411  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1550.75757,"y":-85.41771,"z":-705.907837}}
+  12:47:02.272  17:47:01.794  InputEvent                 Unit 4 Dev                 {"key":"upArrow","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  12:47:04.407  17:47:03.927  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  12:47:06.407  17:47:05.930  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect mega turnips","objectName":"Mega Turnips"}
+  12:47:06.466  17:47:05.933  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Interact","playerOrDrone":"Player","key":"e"}
+  12:47:07.957  17:47:07.481  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  12:47:08.023  17:47:07.485  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:47:08.084  17:47:07.486  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 2"}
+  12:47:08.131  17:47:07.489  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":27}
+  12:47:11.887  17:47:11.410  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1551.012,"y":-85.41701,"z":-707.524963}}
+--- 15 events after (first 15)
+  12:48:15.745  17:47:15.362  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:48:15.936  17:47:15.371  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+  12:48:16.024  17:47:15.375  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:48:16.073  17:47:17.392  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:48:16.124  17:47:20.286  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 1"}
+  12:48:16.188  17:47:20.287  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  12:48:16.257  17:47:22.003  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+  12:48:16.327  17:47:22.005  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:48:16.372  17:47:22.006  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 1"}
+  12:48:16.424  17:47:22.011  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+  12:48:16.475  17:47:22.644  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1551.012,"y":-85.41701,"z":-707.524963}}
+  12:48:16.521  17:47:31.293  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  12:48:16.571  17:47:32.643  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1551.012,"y":-85.41701,"z":-707.524963}}
+  12:48:16.621  17:47:32.794  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:48:16.672  17:47:32.802  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+
+################ crash 3 — 2026-10-05 10:00:06 CT — student …c7f53d (member) — unit4 v2.8.1 build 2.8.1
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"os":"Linux x86_64","platform":"UnityWebGL","processors":4,"resolution":{"width":1366,"height":768},"jsHeapTotalMB":215,"memory":4096,"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36","online":true,"jsHeapUsedMB":213}
+data keys: phase,unitId,workspace,isPWA,type,message,stack
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a8f805e:wasm-function[108509]:0x24df167
+   
+   at wasm://wasm/0a8f805e:wasm-function[3309]:0x143b2d
+   
+   at wasm://wasm/0a8f805e:wasm-function[59913]:0x11cf1cd
+   
+   at wasm://wasm/0a8f805e:wasm-function[3347]:0x145f40
+   
+   at wasm://wasm/0a8f805e:wasm-function[82466]:0x170453c
+   
+   at wasm://wasm/0a8f805e:wasm-function[83416]:0x17182aa
+   
+   at wasm://wasm/0a8f805e:wasm-function[110273]:0x2598735
+   
+   at invoke_iiii (blob:https://<workspace-host>/81e3ae08-65d4-4415-a258-7a8302c96adb:9:474038)
+   
+   at wasm://wasm/0a8f805e:wasm-function[83401]:0x171794a
+   
+   at wasm://wasm/0a8f805e:wasm-function[1942]:0xf5838
+   
+   at wasm://wasm/0a8f805e:wasm-function[109930]:0x255f709
+   
+   at wasm://wasm/0a8f805e:wasm-function[106236]:0x24b04bf
+   
+   at wasm://wasm/0a8f805e:wasm-function[84040]:0x173e5ce
+   
+   at wasm://wasm/0a8f805e:wasm-function[84039]:0x173e504
+   
+   at wasm://wasm/0a8f805e:wasm-function[104562]:0x23e3a49
+   
+   at wasm://wasm/0a8f805e:wasm-function[104548]:0x23dfb1e
+   
+   at wasm://wasm/0a8f805e:wasm-function[103926]:0x2354335
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x245857d
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x24585f2
+   
+   at wasm://wasm/0a8f805e:wasm-function[110008]:0x2567b3c
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at blob:https://<workspace-host>/81e3ae08-65d4-4415-a258-7a8302c96adb:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/81e3ae08-65d4-4415-a258-7a8302c96adb:9:23594)
+   
+   at wasm://wasm/0a8f805e:wasm-function[110009]:0x2567c4b
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at browserIterationFunc (blob:https://<workspace-host>/81e3ae08-65d4-4415-a258-7a8302c96adb:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/81e3ae08-65d4-4415-a258-7a8302c96adb:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/81e3ae08-65d4-4415-a258-7a8302c96adb:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/81e3ae08-65d4-4415-a258-7a8302c96adb:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  09:59:09.176  14:59:08.800  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Sprint","playerOrDrone":"Player","key":"rightShift"}
+  09:59:09.219  14:59:08.816  InputEvent                 Unit 4 Dev                 {"actionType":"Sprint","playerOrDrone":"Player","key":"rightShift","Value":"pressed"}
+  09:59:09.286  14:59:08.917  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"downArrow"}
+  09:59:10.124  14:59:09.750  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  09:59:11.924  14:59:11.550  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.01625,"z":-704.268738,"x":1554.44946}}
+  09:59:12.160  14:59:11.789  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  09:59:12.206  14:59:11.792  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  09:59:12.252  14:59:11.793  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 2"}
+  09:59:12.303  14:59:11.797  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":27}
+  09:59:20.893  14:59:20.520  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":66}
+  09:59:21.921  14:59:21.550  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1554.44946,"y":-85.01625,"z":-704.268738}}
+  09:59:23.489  14:59:23.116  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"1","soilType":"None"}
+  09:59:24.996  14:59:24.618  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  09:59:25.054  14:59:24.626  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":29,"dialogueEventType":"DialogueNodeEvent"}
+  09:59:25.107  14:59:24.628  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  09:59:28.083  14:59:27.689  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  09:59:30.557  14:59:30.182  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"downArrow","Value":"pressed"}
+  09:59:31.091  14:59:30.717  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"upArrow","Value":"pressed","actionType":"Move"}
+  09:59:31.456  14:59:31.082  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"upArrow"}
+  09:59:31.921  14:59:31.549  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1546.2074,"y":-85.02217,"z":-712.0419}}
+  09:59:33.675  14:59:33.303  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Super Orange","actionType":"Press E to collect super orange"}
+  09:59:33.722  14:59:33.306  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  09:59:35.654  14:59:35.282  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"upArrow","Value":"pressed","actionType":"Move"}
+  09:59:37.589  14:59:37.221  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  09:59:37.650  14:59:37.225  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  09:59:37.701  14:59:37.226  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  09:59:37.753  14:59:37.230  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":30,"dialogueEventType":"DialogueNodeEvent"}
+  09:59:41.922  14:59:41.549  PlayerPositionEvent        Unit 4 Dev                 {"position":{"z":-708.7147,"x":1555.574,"y":-85.0141}}
+  09:59:43.272  14:59:42.902  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":67}
+  09:59:48.120  14:59:47.748  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  09:59:49.621  14:59:49.250  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  09:59:49.667  14:59:49.261  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":32,"dialogueEventType":"DialogueNodeEvent"}
+  09:59:49.717  14:59:49.264  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  09:59:49.767  14:59:49.275  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":32}
+  09:59:51.920  14:59:51.549  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1555.574,"y":-85.0141,"z":-708.7147}}
+  09:59:56.484  14:59:56.115  DialogueEvent              Unit 4 Dev                 {"nodeId":33,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  10:00:00.342  14:59:59.969  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:00:01.921  15:00:01.549  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.0141,"z":-708.7147,"x":1555.574}}
+  10:00:04.264  15:00:03.885  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  10:00:06.258  15:00:05.885  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+--- 15 events after (first 15)
+  10:01:07.611  15:00:05.885  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+  10:01:07.687  15:00:05.888  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueStartEvent"}
+  10:01:07.777  15:00:28.018  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  10:01:07.831  15:00:28.021  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  10:01:07.935  15:01:07.299  gameWindowFocusEvent       MainMenu                   {"":true}
+  10:01:08.001  15:01:07.301  gameStartEvent             MainMenu                   {"":true}
+  10:01:16.063  15:01:15.675  DEBUGMenu                  Unit 4 Dev                 {"isOpened":false,"actionType":"DebugMenuStateChanged"}
+  10:01:17.676  15:01:15.698  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":787.31,"y":-69.1,"z":-639.68}}
+  10:01:18.416  15:01:17.111  questEvent                 Unit 4 Dev                 {"questEventType":"questActiveEvent","questID":"41","questName":"Desert Delicacies"}
+  10:01:28.151  15:01:27.778  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1549.8479,"y":-85.41795,"z":-709.9282}}
+  10:01:29.240  15:01:28.868  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":0,"dialogueEventType":"DialogueNodeEvent"}
+  10:01:29.300  15:01:28.876  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:01:29.364  15:01:28.882  DialogueEvent              Unit 4 Dev                 {"nodeId":19,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  10:01:36.141  15:01:35.767  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:01:38.148  15:01:37.777  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1549.8479,"y":-85.41795,"z":-709.9282}}
+
+################ crash 4 — 2026-10-05 10:17:27 CT — student …c7f56d (member) — unit4 v2.8.1 build 2.8.1
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"os":"Linux x86_64","platform":"UnityWebGL","processors":4,"memory":4096,"resolution":{"width":1366,"height":768},"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36","jsHeapUsedMB":227,"jsHeapTotalMB":228,"online":true}
+data keys: message,stack,phase,unitId,workspace,isPWA,type
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a8f805e:wasm-function[108509]:0x24df167
+   
+   at wasm://wasm/0a8f805e:wasm-function[3309]:0x143b2d
+   
+   at wasm://wasm/0a8f805e:wasm-function[59913]:0x11cf1cd
+   
+   at wasm://wasm/0a8f805e:wasm-function[3347]:0x145f40
+   
+   at wasm://wasm/0a8f805e:wasm-function[82466]:0x170453c
+   
+   at wasm://wasm/0a8f805e:wasm-function[83416]:0x17182aa
+   
+   at wasm://wasm/0a8f805e:wasm-function[110273]:0x2598735
+   
+   at invoke_iiii (blob:https://<workspace-host>/55953667-b186-4da5-8dd5-fd4d4ed73aed:9:474038)
+   
+   at wasm://wasm/0a8f805e:wasm-function[83401]:0x171794a
+   
+   at wasm://wasm/0a8f805e:wasm-function[1942]:0xf5838
+   
+   at wasm://wasm/0a8f805e:wasm-function[109930]:0x255f709
+   
+   at wasm://wasm/0a8f805e:wasm-function[106236]:0x24b04bf
+   
+   at wasm://wasm/0a8f805e:wasm-function[84040]:0x173e5ce
+   
+   at wasm://wasm/0a8f805e:wasm-function[84039]:0x173e504
+   
+   at wasm://wasm/0a8f805e:wasm-function[104548]:0x23dfb1e
+   
+   at wasm://wasm/0a8f805e:wasm-function[103926]:0x2354335
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x245857d
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x24585f2
+   
+   at wasm://wasm/0a8f805e:wasm-function[110008]:0x2567b3c
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at blob:https://<workspace-host>/55953667-b186-4da5-8dd5-fd4d4ed73aed:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/55953667-b186-4da5-8dd5-fd4d4ed73aed:9:23594)
+   
+   at wasm://wasm/0a8f805e:wasm-function[110009]:0x2567c4b
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at browserIterationFunc (blob:https://<workspace-host>/55953667-b186-4da5-8dd5-fd4d4ed73aed:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/55953667-b186-4da5-8dd5-fd4d4ed73aed:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/55953667-b186-4da5-8dd5-fd4d4ed73aed:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/55953667-b186-4da5-8dd5-fd4d4ed73aed:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  09:49:02.671  14:49:02.113  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"space","Value":"pressed","actionType":"Jump"}
+  09:49:04.115  14:49:03.564  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":652.899048,"y":-74.86875,"z":-360.280823}}
+  09:49:05.843  14:49:05.296  InputEvent                 Unit 4 Dev                 {"key":"w","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  09:49:06.610  14:49:06.063  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Jump","playerOrDrone":"Player","key":"space"}
+  09:49:08.677  14:49:08.130  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:09.293  14:49:08.746  InputEvent                 Unit 4 Dev                 {"key":"space","Value":"pressed","actionType":"Jump","playerOrDrone":"Player"}
+  09:49:09.643  14:49:09.096  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:09.878  14:49:09.331  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Jump","playerOrDrone":"Player","key":"space"}
+  09:49:10.727  14:49:10.179  InputEvent                 Unit 4 Dev                 {"key":"space","Value":"pressed","actionType":"Jump","playerOrDrone":"Player"}
+  09:49:11.478  14:49:10.930  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"space","Value":"pressed","actionType":"Jump"}
+  09:49:11.809  14:49:11.262  InputEvent                 Unit 4 Dev                 {"key":"space","Value":"pressed","actionType":"Jump","playerOrDrone":"Player"}
+  09:49:12.076  14:49:11.529  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:14.110  14:49:13.563  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":930.58905,"y":-78.67959,"z":-504.957733}}
+  09:49:15.779  14:49:15.229  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:19.559  14:49:19.012  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  09:49:21.625  14:49:21.077  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"space","Value":"pressed","actionType":"Jump"}
+  09:49:24.110  14:49:23.562  PlayerPositionEvent        Unit 4 Dev                 {"position":{"z":-590.362854,"x":1224.9801,"y":-69.462265}}
+  09:49:24.189  14:49:23.644  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:26.793  14:49:26.244  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:27.292  14:49:26.745  InputEvent                 Unit 4 Dev                 {"key":"space","Value":"pressed","actionType":"Jump","playerOrDrone":"Player"}
+  09:49:27.625  14:49:27.077  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:27.858  14:49:27.311  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:28.075  14:49:27.528  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:29.010  14:49:28.461  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:49:34.109  14:49:33.561  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1438.31067,"y":-85.05004,"z":-721.0232}}
+  09:49:43.741  14:49:43.192  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"w"}
+  09:49:44.114  14:49:43.565  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":82,"nodeId":0}
+  09:49:44.171  14:49:43.569  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":82}
+  09:49:44.255  14:49:43.586  PlayerPositionEvent        Unit 4 Dev                 {"position":{"z":-722.5824,"x":1443.96375,"y":-85.05004}}
+  09:49:46.493  14:49:45.945  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":82,"nodeId":1}
+  09:49:48.994  14:49:48.445  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":82,"nodeId":3}
+  09:49:51.743  14:49:51.195  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":82,"nodeId":5}
+  09:49:54.129  14:49:53.575  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1443.96375,"y":-85.05004,"z":-722.5824}}
+  09:49:56.379  14:49:55.828  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":82,"nodeId":6}
+  09:49:58.457  14:49:57.911  DialogueEvent              Unit 4 Dev                 {"nodeId":7,"dialogueEventType":"DialogueNodeEvent","conversationId":82}
+  09:50:00.311  14:49:59.759  DialogueEvent              Unit 4 Dev                 {"conversationId":82,"nodeId":8,"dialogueEventType":"DialogueNodeEvent"}
+  09:50:04.126  14:50:03.574  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1443.96375,"y":-85.05004,"z":-722.5824}}
+  09:50:10.109  14:50:09.559  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":82,"nodeId":9}
+  09:50:14.121  14:50:13.573  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.05004,"z":-722.5824,"x":1443.96375}}
+  09:50:19.223  14:50:18.674  DialogueEvent              Unit 4 Dev                 {"conversationId":82,"nodeId":11,"dialogueEventType":"DialogueNodeEvent"}
+--- 15 events after (first 15)
+  10:18:12.554  14:50:23.889  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.839,"y":-85.0134,"z":-708.2462}}
+  10:18:12.782  14:59:05.029  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  10:18:12.984  14:59:12.66Z  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.0134,"z":-708.2462,"x":1553.839}}
+  10:18:13.128  14:59:14.75Z  DialogueEvent              Unit 4 Dev                 {"nodeId":62,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  10:18:13.274  14:59:19.207  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+  10:18:13.418  14:59:22.661  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.839,"y":-85.0134,"z":-708.2462}}
+  10:18:13.566  14:59:23.733  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueFinishEvent"}
+  10:18:13.709  14:59:25.794  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  10:18:13.856  14:59:26.01Z  InputEvent                 Unit 4 Dev                 {"key":"space","Value":"pressed","actionType":"Jump","playerOrDrone":"Player"}
+  10:18:14.003  14:59:32.276  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  10:18:14.151  14:59:32.66Z  PlayerPositionEvent        Unit 4 Dev                 {"position":{"z":-708.2462,"x":1553.839,"y":-85.0134}}
+  10:18:14.300  14:59:33.51Z  InputEvent                 Unit 4 Dev                 {"key":"space","Value":"pressed","actionType":"Jump","playerOrDrone":"Player"}
+  10:18:14.438  14:59:34.876  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  10:18:14.584  14:59:35.243  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  10:18:14.730  14:59:35.976  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+
+################ crash 5 — 2026-10-06 09:32:04 CT — student …c7f227 (member) — unit4 v2.8.1 build 2.8.1
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0","jsHeapUsedMB":214,"jsHeapTotalMB":219,"os":"Win32","platform":"UnityWebGL","processors":8,"memory":8192,"resolution":{"width":1280,"height":720},"online":true}
+data keys: phase,unitId,workspace,isPWA,type,message,stack
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a8f805e:wasm-function[108509]:0x24df167
+   
+   at wasm://wasm/0a8f805e:wasm-function[3309]:0x143b2d
+   
+   at wasm://wasm/0a8f805e:wasm-function[59913]:0x11cf1cd
+   
+   at wasm://wasm/0a8f805e:wasm-function[3347]:0x145f40
+   
+   at wasm://wasm/0a8f805e:wasm-function[82466]:0x170453c
+   
+   at wasm://wasm/0a8f805e:wasm-function[83416]:0x17182aa
+   
+   at wasm://wasm/0a8f805e:wasm-function[110273]:0x2598735
+   
+   at invoke_iiii (blob:https://<workspace-host>/9a038634-e848-4261-96b0-332bca7b1dd8:9:474038)
+   
+   at wasm://wasm/0a8f805e:wasm-function[83401]:0x171794a
+   
+   at wasm://wasm/0a8f805e:wasm-function[1942]:0xf5838
+   
+   at wasm://wasm/0a8f805e:wasm-function[109930]:0x255f709
+   
+   at wasm://wasm/0a8f805e:wasm-function[106236]:0x24b04bf
+   
+   at wasm://wasm/0a8f805e:wasm-function[84040]:0x173e5ce
+   
+   at wasm://wasm/0a8f805e:wasm-function[84039]:0x173e504
+   
+   at wasm://wasm/0a8f805e:wasm-function[104562]:0x23e3a49
+   
+   at wasm://wasm/0a8f805e:wasm-function[104548]:0x23dfb1e
+   
+   at wasm://wasm/0a8f805e:wasm-function[103926]:0x2354335
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x245857d
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x24585f2
+   
+   at wasm://wasm/0a8f805e:wasm-function[110008]:0x2567b3c
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at blob:https://<workspace-host>/9a038634-e848-4261-96b0-332bca7b1dd8:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/9a038634-e848-4261-96b0-332bca7b1dd8:9:23594)
+   
+   at wasm://wasm/0a8f805e:wasm-function[110009]:0x2567c4b
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at browserIterationFunc (blob:https://<workspace-host>/9a038634-e848-4261-96b0-332bca7b1dd8:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/9a038634-e848-4261-96b0-332bca7b1dd8:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/9a038634-e848-4261-96b0-332bca7b1dd8:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/9a038634-e848-4261-96b0-332bca7b1dd8:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  09:30:51.056  14:30:50.993  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":29}
+  09:30:51.128  14:30:50.998  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  09:30:53.271  14:30:53.250  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  09:30:54.830  14:30:54.808  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1551.239,"y":-85.41639,"z":-708.9162}}
+  09:30:54.895  14:30:54.876  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  09:30:56.334  14:30:56.308  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"w","Value":"pressed","actionType":"Move"}
+  09:30:57.932  14:30:57.909  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"3","Value":"pressed","actionType":"SkipCinematic"}
+  09:30:59.436  14:30:59.407  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  09:31:00.771  14:31:00.750  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect super orange","objectName":"Super Orange"}
+  09:31:00.826  14:31:00.755  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  09:31:02.335  14:31:02.309  InputEvent                 Unit 4 Dev                 {"key":"w","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  09:31:03.234  14:31:03.208  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  09:31:04.137  14:31:04.116  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  09:31:04.227  14:31:04.121  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  09:31:04.299  14:31:04.123  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  09:31:04.361  14:31:04.133  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":30}
+  09:31:04.830  14:31:04.807  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.68616,"y":-85.41284,"z":-710.551147}}
+  09:31:06.205  14:31:06.174  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  09:31:07.705  14:31:07.679  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  09:31:07.757  14:31:07.698  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":32}
+  09:31:07.823  14:31:07.702  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  09:31:07.895  14:31:07.719  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":32}
+  09:31:14.819  14:31:14.804  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.68616,"y":-85.41284,"z":-710.551147}}
+  09:31:16.105  14:31:16.090  DialogueEvent              Unit 4 Dev                 {"nodeId":33,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  09:31:20.040  14:31:20.015  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  09:31:23.769  14:31:23.747  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 1"}
+  09:31:24.826  14:31:24.805  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.68616,"y":-85.41284,"z":-710.551147}}
+  09:31:25.765  14:31:25.746  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+  09:31:25.818  14:31:25.752  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  09:31:34.824  14:31:34.803  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.41284,"z":-710.551147,"x":1553.68616}}
+  09:31:42.064  14:31:42.044  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  09:31:44.825  14:31:44.803  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.41284,"z":-710.551147,"x":1553.68616}}
+  09:31:45.931  14:31:45.914  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 2"}
+  09:31:47.951  14:31:47.938  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+  09:31:48.014  14:31:47.941  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  09:31:54.824  14:31:54.800  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.41284,"z":-710.551147,"x":1553.68616}}
+  09:31:56.035  14:31:56.012  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  09:31:59.929  14:31:59.901  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  09:32:02.029  14:32:02.005  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  09:32:04.060  14:32:04.041  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+--- 0 events after (first 15)
+
+################ crash 6 — 2026-10-07 10:08:12 CT — student …c7f535 (member) — unit4 v2.8.1 build 2.8.1
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"os":"Linux x86_64","platform":"UnityWebGL","processors":4,"memory":4096,"resolution":{"height":768,"width":1366},"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36","online":true,"jsHeapUsedMB":233,"jsHeapTotalMB":236}
+data keys: phase,unitId,workspace,isPWA,type,message,stack
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a8f805e:wasm-function[108509]:0x24df167
+   
+   at wasm://wasm/0a8f805e:wasm-function[3309]:0x143b2d
+   
+   at wasm://wasm/0a8f805e:wasm-function[59913]:0x11cf1cd
+   
+   at wasm://wasm/0a8f805e:wasm-function[3347]:0x145f40
+   
+   at wasm://wasm/0a8f805e:wasm-function[82466]:0x170453c
+   
+   at wasm://wasm/0a8f805e:wasm-function[83416]:0x17182aa
+   
+   at wasm://wasm/0a8f805e:wasm-function[110273]:0x2598735
+   
+   at invoke_iiii (blob:https://<workspace-host>/b518628c-786e-4e1a-b30b-395f63ab63b1:9:474038)
+   
+   at wasm://wasm/0a8f805e:wasm-function[83401]:0x171794a
+   
+   at wasm://wasm/0a8f805e:wasm-function[1942]:0xf5838
+   
+   at wasm://wasm/0a8f805e:wasm-function[109930]:0x255f709
+   
+   at wasm://wasm/0a8f805e:wasm-function[106236]:0x24b04bf
+   
+   at wasm://wasm/0a8f805e:wasm-function[84040]:0x173e5ce
+   
+   at wasm://wasm/0a8f805e:wasm-function[84039]:0x173e504
+   
+   at wasm://wasm/0a8f805e:wasm-function[104548]:0x23dfb1e
+   
+   at wasm://wasm/0a8f805e:wasm-function[103926]:0x2354335
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x245857d
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x24585f2
+   
+   at wasm://wasm/0a8f805e:wasm-function[110008]:0x2567b3c
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at blob:https://<workspace-host>/b518628c-786e-4e1a-b30b-395f63ab63b1:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/b518628c-786e-4e1a-b30b-395f63ab63b1:9:23594)
+   
+   at wasm://wasm/0a8f805e:wasm-function[110009]:0x2567c4b
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at browserIterationFunc (blob:https://<workspace-host>/b518628c-786e-4e1a-b30b-395f63ab63b1:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/b518628c-786e-4e1a-b30b-395f63ab63b1:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/b518628c-786e-4e1a-b30b-395f63ab63b1:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/b518628c-786e-4e1a-b30b-395f63ab63b1:9:115294)
+--- 0 events before (server time CT; game timestamp; type; scene; data)
+--- 0 events after (first 15)
+
+################ crash 7 — 2026-10-08 08:31:13 CT — student …c7f538 (member) — unit4 v2.8.1 build 2.8.1
+message: Uncaught RuntimeError: null function
+type/phase: runtime_error / running
+device: {"resolution":{"width":1366,"height":768},"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36","jsHeapTotalMB":243,"online":true,"jsHeapUsedMB":236,"os":"Linux x86_64","platform":"UnityWebGL","processors":4,"memory":4096}
+data keys: phase,unitId,workspace,isPWA,type,message,stack
+stack:
+RuntimeError: null function
+   
+   at wasm://wasm/0a8f805e:wasm-function[106212]:0x24ae70c
+   
+   at wasm://wasm/0a8f805e:wasm-function[108509]:0x24df16a
+   
+   at wasm://wasm/0a8f805e:wasm-function[3309]:0x143b2d
+   
+   at wasm://wasm/0a8f805e:wasm-function[59913]:0x11cf1cd
+   
+   at wasm://wasm/0a8f805e:wasm-function[3347]:0x145f40
+   
+   at wasm://wasm/0a8f805e:wasm-function[82466]:0x170453c
+   
+   at wasm://wasm/0a8f805e:wasm-function[83416]:0x17182aa
+   
+   at wasm://wasm/0a8f805e:wasm-function[110273]:0x2598735
+   
+   at invoke_iiii (blob:https://<workspace-host>/d26ed8f0-b682-490a-8a23-90972e0ac773:9:474038)
+   
+   at wasm://wasm/0a8f805e:wasm-function[83401]:0x171794a
+   
+   at wasm://wasm/0a8f805e:wasm-function[1942]:0xf5838
+   
+   at wasm://wasm/0a8f805e:wasm-function[109930]:0x255f709
+   
+   at wasm://wasm/0a8f805e:wasm-function[106236]:0x24b04bf
+   
+   at wasm://wasm/0a8f805e:wasm-function[84040]:0x173e5ce
+   
+   at wasm://wasm/0a8f805e:wasm-function[84039]:0x173e504
+   
+   at wasm://wasm/0a8f805e:wasm-function[104562]:0x23e3a49
+   
+   at wasm://wasm/0a8f805e:wasm-function[104548]:0x23dfb1e
+   
+   at wasm://wasm/0a8f805e:wasm-function[103926]:0x2354335
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x245857d
+   
+   at wasm://wasm/0a8f805e:wasm-function[105656]:0x24585f2
+   
+   at wasm://wasm/0a8f805e:wasm-function[110008]:0x2567b3c
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at blob:https://<workspace-host>/d26ed8f0-b682-490a-8a23-90972e0ac773:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/d26ed8f0-b682-490a-8a23-90972e0ac773:9:23594)
+   
+   at wasm://wasm/0a8f805e:wasm-function[110009]:0x2567c4b
+   
+   at wasm://wasm/0a8f805e:wasm-function[110279]:0x2598788
+   
+   at browserIterationFunc (blob:https://<workspace-host>/d26ed8f0-b682-490a-8a23-90972e0ac773:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/d26ed8f0-b682-490a-8a23-90972e0ac773:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/d26ed8f0-b682-490a-8a23-90972e0ac773:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/d26ed8f0-b682-490a-8a23-90972e0ac773:9:115294)
+--- 0 events before (server time CT; game timestamp; type; scene; data)
+--- 15 events after (first 15)
+  08:32:36.003  13:20:19.655  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+  08:32:36.003  13:20:19.488  InputEvent                 Unit 4 Dev - Dungeon       {"key":"leftShift","Value":"pressed","actionType":"Sprint","playerOrDrone":"Player"}
+  08:32:36.003  13:20:18.354  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+  08:32:36.003  13:20:18.32Z  InputEvent                 Unit 4 Dev - Dungeon       {"key":"leftShift","Value":"pressed","actionType":"Sprint","playerOrDrone":"Player"}
+  08:32:36.003  13:20:18.137  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+  08:32:36.003  13:20:17.804  InputEvent                 Unit 4 Dev - Dungeon       {"playerOrDrone":"Player","key":"leftShift","Value":"pressed","actionType":"Sprint"}
+  08:32:36.003  13:20:17.604  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+  08:32:36.003  13:20:17.087  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+  08:32:36.003  13:20:15.059  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+  08:32:36.003  13:20:15.056  ObjectInterEvent           Unit 4 Dev - Dungeon       {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  08:32:36.003  13:20:14.72Z  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+  08:32:36.003  13:20:14.104  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+  08:32:36.003  13:20:13.92Z  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+  08:32:36.003  13:20:13.904  InputEvent                 Unit 4 Dev - Dungeon       {"key":"leftShift","Value":"pressed","actionType":"Sprint","playerOrDrone":"Player"}
+  08:32:36.003  13:20:13.704  InputEvent                 Unit 4 Dev - Dungeon       {"actionType":"Sprint","playerOrDrone":"Player","key":"leftShift","Value":"pressed"}
+
+################ crash 8 — 2026-10-12 09:11:25 CT — student …6b1473 (?) — unit2 v2.8.1 build 2.8.1
+message: Uncaught ReferenceError: unityFramework is not defined
+type/phase: runtime_error / compiling
+device: {"os":"Win32","processors":4,"memory":4096,"resolution":{"width":1366,"height":768},"platform":"UnityWebGL","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36","online":true,"jsHeapUsedMB":3,"jsHeapTotalMB":4}
+data keys: workspace,isPWA,type,message,stack,phase,unitId
+stack:
+ReferenceError: unityFramework is not defined
+   
+   at i.onload (https://<workspace-host>/missionhydrosci/content/unit2/v2.8.1/Build/unit2.loader.js:1:44345)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  09:11:20.077  14:11:22.182  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"s","Value":"pressed"}
+  09:11:20.165  14:11:20.453  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameVisible","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:20.6740000Z"}
+  09:11:20.264  14:11:20.674  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameVisible","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:21.0660000Z"}
+  09:11:20.342  14:11:20.687  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:21.0830000Z"}
+  09:11:20.451  14:11:21.066  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraUncentered","pieceId":"Watershed Piece 4","timestamp":"2026-10-12T14:11:22.3400000Z"}
+  09:11:20.468  14:11:21.986  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Interact","playerOrDrone":"Player","key":"leftButton","Value":"pressed"}
+  09:11:20.549  14:11:21.083  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraUncentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:22.3400000Z"}
+  09:11:20.673  14:11:22.780  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"d","Value":"pressed"}
+  09:11:20.800  14:11:22.321  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraUncentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:22.3680000Z"}
+  09:11:20.935  14:11:22.340  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:22.4430000Z","actionType":"BecameVisible"}
+  09:11:21.121  14:11:22.340  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameVisible","pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:22.4430000Z"}
+  09:11:21.130  14:11:20.898  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  09:11:21.226  14:11:22.368  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameVisible","pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:22.4430000Z"}
+  09:11:21.323  14:11:22.368  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameVisible","pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:22.4430000Z"}
+  09:11:21.346  14:11:21.115  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  09:11:21.490  14:11:22.368  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameVisible","pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:22.4430000Z"}
+  09:11:21.563  14:11:21.330  InputEvent                 Unit 2 Prod (Refactor)     {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"a"}
+  09:11:21.597  14:11:22.402  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameVisible","pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:22.4430000Z"}
+  09:11:21.694  14:11:22.443  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameVisible","pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:22.4430000Z"}
+  09:11:21.963  14:11:22.538  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Watershed Piece 1","timestamp":"2026-10-12T14:11:22.5380000Z"}
+  09:11:22.046  14:11:22.891  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:22.8910000Z"}
+  09:11:22.137  14:11:22.957  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameInvisible","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:22.9570000Z"}
+  09:11:22.217  14:11:22.961  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameInvisible","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:23.7210000Z"}
+  09:11:22.297  14:11:23.721  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameInvisible","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:23.7210000Z"}
+  09:11:22.413  14:11:24.761  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  09:11:22.650  14:11:25.069  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  09:11:22.955  14:11:25.387  InputEvent                 Unit 2 Prod (Refactor)     {"key":"w","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  09:11:23.328  14:11:25.036  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:25.0360000Z","actionType":"BecameVisible"}
+  09:11:23.414  14:11:23.181  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  09:11:23.542  14:11:25.120  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:25.1700000Z"}
+  09:11:23.739  14:11:25.124  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraUncentered","pieceId":"Watershed Piece 1","timestamp":"2026-10-12T14:11:25.2340000Z"}
+  09:11:23.869  14:11:25.903  InputEvent                 Unit 2 Prod (Refactor)     {"key":"w","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  09:11:23.931  14:11:25.464  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  09:11:24.005  14:11:25.170  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"timestamp":"2026-10-12T14:11:25.5830000Z","actionType":"BecameCameraCentered","pieceId":"WatershedSlotWall"}
+  09:11:24.160  14:11:25.191  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:25.5830000Z"}
+  09:11:24.315  14:11:25.234  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:25.6020000Z","actionType":"BecameCameraCentered"}
+  09:11:24.491  14:11:25.542  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"timestamp":"2026-10-12T14:11:25.6020000Z","actionType":"BecameCameraCentered","pieceId":"Dissolving Particles Slot 1"}
+  09:11:24.680  14:11:25.543  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:25.6020000Z"}
+  09:11:24.736  14:11:26.186  PlayerPositionEvent        Unit 2 Prod (Refactor)     {"position":{"x":1101.00439,"y":144.589264,"z":1943.56348}}
+  09:11:24.905  14:11:25.564  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:25.6020000Z"}
+--- 15 events after (first 15)
+  09:11:25.062  14:11:25.564  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:25.6020000Z"}
+  09:11:25.181  14:11:25.583  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:25.6020000Z"}
+  09:11:25.182  14:11:24.948  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  09:11:25.362  14:11:25.130  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"d","Value":"pressed"}
+  09:11:25.397  14:11:25.583  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraCentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:25.6020000Z"}
+  09:11:25.561  14:11:25.583  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameInvisible","pieceId":"Watershed Piece 3","timestamp":"2026-10-12T14:11:26.5970000Z"}
+  09:11:25.718  14:11:25.583  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:27.0200000Z","actionType":"BecameCameraCentered"}
+  09:11:25.846  14:11:25.614  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"d","Value":"pressed"}
+  09:11:25.875  14:11:26.578  InputEvent                 Unit 2 Prod (Refactor)     {"playerOrDrone":"Player","key":"w","Value":"pressed","actionType":"Move"}
+  09:11:25.984  14:11:25.597  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"timestamp":"2026-10-12T14:11:27.7490000Z","actionType":"BecameCameraUncentered","pieceId":"Dissolving Particles Slot 1"}
+  09:11:26.125  14:11:25.602  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraUncentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:27.7490000Z"}
+  09:11:26.179  14:11:25.948  InputEvent                 Unit 2 Prod (Refactor)     {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"a"}
+  09:11:26.273  14:11:25.602  PuzzlePieceVisibleEvent    Unit 2 Prod (Refactor)     {"actionType":"BecameCameraUncentered","pieceId":"Dissolving Particles Slot 1","timestamp":"2026-10-12T14:11:27.7490000Z"}
+  09:11:26.404  14:11:26.838  InputEvent                 Unit 2 Prod (Refactor)     {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"w"}
+  09:11:26.577  14:11:27.539  InputEvent                 Unit 2 Prod (Refactor)     {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+
+################ crash 9 — 2026-10-15 10:33:15 CT — student …b56b08 (member) — unit4 v2.8.4 build 2.8.4
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"online":true,"jsHeapUsedMB":210,"jsHeapTotalMB":215,"platform":"UnityWebGL","resolution":{"width":1366,"height":768},"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36","os":"Linux x86_64","processors":8,"memory":4096}
+data keys: workspace,isPWA,type,message,stack,phase,unitId
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a915116:wasm-function[108544]:0x24e60da
+   
+   at wasm://wasm/0a915116:wasm-function[3309]:0x143bd9
+   
+   at wasm://wasm/0a915116:wasm-function[59793]:0x11abccc
+   
+   at wasm://wasm/0a915116:wasm-function[3347]:0x145fec
+   
+   at wasm://wasm/0a915116:wasm-function[82501]:0x170b4af
+   
+   at wasm://wasm/0a915116:wasm-function[83451]:0x171f21d
+   
+   at wasm://wasm/0a915116:wasm-function[110308]:0x259f6a8
+   
+   at invoke_iiii (blob:https://<workspace-host>/e4b7147d-c2a3-4d37-944f-4c8f3e442549:9:474038)
+   
+   at wasm://wasm/0a915116:wasm-function[83436]:0x171e8bd
+   
+   at wasm://wasm/0a915116:wasm-function[1942]:0xf58e4
+   
+   at wasm://wasm/0a915116:wasm-function[109965]:0x256667c
+   
+   at wasm://wasm/0a915116:wasm-function[106271]:0x24b7432
+   
+   at wasm://wasm/0a915116:wasm-function[84075]:0x1745541
+   
+   at wasm://wasm/0a915116:wasm-function[84074]:0x1745477
+   
+   at wasm://wasm/0a915116:wasm-function[104597]:0x23ea9bc
+   
+   at wasm://wasm/0a915116:wasm-function[104583]:0x23e6a91
+   
+   at wasm://wasm/0a915116:wasm-function[103961]:0x235b2a8
+   
+   at wasm://wasm/0a915116:wasm-function[105691]:0x245f4f0
+   
+   at wasm://wasm/0a915116:wasm-function[105691]:0x245f565
+   
+   at wasm://wasm/0a915116:wasm-function[110043]:0x256eaaf
+   
+   at wasm://wasm/0a915116:wasm-function[110314]:0x259f6fb
+   
+   at blob:https://<workspace-host>/e4b7147d-c2a3-4d37-944f-4c8f3e442549:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/e4b7147d-c2a3-4d37-944f-4c8f3e442549:9:23594)
+   
+   at wasm://wasm/0a915116:wasm-function[110044]:0x256ebbe
+   
+   at wasm://wasm/0a915116:wasm-function[110314]:0x259f6fb
+   
+   at browserIterationFunc (blob:https://<workspace-host>/e4b7147d-c2a3-4d37-944f-4c8f3e442549:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/e4b7147d-c2a3-4d37-944f-4c8f3e442549:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/e4b7147d-c2a3-4d37-944f-4c8f3e442549:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/e4b7147d-c2a3-4d37-944f-4c8f3e442549:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  10:32:24.879  15:32:24.662  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:32:24.879  15:32:24.663  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 2"}
+  10:32:24.879  15:32:24.670  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":27}
+  10:32:31.937  15:32:31.801  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1549.725,"y":-85.4186859,"z":-707.456055}}
+  10:32:33.387  15:32:33.243  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":66}
+  10:32:35.718  15:32:35.568  TerasGardenBox             Unit 4 Dev                 {"soilType":"Sand","actionType":"","boxId":"1"}
+  10:32:37.808  15:32:37.670  TerasGardenBox             Unit 4 Dev                 {"actionType":"","boxId":"1","soilType":"Gravel"}
+  10:32:39.737  15:32:39.229  TerasGardenBox             Unit 4 Dev                 {"actionType":"","boxId":"1","soilType":"Sand"}
+  10:32:41.629  15:32:41.472  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"1","soilType":"Sand"}
+  10:32:41.935  15:32:41.795  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1549.725,"y":-85.4186859,"z":-707.456055}}
+  10:32:43.139  15:32:42.989  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:32:43.212  15:32:43.022  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:32:43.212  15:32:43.006  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":29,"dialogueEventType":"DialogueNodeEvent"}
+  10:32:46.296  15:32:45.903  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:32:46.456  15:32:46.317  InputEvent                 Unit 4 Dev                 {"key":"d","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  10:32:47.176  15:32:47.034  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"w","Value":"pressed","actionType":"Move"}
+  10:32:47.611  15:32:47.467  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"d"}
+  10:32:50.513  15:32:50.368  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Super Orange","actionType":"Press E to collect super orange"}
+  10:32:50.567  15:32:50.376  InputEvent                 Unit 4 Dev                 {"key":"e","Value":"pressed","actionType":"Interact","playerOrDrone":"Player"}
+  10:32:50.979  15:32:50.839  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"d"}
+  10:32:51.458  15:32:51.308  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  10:32:51.950  15:32:51.812  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1554.52917,"y":-85.41096,"z":-713.9193}}
+  10:32:52.113  15:32:51.975  DialogueEvent              Unit 4 Dev                 {"nodeId":0,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  10:32:52.222  15:32:51.984  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Garden Box 3","actionType":"Press E To Place Cameras"}
+  10:32:52.222  15:32:51.983  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:32:52.222  15:32:51.995  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":30}
+  10:32:54.324  15:32:54.185  TerasGardenBox             Unit 4 Dev                 {"actionType":"","boxId":"2","soilType":"Gravel"}
+  10:32:56.916  15:32:56.778  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":67}
+  10:32:58.857  15:32:58.715  TerasGardenBox             Unit 4 Dev                 {"actionType":"","boxId":"2","soilType":"Gravel"}
+  10:33:00.114  15:32:59.972  TerasGardenBox             Unit 4 Dev                 {"boxId":"2","soilType":"Gravel","actionType":"cameraPlaced"}
+  10:33:01.641  15:33:01.499  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:33:01.738  15:33:01.524  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:33:01.738  15:33:01.521  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  10:33:01.738  15:33:01.530  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":32}
+  10:33:01.955  15:33:01.799  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.41113,"z":-713.0168,"x":1555.12231}}
+  10:33:08.332  15:33:08.184  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":33}
+  10:33:11.012  15:33:10.876  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:33:11.962  15:33:11.823  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.41113,"z":-713.0168,"x":1555.12231}}
+  10:33:13.741  15:33:13.599  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 1"}
+  10:33:15.753  15:33:15.615  DialogueEvent              Unit 4 Dev                 {"nodeId":63,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+--- 15 events after (first 15)
+  10:35:06.838  15:33:15.621  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:35:06.838  15:33:15.615  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+  10:35:07.031  15:35:06.869  gameWindowFocusEvent       MainMenu                   {"":true}
+  10:35:07.031  15:35:06.869  gameStartEvent             MainMenu                   {"":true}
+  10:35:07.031  15:35:06.735  DEBUGMenu                  MainMenu                   {"isOpened":false,"actionType":"DebugMenuStateChanged"}
+  10:35:15.749  15:35:15.608  DEBUGMenu                  Unit 4 Dev                 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  10:35:18.334  15:35:17.108  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  10:35:18.334  15:35:17.190  questEvent                 Unit 4 Dev                 {"questEventType":"questActiveEvent","questID":"41","questName":"Desert Delicacies"}
+  10:35:18.334  15:35:15.617  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":787.31,"y":-69.1,"z":-639.68}}
+  10:35:25.312  15:35:25.157  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"w","Value":"pressed","actionType":"Move"}
+  10:35:27.829  15:35:27.674  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1547.71033,"y":-85.42245,"z":-702.517761}}
+  10:35:28.581  15:35:28.439  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  10:35:28.729  15:35:28.469  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":19}
+  10:35:28.729  15:35:28.454  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:35:37.828  15:35:37.685  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1547.71033,"y":-85.42245,"z":-702.517761}}
+
+################ crash 10 — 2026-10-15 23:31:43 CT — student …b56aeb (member) — unit4 v2.8.4 build 2.8.4
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"processors":8,"resolution":{"width":1366,"height":768},"online":true,"jsHeapUsedMB":206,"jsHeapTotalMB":215,"os":"Linux x86_64","platform":"UnityWebGL","memory":4096,"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36"}
+data keys: type,message,stack,phase,unitId,workspace,isPWA
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a915116:wasm-function[108544]:0x24e60da
+   
+   at wasm://wasm/0a915116:wasm-function[3309]:0x143bd9
+   
+   at wasm://wasm/0a915116:wasm-function[59793]:0x11abccc
+   
+   at wasm://wasm/0a915116:wasm-function[3347]:0x145fec
+   
+   at wasm://wasm/0a915116:wasm-function[82501]:0x170b4af
+   
+   at wasm://wasm/0a915116:wasm-function[83451]:0x171f21d
+   
+   at wasm://wasm/0a915116:wasm-function[110308]:0x259f6a8
+   
+   at invoke_iiii (blob:https://<workspace-host>/aee8914f-801a-408e-998e-b97214faa5cf:9:474038)
+   
+   at wasm://wasm/0a915116:wasm-function[83436]:0x171e8bd
+   
+   at wasm://wasm/0a915116:wasm-function[1942]:0xf58e4
+   
+   at wasm://wasm/0a915116:wasm-function[109965]:0x256667c
+   
+   at wasm://wasm/0a915116:wasm-function[106271]:0x24b7432
+   
+   at wasm://wasm/0a915116:wasm-function[84075]:0x1745541
+   
+   at wasm://wasm/0a915116:wasm-function[84074]:0x1745477
+   
+   at wasm://wasm/0a915116:wasm-function[104583]:0x23e6a91
+   
+   at wasm://wasm/0a915116:wasm-function[103961]:0x235b2a8
+   
+   at wasm://wasm/0a915116:wasm-function[105691]:0x245f4f0
+   
+   at wasm://wasm/0a915116:wasm-function[105691]:0x245f565
+   
+   at wasm://wasm/0a915116:wasm-function[110043]:0x256eaaf
+   
+   at wasm://wasm/0a915116:wasm-function[110314]:0x259f6fb
+   
+   at blob:https://<workspace-host>/aee8914f-801a-408e-998e-b97214faa5cf:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/aee8914f-801a-408e-998e-b97214faa5cf:9:23594)
+   
+   at wasm://wasm/0a915116:wasm-function[110044]:0x256ebbe
+   
+   at wasm://wasm/0a915116:wasm-function[110314]:0x259f6fb
+   
+   at browserIterationFunc (blob:https://<workspace-host>/aee8914f-801a-408e-998e-b97214faa5cf:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/aee8914f-801a-408e-998e-b97214faa5cf:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/aee8914f-801a-408e-998e-b97214faa5cf:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/aee8914f-801a-408e-998e-b97214faa5cf:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  23:30:47.688  04:30:47.244  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  23:30:48.828  04:30:48.371  InputEvent                 Unit 4 Dev                 {"key":"downArrow","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  23:30:55.008  04:30:54.584  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1548.61755,"y":-85.41773,"z":-717.6999}}
+  23:30:56.724  04:30:56.256  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect mega turnips","objectName":"Mega Turnips"}
+  23:30:56.888  04:30:56.265  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  23:30:58.128  04:30:57.667  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"upArrow","Value":"pressed","actionType":"Move"}
+  23:30:59.498  04:30:59.049  InputEvent                 Unit 4 Dev                 {"key":"upArrow","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  23:31:01.260  04:31:00.779  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  23:31:01.394  04:31:00.798  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":27}
+  23:31:01.394  04:31:00.788  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  23:31:01.394  04:31:00.789  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Garden Box 2","actionType":"Press E To Place Cameras"}
+  23:31:05.022  04:31:04.567  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.40808,"y":-85.41374,"z":-708.2153}}
+  23:31:08.549  04:31:08.096  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"1","soilType":"None"}
+  23:31:10.056  04:31:09.617  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  23:31:10.199  04:31:09.643  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":29}
+  23:31:10.199  04:31:09.647  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  23:31:12.286  04:31:11.810  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  23:31:14.018  04:31:13.547  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"downArrow","Value":"pressed"}
+  23:31:15.148  04:31:14.594  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1548.10242,"y":-85.41915,"z":-714.4674}}
+  23:31:18.428  04:31:17.973  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Super Orange","actionType":"Press E to collect super orange"}
+  23:31:18.586  04:31:17.977  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  23:31:20.708  04:31:20.273  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  23:31:22.406  04:31:21.948  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"downArrow"}
+  23:31:23.598  04:31:23.148  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  23:31:23.749  04:31:23.158  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  23:31:23.749  04:31:23.170  DialogueEvent              Unit 4 Dev                 {"nodeId":30,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  23:31:23.749  04:31:23.158  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  23:31:25.049  04:31:24.594  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1551.34827,"y":-85.41559,"z":-711.7576}}
+  23:31:25.928  04:31:25.476  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  23:31:27.428  04:31:26.980  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  23:31:27.549  04:31:26.999  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  23:31:27.549  04:31:27.038  DialogueEvent              Unit 4 Dev                 {"nodeId":32,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  23:31:27.549  04:31:27.005  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  23:31:33.638  04:31:33.167  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":33,"dialogueEventType":"DialogueNodeEvent"}
+  23:31:35.018  04:31:34.568  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1551.34827,"y":-85.41559,"z":-711.7576}}
+  23:31:36.068  04:31:35.656  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  23:31:38.624  04:31:38.191  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  23:31:39.837  04:31:39.384  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  23:31:41.398  04:31:40.973  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 1"}
+  23:31:43.418  04:31:43.005  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+--- 15 events after (first 15)
+  23:33:06.120  04:31:45.896  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  23:33:06.120  04:31:43.005  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+  23:33:06.120  04:31:43.015  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  23:33:06.120  04:31:45.919  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  23:33:06.339  04:33:05.694  DEBUGMenu                  MainMenu                   {"actionType":"DebugMenuStateChanged","isOpened":false}
+  23:33:06.339  04:33:05.857  gameStartEvent             MainMenu                   {"":true}
+  23:33:06.339  04:33:05.856  gameWindowFocusEvent       MainMenu                   {"":true}
+  23:37:23.246  04:37:22.177  DEBUGMenu                  MainMenu                   {"actionType":"DebugMenuStateChanged","isOpened":false}
+  23:37:23.364  04:37:22.343  gameStartEvent             MainMenu                   {"":true}
+  23:37:23.364  04:37:22.343  gameWindowFocusEvent       MainMenu                   {"":true}
+  23:37:32.028  04:37:30.710  gameWindowUnfocusEvent     Transition                 {"":false}
+  23:37:35.119  04:37:34.232  gameWindowFocusEvent       Transition                 {"":true}
+  23:37:39.429  04:37:38.695  DEBUGMenu                  Unit 4 Dev                 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  23:37:45.970  04:37:43.704  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"space","Value":"pressed","actionType":"Jump"}
+  23:37:45.970  04:37:43.704  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Jump","playerOrDrone":"Player","key":"space"}
+
+################ crash 11 — 2026-10-16 08:50:05 CT — student …b56ae3 (member) — unit4 v2.8.4 build 2.8.4
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"os":"Linux x86_64","platform":"UnityWebGL","memory":4096,"resolution":{"width":1366,"height":768},"processors":8,"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36","online":true,"jsHeapUsedMB":207,"jsHeapTotalMB":215}
+data keys: message,stack,phase,unitId,workspace,isPWA,type
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a915116:wasm-function[108544]:0x24e60da
+   
+   at wasm://wasm/0a915116:wasm-function[3309]:0x143bd9
+   
+   at wasm://wasm/0a915116:wasm-function[59793]:0x11abccc
+   
+   at wasm://wasm/0a915116:wasm-function[3347]:0x145fec
+   
+   at wasm://wasm/0a915116:wasm-function[82501]:0x170b4af
+   
+   at wasm://wasm/0a915116:wasm-function[83451]:0x171f21d
+   
+   at wasm://wasm/0a915116:wasm-function[110308]:0x259f6a8
+   
+   at invoke_iiii (blob:https://<workspace-host>/7730a607-44d9-45be-b79b-a52fdc1d18df:9:474038)
+   
+   at wasm://wasm/0a915116:wasm-function[83436]:0x171e8bd
+   
+   at wasm://wasm/0a915116:wasm-function[1942]:0xf58e4
+   
+   at wasm://wasm/0a915116:wasm-function[109965]:0x256667c
+   
+   at wasm://wasm/0a915116:wasm-function[106271]:0x24b7432
+   
+   at wasm://wasm/0a915116:wasm-function[84075]:0x1745541
+   
+   at wasm://wasm/0a915116:wasm-function[84074]:0x1745477
+   
+   at wasm://wasm/0a915116:wasm-function[104597]:0x23ea9bc
+   
+   at wasm://wasm/0a915116:wasm-function[104583]:0x23e6a91
+   
+   at wasm://wasm/0a915116:wasm-function[103961]:0x235b2a8
+   
+   at wasm://wasm/0a915116:wasm-function[105691]:0x245f4f0
+   
+   at wasm://wasm/0a915116:wasm-function[105691]:0x245f565
+   
+   at wasm://wasm/0a915116:wasm-function[110043]:0x256eaaf
+   
+   at wasm://wasm/0a915116:wasm-function[110314]:0x259f6fb
+   
+   at blob:https://<workspace-host>/7730a607-44d9-45be-b79b-a52fdc1d18df:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/7730a607-44d9-45be-b79b-a52fdc1d18df:9:23594)
+   
+   at wasm://wasm/0a915116:wasm-function[110044]:0x256ebbe
+   
+   at wasm://wasm/0a915116:wasm-function[110314]:0x259f6fb
+   
+   at browserIterationFunc (blob:https://<workspace-host>/7730a607-44d9-45be-b79b-a52fdc1d18df:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/7730a607-44d9-45be-b79b-a52fdc1d18df:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/7730a607-44d9-45be-b79b-a52fdc1d18df:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/7730a607-44d9-45be-b79b-a52fdc1d18df:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  08:49:06.049  13:49:05.551  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Interact","playerOrDrone":"Player","key":"e"}
+  08:49:07.354  13:49:06.955  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.419754,"z":-712.683,"x":1547.95667}}
+  08:49:07.948  13:49:07.544  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"upArrow"}
+  08:49:09.361  13:49:08.942  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  08:49:09.448  13:49:08.957  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":27}
+  08:49:09.448  13:49:08.950  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Garden Box 2","actionType":"Press E To Place Cameras"}
+  08:49:09.448  13:49:08.949  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueStartEvent"}
+  08:49:17.123  13:49:16.693  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"1","soilType":"None"}
+  08:49:17.365  13:49:16.967  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1550.80017,"y":-85.41668,"z":-710.114258}}
+  08:49:18.627  13:49:18.218  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueFinishEvent"}
+  08:49:18.714  13:49:18.239  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  08:49:18.714  13:49:18.234  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":29}
+  08:49:20.629  13:49:20.231  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueFinishEvent"}
+  08:49:24.538  13:49:24.136  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect super orange","objectName":"Super Orange"}
+  08:49:24.623  13:49:24.139  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  08:49:27.037  13:49:26.632  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  08:49:27.331  13:49:26.932  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.18652,"y":-85.41367,"z":-709.7455}}
+  08:49:29.104  13:49:28.688  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"downArrow","Value":"pressed"}
+  08:49:29.611  13:49:29.213  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"downArrow","Value":"pressed"}
+  08:49:30.842  13:49:30.443  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  08:49:32.592  13:49:32.192  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  08:49:35.471  13:49:35.058  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"downArrow","Value":"pressed"}
+  08:49:37.337  13:49:36.927  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1555.08215,"y":-85.41135,"z":-712.6471}}
+  08:49:37.774  13:49:37.375  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"upArrow"}
+  08:49:38.968  13:49:38.564  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  08:49:39.060  13:49:38.584  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":30}
+  08:49:39.060  13:49:38.571  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  08:49:39.060  13:49:38.572  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  08:49:43.255  13:49:42.852  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":67}
+  08:49:45.703  13:49:45.277  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  08:49:47.193  13:49:46.792  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  08:49:47.256  13:49:46.808  DialogueEvent              Unit 4 Dev                 {"nodeId":0,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  08:49:47.256  13:49:46.812  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  08:49:47.318  13:49:46.857  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":32,"dialogueEventType":"DialogueNodeEvent"}
+  08:49:47.392  13:49:46.924  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1556.44861,"y":-85.41365,"z":-710.2307}}
+  08:49:57.334  13:49:56.916  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1556.44861,"y":-85.41365,"z":-710.2307}}
+  08:49:58.340  13:49:57.940  DialogueEvent              Unit 4 Dev                 {"nodeId":33,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  08:50:01.053  13:50:00.620  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  08:50:03.294  13:50:02.880  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  08:50:05.309  13:50:04.903  DialogueEvent              Unit 4 Dev                 {"nodeId":62,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+--- 15 events after (first 15)
+  08:50:40.529  13:50:07.769  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  08:50:40.529  13:50:17.644  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  08:50:40.529  13:50:04.903  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+  08:50:40.529  13:50:18.488  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  08:50:40.529  13:50:07.773  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  08:50:40.529  13:50:04.913  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueStartEvent"}
+  08:50:40.770  13:50:40.291  gameWindowFocusEvent       MainMenu                   {"":true}
+  08:50:40.770  13:50:40.162  DEBUGMenu                  MainMenu                   {"actionType":"DebugMenuStateChanged","isOpened":false}
+  08:50:40.770  13:50:40.291  gameStartEvent             MainMenu                   {"":true}
+  08:50:49.068  13:50:48.665  DEBUGMenu                  Unit 4 Dev                 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  08:50:50.875  13:50:50.253  questEvent                 Unit 4 Dev                 {"questEventType":"questActiveEvent","questID":"39","questName":"Well, What Have We Here?"}
+  08:50:50.875  13:50:48.675  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":787.31,"y":-69.1,"z":-639.68}}
+  08:50:50.875  13:50:50.247  questEvent                 Unit 4 Dev                 {"questEventType":"questActiveEvent","questID":"41","questName":"Desert Delicacies"}
+  08:50:50.875  13:50:50.161  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  08:50:59.008  13:50:58.602  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+
+################ crash 12 — 2026-10-16 10:47:14 CT — student …b56b0a (member) — unit4 v2.8.4 build 2.8.4
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"resolution":{"width":1366,"height":768},"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36","jsHeapUsedMB":214,"os":"Linux x86_64","online":true,"jsHeapTotalMB":216,"platform":"UnityWebGL","processors":8,"memory":4096}
+data keys: isPWA,type,message,stack,phase,unitId,workspace
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a915116:wasm-function[108544]:0x24e60da
+   
+   at wasm://wasm/0a915116:wasm-function[3309]:0x143bd9
+   
+   at wasm://wasm/0a915116:wasm-function[59793]:0x11abccc
+   
+   at wasm://wasm/0a915116:wasm-function[3347]:0x145fec
+   
+   at wasm://wasm/0a915116:wasm-function[82501]:0x170b4af
+   
+   at wasm://wasm/0a915116:wasm-function[83451]:0x171f21d
+   
+   at wasm://wasm/0a915116:wasm-function[110308]:0x259f6a8
+   
+   at invoke_iiii (blob:https://<workspace-host>/f0bdbe64-96dd-4e7e-93f4-9caea70e5af2:9:474038)
+   
+   at wasm://wasm/0a915116:wasm-function[83436]:0x171e8bd
+   
+   at wasm://wasm/0a915116:wasm-function[1942]:0xf58e4
+   
+   at wasm://wasm/0a915116:wasm-function[109965]:0x256667c
+   
+   at wasm://wasm/0a915116:wasm-function[106271]:0x24b7432
+   
+   at wasm://wasm/0a915116:wasm-function[84075]:0x1745541
+   
+   at wasm://wasm/0a915116:wasm-function[84074]:0x1745477
+   
+   at wasm://wasm/0a915116:wasm-function[104597]:0x23ea9bc
+   
+   at wasm://wasm/0a915116:wasm-function[104583]:0x23e6a91
+   
+   at wasm://wasm/0a915116:wasm-function[103961]:0x235b2a8
+   
+   at wasm://wasm/0a915116:wasm-function[105691]:0x245f4f0
+   
+   at wasm://wasm/0a915116:wasm-function[105691]:0x245f565
+   
+   at wasm://wasm/0a915116:wasm-function[110043]:0x256eaaf
+   
+   at wasm://wasm/0a915116:wasm-function[110314]:0x259f6fb
+   
+   at blob:https://<workspace-host>/f0bdbe64-96dd-4e7e-93f4-9caea70e5af2:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/f0bdbe64-96dd-4e7e-93f4-9caea70e5af2:9:23594)
+   
+   at wasm://wasm/0a915116:wasm-function[110044]:0x256ebbe
+   
+   at wasm://wasm/0a915116:wasm-function[110314]:0x259f6fb
+   
+   at browserIterationFunc (blob:https://<workspace-host>/f0bdbe64-96dd-4e7e-93f4-9caea70e5af2:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/f0bdbe64-96dd-4e7e-93f4-9caea70e5af2:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/f0bdbe64-96dd-4e7e-93f4-9caea70e5af2:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/f0bdbe64-96dd-4e7e-93f4-9caea70e5af2:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  10:46:17.776  15:46:17.567  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:46:20.195  15:46:19.988  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"upArrow"}
+  10:46:20.555  15:46:20.361  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  10:46:21.771  15:46:21.568  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"upArrow","Value":"pressed","actionType":"Move"}
+  10:46:23.088  15:46:22.882  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect mega turnips","objectName":"Mega Turnips"}
+  10:46:23.194  15:46:22.886  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"e","Value":"pressed"}
+  10:46:24.188  15:46:23.993  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.41979,"z":-714.7247,"x":1547.55957}}
+  10:46:28.032  15:46:27.765  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  10:46:28.872  15:46:28.668  InputEvent                 Unit 4 Dev                 {"key":"upArrow","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  10:46:33.379  15:46:33.180  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  10:46:33.472  15:46:33.192  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 2"}
+  10:46:33.472  15:46:33.198  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":27}
+  10:46:33.472  15:46:33.191  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:46:34.626  15:46:33.993  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1552.25317,"y":-85.41506,"z":-708.974548}}
+  10:46:40.275  15:46:40.080  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":66}
+  10:46:42.455  15:46:42.237  TerasGardenBox             Unit 4 Dev                 {"boxId":"1","soilType":"None","actionType":"cameraPlaced"}
+  10:46:43.975  15:46:43.776  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:46:44.034  15:46:43.792  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":29,"dialogueEventType":"DialogueNodeEvent"}
+  10:46:44.034  15:46:43.798  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:46:44.198  15:46:43.998  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1552.25317,"y":-85.41506,"z":-708.974548}}
+  10:46:45.760  15:46:45.567  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueFinishEvent"}
+  10:46:50.395  15:46:50.188  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect super orange","objectName":"Super Orange"}
+  10:46:50.490  15:46:50.192  InputEvent                 Unit 4 Dev                 {"key":"e","Value":"pressed","actionType":"Interact","playerOrDrone":"Player"}
+  10:46:53.293  15:46:53.095  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  10:46:53.376  15:46:53.103  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  10:46:53.376  15:46:53.112  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":30}
+  10:46:53.376  15:46:53.102  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:46:54.364  15:46:54.001  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1552.25317,"y":-85.41506,"z":-708.974548}}
+  10:46:58.241  15:46:58.044  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":67}
+  10:46:59.404  15:46:59.205  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  10:47:00.945  15:47:00.712  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:47:01.026  15:47:00.732  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:47:01.026  15:47:00.729  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  10:47:01.026  15:47:00.738  DialogueEvent              Unit 4 Dev                 {"nodeId":32,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  10:47:04.225  15:47:04.024  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1552.25317,"y":-85.41506,"z":-708.974548}}
+  10:47:06.953  15:47:06.735  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":33}
+  10:47:09.209  15:47:09.002  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  10:47:12.467  15:47:12.262  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 1"}
+  10:47:14.203  15:47:14.004  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1552.25317,"y":-85.41506,"z":-708.974548}}
+  10:47:14.458  15:47:14.265  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+--- 15 events after (first 15)
+  10:47:41.637  15:47:14.272  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  10:47:41.637  15:47:16.172  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  10:47:41.637  15:47:16.177  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  10:47:41.637  15:47:21.86Z  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  10:47:41.637  15:47:22.59Z  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  10:47:41.637  15:47:23.419  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  10:47:41.637  15:47:24.24Z  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  10:47:41.637  15:47:14.265  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+  10:47:41.883  15:47:41.605  gameWindowFocusEvent       MainMenu                   {"":true}
+  10:47:41.883  15:47:41.605  gameStartEvent             MainMenu                   {"":true}
+  10:47:41.883  15:47:41.472  DEBUGMenu                  MainMenu                   {"actionType":"DebugMenuStateChanged","isOpened":false}
+  10:47:50.599  15:47:50.404  DEBUGMenu                  Unit 4 Dev                 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  10:47:52.911  15:47:50.416  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":787.31,"y":-69.1,"z":-639.68}}
+  10:47:52.911  15:47:51.964  questEvent                 Unit 4 Dev                 {"questEventType":"questActiveEvent","questID":"41","questName":"Desert Delicacies"}
+  10:47:55.798  15:47:55.596  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+
+################ crash 13 — 2026-10-20 12:47:32 CT — student …b56bdd (member) — unit4 v2.8.9 build 2.8.9
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"memory":4096,"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36","online":true,"jsHeapUsedMB":216,"jsHeapTotalMB":221,"os":"Linux x86_64","platform":"UnityWebGL","processors":2,"resolution":{"width":1517,"height":852}}
+data keys: type,message,stack,phase,unitId,workspace,isPWA
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a91eee2:wasm-function[108552]:0x24e867a
+   
+   at wasm://wasm/0a91eee2:wasm-function[3309]:0x143c0a
+   
+   at wasm://wasm/0a91eee2:wasm-function[59792]:0x11ada09
+   
+   at wasm://wasm/0a91eee2:wasm-function[3347]:0x14601d
+   
+   at wasm://wasm/0a91eee2:wasm-function[82509]:0x170da4f
+   
+   at wasm://wasm/0a91eee2:wasm-function[83459]:0x17217bd
+   
+   at wasm://wasm/0a91eee2:wasm-function[110316]:0x25a1c48
+   
+   at invoke_iiii (blob:https://<workspace-host>/def9f67b-02df-45c5-b197-62c08a6d2ca5:9:474038)
+   
+   at wasm://wasm/0a91eee2:wasm-function[83444]:0x1720e5d
+   
+   at wasm://wasm/0a91eee2:wasm-function[1942]:0xf5915
+   
+   at wasm://wasm/0a91eee2:wasm-function[109973]:0x2568c1c
+   
+   at wasm://wasm/0a91eee2:wasm-function[106279]:0x24b99d2
+   
+   at wasm://wasm/0a91eee2:wasm-function[84083]:0x1747ae1
+   
+   at wasm://wasm/0a91eee2:wasm-function[84082]:0x1747a17
+   
+   at wasm://wasm/0a91eee2:wasm-function[104605]:0x23ecf5c
+   
+   at wasm://wasm/0a91eee2:wasm-function[104591]:0x23e9031
+   
+   at wasm://wasm/0a91eee2:wasm-function[103969]:0x235d848
+   
+   at wasm://wasm/0a91eee2:wasm-function[105699]:0x2461a90
+   
+   at wasm://wasm/0a91eee2:wasm-function[105699]:0x2461b05
+   
+   at wasm://wasm/0a91eee2:wasm-function[110051]:0x257104f
+   
+   at wasm://wasm/0a91eee2:wasm-function[110322]:0x25a1c9b
+   
+   at blob:https://<workspace-host>/def9f67b-02df-45c5-b197-62c08a6d2ca5:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/def9f67b-02df-45c5-b197-62c08a6d2ca5:9:23594)
+   
+   at wasm://wasm/0a91eee2:wasm-function[110052]:0x257115e
+   
+   at wasm://wasm/0a91eee2:wasm-function[110322]:0x25a1c9b
+   
+   at browserIterationFunc (blob:https://<workspace-host>/def9f67b-02df-45c5-b197-62c08a6d2ca5:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/def9f67b-02df-45c5-b197-62c08a6d2ca5:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/def9f67b-02df-45c5-b197-62c08a6d2ca5:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/def9f67b-02df-45c5-b197-62c08a6d2ca5:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  12:46:23.950  17:46:23.464  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  12:46:26.428  17:46:25.956  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  12:46:26.555  17:46:25.971  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":28}
+  12:46:26.555  17:46:25.964  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 2"}
+  12:46:26.555  17:46:25.963  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:46:28.492  17:46:28.016  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.37329,"y":-85.41366,"z":-708.769653}}
+  12:46:35.191  17:46:34.702  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":66}
+  12:46:36.184  17:46:35.716  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"1","soilType":"None"}
+  12:46:37.705  17:46:37.234  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:46:37.789  17:46:37.254  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:46:37.789  17:46:37.250  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":29,"dialogueEventType":"DialogueNodeEvent"}
+  12:46:38.468  17:46:37.998  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.37329,"y":-85.41366,"z":-708.769653}}
+  12:46:40.370  17:46:39.888  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:46:43.164  17:46:42.681  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  12:46:46.616  17:46:46.148  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  12:46:48.475  17:46:47.998  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1549.21765,"y":-85.41767,"z":-714.615967}}
+  12:46:48.599  17:46:48.134  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect broccoli","objectName":"Broccoli"}
+  12:46:48.668  17:46:48.137  InputEvent                 Unit 4 Dev                 {"key":"leftButton","Value":"pressed","actionType":"Interact","playerOrDrone":"Player"}
+  12:46:51.840  17:46:51.365  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"upArrow","Value":"pressed"}
+  12:46:54.594  17:46:54.123  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  12:46:54.705  17:46:54.152  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":31}
+  12:46:54.705  17:46:54.141  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Garden Box 3","actionType":"Press E To Place Cameras"}
+  12:46:54.705  17:46:54.141  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:46:58.500  17:46:58.015  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1556.02625,"y":-85.41414,"z":-709.0734}}
+  12:47:02.022  17:47:01.549  TerasGardenBox             Unit 4 Dev                 {"actionType":"","boxId":"2","soilType":"Gravel"}
+  12:47:04.208  17:47:03.730  TerasGardenBox             Unit 4 Dev                 {"boxId":"2","soilType":"Gravel","actionType":"cameraPlaced"}
+  12:47:05.717  17:47:05.248  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:47:05.799  17:47:05.299  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":32}
+  12:47:05.799  17:47:05.275  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:47:05.799  17:47:05.272  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  12:47:08.479  17:47:08.014  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1556.02625,"y":-85.41414,"z":-709.0734}}
+  12:47:12.603  17:47:12.132  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":33}
+  12:47:15.138  17:47:14.668  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:47:18.504  17:47:18.031  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1556.02625,"y":-85.41414,"z":-709.0734}}
+  12:47:18.587  17:47:18.044  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  12:47:20.542  17:47:20.068  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":62,"dialogueEventType":"DialogueNodeEvent"}
+  12:47:20.627  17:47:20.073  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueStartEvent"}
+  12:47:28.504  17:47:28.029  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1556.02625,"y":-85.41414,"z":-709.0734}}
+  12:47:28.597  17:47:28.087  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:47:30.410  17:47:29.934  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Garden Box 2","actionType":"Press E To Place Cameras"}
+--- 15 events after (first 15)
+  12:47:34.196  17:47:33.680  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  12:48:27.759  17:47:33.69Z  gameWindowFocusEvent       Unit 4 Dev                 {"":true}
+  12:48:27.759  17:47:33.68Z  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  12:48:27.759  17:48:09.465  gameWindowUnfocusEvent     Unit 4 Dev                 {"":false}
+  12:48:27.927  17:48:27.417  gameWindowFocusEvent       MainMenu                   {"":true}
+  12:48:27.927  17:48:27.417  gameStartEvent             MainMenu                   {"":true}
+  12:48:27.927  17:48:27.324  DEBUGMenu                  MainMenu                   {"actionType":"DebugMenuStateChanged","isOpened":false}
+  12:48:34.084  17:48:33.614  DEBUGMenu                  Unit 4 Dev                 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  12:48:35.500  17:48:34.713  questEvent                 Unit 4 Dev                 {"questName":"Desert Delicacies","questEventType":"questActiveEvent","questID":"41"}
+  12:48:35.500  17:48:33.630  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":787.31,"y":-69.1,"z":-639.68}}
+  12:48:38.385  17:48:37.898  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  12:48:38.588  17:48:37.926  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":18}
+  12:48:38.588  17:48:37.912  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  12:48:44.220  17:48:43.750  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  12:48:45.282  17:48:44.810  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1549.8479,"y":-85.41795,"z":-709.9282}}
+
+################ crash 14 — 2026-10-20 14:36:02 CT — student …b56c18 (member) — unit4 v2.8.9 build 2.8.9
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"online":true,"os":"Linux x86_64","jsHeapUsedMB":216,"jsHeapTotalMB":219,"platform":"UnityWebGL","processors":2,"memory":4096,"resolution":{"width":1517,"height":852},"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36"}
+data keys: type,message,stack,phase,unitId,workspace,isPWA
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a91eee2:wasm-function[108552]:0x24e867a
+   
+   at wasm://wasm/0a91eee2:wasm-function[3309]:0x143c0a
+   
+   at wasm://wasm/0a91eee2:wasm-function[59792]:0x11ada09
+   
+   at wasm://wasm/0a91eee2:wasm-function[3347]:0x14601d
+   
+   at wasm://wasm/0a91eee2:wasm-function[82509]:0x170da4f
+   
+   at wasm://wasm/0a91eee2:wasm-function[83459]:0x17217bd
+   
+   at wasm://wasm/0a91eee2:wasm-function[110316]:0x25a1c48
+   
+   at invoke_iiii (blob:https://<workspace-host>/63a820c6-08b1-4dee-9422-aac65753736e:9:474038)
+   
+   at wasm://wasm/0a91eee2:wasm-function[83444]:0x1720e5d
+   
+   at wasm://wasm/0a91eee2:wasm-function[1942]:0xf5915
+   
+   at wasm://wasm/0a91eee2:wasm-function[109973]:0x2568c1c
+   
+   at wasm://wasm/0a91eee2:wasm-function[106279]:0x24b99d2
+   
+   at wasm://wasm/0a91eee2:wasm-function[84083]:0x1747ae1
+   
+   at wasm://wasm/0a91eee2:wasm-function[84082]:0x1747a17
+   
+   at wasm://wasm/0a91eee2:wasm-function[104605]:0x23ecf5c
+   
+   at wasm://wasm/0a91eee2:wasm-function[104591]:0x23e9031
+   
+   at wasm://wasm/0a91eee2:wasm-function[103969]:0x235d848
+   
+   at wasm://wasm/0a91eee2:wasm-function[105699]:0x2461a90
+   
+   at wasm://wasm/0a91eee2:wasm-function[105699]:0x2461b05
+   
+   at wasm://wasm/0a91eee2:wasm-function[110051]:0x257104f
+   
+   at wasm://wasm/0a91eee2:wasm-function[110322]:0x25a1c9b
+   
+   at blob:https://<workspace-host>/63a820c6-08b1-4dee-9422-aac65753736e:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/63a820c6-08b1-4dee-9422-aac65753736e:9:23594)
+   
+   at wasm://wasm/0a91eee2:wasm-function[110052]:0x257115e
+   
+   at wasm://wasm/0a91eee2:wasm-function[110322]:0x25a1c9b
+   
+   at browserIterationFunc (blob:https://<workspace-host>/63a820c6-08b1-4dee-9422-aac65753736e:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/63a820c6-08b1-4dee-9422-aac65753736e:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/63a820c6-08b1-4dee-9422-aac65753736e:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/63a820c6-08b1-4dee-9422-aac65753736e:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  14:35:12.102  19:35:11.968  InputEvent                 Unit 4 Dev                 {"key":"s","Value":"pressed","actionType":"Move","playerOrDrone":"Player"}
+  14:35:12.237  19:35:12.069  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"d","Value":"pressed"}
+  14:35:13.149  19:35:13.018  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"leftButton","Value":"pressed"}
+  14:35:13.551  19:35:13.418  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  14:35:13.853  19:35:13.723  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect broccoli","objectName":"Broccoli"}
+  14:35:13.986  19:35:13.726  InputEvent                 Unit 4 Dev                 {"key":"leftButton","Value":"pressed","actionType":"Interact","playerOrDrone":"Player"}
+  14:35:14.251  19:35:14.118  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  14:35:14.638  19:35:14.501  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  14:35:14.998  19:35:14.868  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  14:35:15.102  19:35:14.871  InputEvent                 Unit 4 Dev                 {"Value":"pressed","actionType":"Move","playerOrDrone":"Player","key":"a"}
+  14:35:15.481  19:35:15.351  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  14:35:15.716  19:35:15.581  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  14:35:15.805  19:35:15.601  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":31}
+  14:35:15.805  19:35:15.587  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  14:35:15.805  19:35:15.587  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  14:35:18.590  19:35:18.454  TerasGardenBox             Unit 4 Dev                 {"actionType":"","boxId":"2","soilType":"Gravel"}
+  14:35:19.952  19:35:19.818  TerasGardenBox             Unit 4 Dev                 {"boxId":"2","soilType":"Gravel","actionType":"cameraPlaced"}
+  14:35:21.422  19:35:21.287  PlayerPositionEvent        Unit 4 Dev                 {"position":{"z":-707.3386,"x":1553.268,"y":-85.41413}}
+  14:35:21.498  19:35:21.369  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  14:35:21.613  19:35:21.400  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":32}
+  14:35:21.613  19:35:21.393  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  14:35:21.613  19:35:21.388  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  14:35:31.408  19:35:31.269  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1553.268,"y":-85.41413,"z":-707.3386}}
+  14:35:31.725  19:35:31.572  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":33}
+  14:35:34.067  19:35:33.940  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  14:35:35.766  19:35:35.639  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 2"}
+  14:35:37.822  19:35:37.644  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+  14:35:37.946  19:35:37.653  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  14:35:41.453  19:35:41.317  PlayerPositionEvent        Unit 4 Dev                 {"position":{"z":-707.3386,"x":1553.268,"y":-85.41413}}
+  14:35:45.671  19:35:45.540  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  14:35:46.917  19:35:46.783  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"d","Value":"pressed","actionType":"Move"}
+  14:35:47.425  19:35:47.288  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  14:35:49.439  19:35:49.307  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+  14:35:49.541  19:35:49.312  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  14:35:51.424  19:35:51.285  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.4137344,"z":-709.769043,"x":1556.09485}}
+  14:35:58.139  19:35:57.989  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  14:35:59.700  19:35:59.567  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  14:36:00.693  19:36:00.540  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Garden Box 1","actionType":"Press E To Place Cameras"}
+  14:36:01.419  19:36:01.283  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1549.49512,"y":-85.41912,"z":-706.890869}}
+  14:36:02.932  19:36:02.573  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+--- 15 events after (first 15)
+  14:37:23.396  19:36:02.579  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueStartEvent"}
+  14:37:23.396  19:36:02.573  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":63}
+  14:37:23.976  19:37:23.300  DEBUGMenu                  MainMenu                   {"actionType":"DebugMenuStateChanged","isOpened":false}
+  14:37:23.976  19:37:23.775  gameWindowFocusEvent       MainMenu                   {"":true}
+  14:37:23.976  19:37:23.775  gameStartEvent             MainMenu                   {"":true}
+  14:37:32.033  19:37:31.906  DEBUGMenu                  Unit 4 Dev                 {"isOpened":false,"actionType":"DebugMenuStateChanged"}
+  14:37:34.773  19:37:34.107  questEvent                 Unit 4 Dev                 {"questEventType":"questActiveEvent","questID":"41","questName":"Desert Delicacies"}
+  14:37:34.773  19:37:34.062  InputEvent                 Unit 4 Dev                 {"actionType":"Jump","playerOrDrone":"Player","key":"space","Value":"pressed"}
+  14:37:34.773  19:37:34.063  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"space","Value":"pressed","actionType":"Jump"}
+  14:37:34.773  19:37:31.933  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":787.31,"y":-69.1,"z":-639.68}}
+  14:37:34.773  19:37:34.063  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"space","Value":"pressed","actionType":"Jump"}
+  14:37:36.456  19:37:36.280  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  14:37:37.021  19:37:36.857  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"leftButton","Value":"pressed"}
+  14:37:37.686  19:37:37.554  DialogueEvent              Unit 4 Dev                 {"nodeId":0,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  14:37:37.807  19:37:37.569  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+
+################ crash 15 — 2026-10-20 16:38:26 CT — student …b56c17 (member) — unit4 v2.8.9 build 2.8.9
+message: Uncaught RuntimeError: memory access out of bounds
+type/phase: runtime_error / running
+device: {"platform":"UnityWebGL","processors":2,"memory":4096,"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36","online":true,"jsHeapUsedMB":213,"jsHeapTotalMB":214,"os":"Linux x86_64","resolution":{"width":1920,"height":1080}}
+data keys: message,stack,phase,unitId,workspace,isPWA,type
+stack:
+RuntimeError: memory access out of bounds
+   
+   at wasm://wasm/0a91eee2:wasm-function[108552]:0x24e867a
+   
+   at wasm://wasm/0a91eee2:wasm-function[3309]:0x143c0a
+   
+   at wasm://wasm/0a91eee2:wasm-function[59792]:0x11ada09
+   
+   at wasm://wasm/0a91eee2:wasm-function[3347]:0x14601d
+   
+   at wasm://wasm/0a91eee2:wasm-function[82509]:0x170da4f
+   
+   at wasm://wasm/0a91eee2:wasm-function[83459]:0x17217bd
+   
+   at wasm://wasm/0a91eee2:wasm-function[110316]:0x25a1c48
+   
+   at invoke_iiii (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:474038)
+   
+   at wasm://wasm/0a91eee2:wasm-function[83444]:0x1720e5d
+   
+   at wasm://wasm/0a91eee2:wasm-function[1942]:0xf5915
+   
+   at wasm://wasm/0a91eee2:wasm-function[109973]:0x2568c1c
+   
+   at wasm://wasm/0a91eee2:wasm-function[106279]:0x24b99d2
+   
+   at wasm://wasm/0a91eee2:wasm-function[84083]:0x1747ae1
+   
+   at wasm://wasm/0a91eee2:wasm-function[84082]:0x1747a17
+   
+   at wasm://wasm/0a91eee2:wasm-function[104605]:0x23ecf5c
+   
+   at wasm://wasm/0a91eee2:wasm-function[104591]:0x23e9031
+   
+   at wasm://wasm/0a91eee2:wasm-function[103969]:0x235d848
+   
+   at wasm://wasm/0a91eee2:wasm-function[105699]:0x2461a90
+   
+   at wasm://wasm/0a91eee2:wasm-function[105699]:0x2461b05
+   
+   at wasm://wasm/0a91eee2:wasm-function[110051]:0x257104f
+   
+   at wasm://wasm/0a91eee2:wasm-function[110322]:0x25a1c9b
+   
+   at blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:23580
+   
+   at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:23594)
+   
+   at wasm://wasm/0a91eee2:wasm-function[110052]:0x257115e
+   
+   at wasm://wasm/0a91eee2:wasm-function[110322]:0x25a1c9b
+   
+   at browserIterationFunc (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:115768)
+   
+   at callUserCallback (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:98130)
+   
+   at Object.runIter (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:99497)
+   
+   at Browser_mainLoop_runner (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:115294)
+--- 40 events before (server time CT; game timestamp; type; scene; data)
+  16:38:00.099  21:37:58.993  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  16:38:00.374  21:37:59.136  PlayerPositionEvent        Unit 4 Dev                 {"position":{"y":-85.41622,"z":-706.8173,"x":1557.1842}}
+  16:38:00.374  21:37:59.057  TerasGardenBox             Unit 4 Dev                 {"soilType":"None","actionType":"cameraPlaced","boxId":"1"}
+  16:38:00.374  21:37:59.012  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":27}
+  16:38:00.374  21:37:59.002  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  16:38:00.374  21:37:59.003  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 2"}
+  16:38:01.707  21:38:00.602  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  16:38:01.865  21:38:00.625  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":29}
+  16:38:01.865  21:38:00.630  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  16:38:03.285  21:38:02.177  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  16:38:03.862  21:38:02.501  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"leftButton","Value":"pressed"}
+  16:38:04.672  21:38:03.568  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  16:38:05.108  21:38:03.986  InputEvent                 Unit 4 Dev                 {"playerOrDrone":"Player","key":"a","Value":"pressed","actionType":"Move"}
+  16:38:05.372  21:38:04.256  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  16:38:05.532  21:38:04.433  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  16:38:06.248  21:38:05.150  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"a","Value":"pressed"}
+  16:38:07.084  21:38:05.983  ObjectInterEvent           Unit 4 Dev                 {"objectName":"Super Orange","actionType":"Press E to collect super orange"}
+  16:38:07.136  21:38:05.988  InputEvent                 Unit 4 Dev                 {"key":"leftButton","Value":"pressed","actionType":"Interact","playerOrDrone":"Player"}
+  16:38:07.864  21:38:06.750  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"s","Value":"pressed"}
+  16:38:08.476  21:38:07.368  InputEvent                 Unit 4 Dev                 {"actionType":"Move","playerOrDrone":"Player","key":"w","Value":"pressed"}
+  16:38:09.456  21:38:08.370  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":0}
+  16:38:09.588  21:38:08.384  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  16:38:09.588  21:38:08.405  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":30,"dialogueEventType":"DialogueNodeEvent"}
+  16:38:09.588  21:38:08.385  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  16:38:10.260  21:38:09.150  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1554.25024,"y":-85.4119,"z":-711.426636}}
+  16:38:11.184  21:38:10.086  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  16:38:11.652  21:38:10.552  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  16:38:11.772  21:38:10.674  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  16:38:11.904  21:38:10.720  TerasGardenBox             Unit 4 Dev                 {"soilType":"None","actionType":"cameraPlaced","boxId":"2"}
+  16:38:12.059  21:38:10.892  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  16:38:12.213  21:38:11.039  TerasGardenBox             Unit 4 Dev                 {"actionType":"cameraPlaced","boxId":"2","soilType":"None"}
+  16:38:12.731  21:38:11.610  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueFinishEvent"}
+  16:38:12.832  21:38:11.644  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":0,"dialogueEventType":"DialogueNodeEvent"}
+  16:38:12.832  21:38:11.657  DialogueEvent              Unit 4 Dev                 {"nodeId":32,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  16:38:12.832  21:38:11.649  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"dialogueEventType":"DialogueStartEvent"}
+  16:38:20.256  21:38:19.136  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1554.25024,"y":-85.41191,"z":-711.426636}}
+  16:38:20.427  21:38:19.249  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":33}
+  16:38:22.677  21:38:21.558  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueFinishEvent","conversationId":92}
+  16:38:24.291  21:38:23.191  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E To Place Cameras","objectName":"Garden Box 3"}
+  16:38:26.358  21:38:25.229  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":62}
+--- 15 events after (first 15)
+  16:38:45.300  21:38:25.242  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  16:38:45.300  21:38:25.229  DialogueEvent              Unit 4 Dev                 {"nodeId":62,"dialogueEventType":"DialogueNodeEvent","conversationId":92}
+  16:38:45.400  21:38:44.264  gameWindowFocusEvent       MainMenu                   {"":true}
+  16:38:45.400  21:38:44.264  gameStartEvent             MainMenu                   {"":true}
+  16:38:45.400  21:38:44.219  DEBUGMenu                  MainMenu                   {"actionType":"DebugMenuStateChanged","isOpened":false}
+  16:38:52.542  21:38:51.442  DEBUGMenu                  Unit 4 Dev                 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  16:38:53.934  21:38:51.461  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":787.31,"y":-69.1,"z":-639.68}}
+  16:38:53.934  21:38:52.525  questEvent                 Unit 4 Dev                 {"questName":"Desert Delicacies","questEventType":"questActiveEvent","questID":"41"}
+  16:38:59.914  21:38:58.800  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"leftButton","Value":"pressed"}
+  16:39:00.367  21:38:59.103  InputEvent                 Unit 4 Dev                 {"actionType":"Interact","playerOrDrone":"Player","key":"leftButton","Value":"pressed"}
+  16:39:04.079  21:39:02.980  DialogueEvent              Unit 4 Dev                 {"conversationId":92,"nodeId":0,"dialogueEventType":"DialogueNodeEvent"}
+  16:39:04.266  21:39:03.016  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueNodeEvent","conversationId":92,"nodeId":19}
+  16:39:04.266  21:39:03.002  ObjectInterEvent           Unit 4 Dev                 {"actionType":"Press E to collect cameras","objectName":"Cameras"}
+  16:39:04.266  21:39:03.000  DialogueEvent              Unit 4 Dev                 {"dialogueEventType":"DialogueStartEvent","conversationId":92}
+  16:39:05.647  21:39:04.527  PlayerPositionEvent        Unit 4 Dev                 {"position":{"x":1549.8623,"y":-85.4169,"z":-714.3442}}
+
+################ TerasGardenBox events since 09-14 by actionType / soilType
+   442 {"a":"","s":"Sand"}
+   400 {"a":"","s":"Clay"}
+   322 {"a":"","s":"Gravel"}
+   285 {"a":"cameraPlaced","s":"Sand"}
+   269 {"a":"cameraPlaced","s":"Clay"}
+   248 {"a":"cameraPlaced","s":"Gravel"}
+   213 {"a":"cameraPlaced","s":"None"}
+
+################ ObjectInterEvent Garden Box actionTypes since 09-14
+   624 Press E To Place Cameras @ Garden Box 1
+   589 Press E To Place Cameras @ Garden Box 3
+   533 Press E To Place Cameras @ Garden Box 2
+
+################ sample full documents (one crash event, one TerasGardenBox, one Garden Box ObjectInterEvent)
+{"_id":"…eea185","game":"mhs","user_id":"…b56c17","eventType":"crash","version":"2.8.9","data":{"message":"Uncaught RuntimeError: memory access out of bounds","stack":"RuntimeError: memory access out of bounds\n    at wasm://wasm/0a91eee2:wasm-function[108552]:0x24e867a\n    at wasm://wasm/0a91eee2:wasm-function[3309]:0x143c0a\n    at wasm://wasm/0a91eee2:wasm-function[59792]:0x11ada09\n    at wasm://wasm/0a91eee2:wasm-function[3347]:0x14601d\n    at wasm://wasm/0a91eee2:wasm-function[82509]:0x170da4f\n    at wasm://wasm/0a91eee2:wasm-function[83459]:0x17217bd\n    at wasm://wasm/0a91eee2:wasm-function[110316]:0x25a1c48\n    at invoke_iiii (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:474038)\n    at wasm://wasm/0a91eee2:wasm-function[83444]:0x1720e5d\n    at wasm://wasm/0a91eee2:wasm-function[1942]:0xf5915\n    at wasm://wasm/0a91eee2:wasm-function[109973]:0x2568c1c\n    at wasm://wasm/0a91eee2:wasm-function[106279]:0x24b99d2\n    at wasm://wasm/0a91eee2:wasm-function[84083]:0x1747ae1\n    at wasm://wasm/0a91eee2:wasm-function[84082]:0x1747a17\n    at wasm://wasm/0a91eee2:wasm-function[104605]:0x23ecf5c\n    at wasm://wasm/0a91eee2:wasm-function[104591]:0x23e9031\n    at wasm://wasm/0a91eee2:wasm-function[103969]:0x235d848\n    at wasm://wasm/0a91eee2:wasm-function[105699]:0x2461a90\n    at wasm://wasm/0a91eee2:wasm-function[105699]:0x2461b05\n    at wasm://wasm/0a91eee2:wasm-function[110051]:0x257104f\n    at wasm://wasm/0a91eee2:wasm-function[110322]:0x25a1c9b\n    at blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:23580\n    at _JS_CallAsLongAsNoExceptionsSeen (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:23594)\n    at wasm://wasm/0a91eee2:wasm-function[110052]:0x257115e\n    at wasm://wasm/0a91eee2:wasm-function[110322]:0x25a1c9b\n    at browserIterationFunc (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:115768)\n    at callUserCallback (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:98130)\n    at Object.runIter (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:99497)\n    at Browser_mainLoop_runner (blob:https://<workspace-host>/86a0403a-6aa7-41b8-b740-890a5f48ed44:9:115294)","phase":"running","unitId":"unit4","workspace":"mhs","isPWA":true,"type":"runtime_error"},"device":{"platform":"UnityWebGL","processors":2,"memory":4096,"userAgent":"Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36","online":true,"jsHeapUsedMB":213,"jsHeapTotalMB":214,"os":"Linux x86_64","resolution":{"width":1920,"height":1080}},"serverTimestamp":"2026-10-20T21:38:26.411Z"}
+{"_id":"…451b21","timestamp":"2026-09-16T01:54:32.2810000Z","device":{"platform":"UnityWebGL","memory":158,"gdName":"ANGLE (Intel, Vulkan 1.3.289 (Intel(R) UHD Graphics (JSL) (0x00004E55)), Intel open-source Mesa driver)","gdApiType":"OpenGLES3","os":"Unknown OS Unknown OS Version","processors":1,"gMemory":512,"resolution":{"width":1366,"height":768,"refreshRate":{"numerator":60,"denominator":1,"value":60}},"dpi":96},"serverTimestamp":"2026-09-16T01:54:33.360Z","game":"mhs","user_id":"…2095fb","eventType":"TerasGardenBox","data":{"actionType":"","boxId":"0","soilType":"Gravel"},"version":"20260914-","sceneName":"Unit 4 Dev"}
+{"_id":"…451b0f","timestamp":"2026-09-16T01:53:56.6110000Z","eventType":"ObjectInterEvent","device":{"platform":"UnityWebGL","processors":1,"memory":158,"gdName":"ANGLE (Intel, Vulkan 1.3.289 (Intel(R) UHD Graphics (JSL) (0x00004E55)), Intel open-source Mesa driver)","gMemory":512,"gdApiType":"OpenGLES3","os":"Unknown OS Unknown OS Version","resolution":{"refreshRate":{"denominator":1,"value":60,"numerator":60},"width":1366,"height":768},"dpi":96},"serverTimestamp":"2026-09-16T01:53:57.983Z","game":"mhs","user_id":"…2095fb","version":"20260914-","data":{"actionType":"Press E To Place Cameras","objectName":"Garden Box 1"},"sceneName":"Unit 4 Dev"}

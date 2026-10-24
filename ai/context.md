@@ -58,6 +58,12 @@ mhs-updates/
 │   └── Game-Code/
 │       └── Systems/
 │           └── Logging/GameLogger.cs            # Drop-in (bounded cache, no wedging, batch sends)
+├── unit4-gardenbox-crash-102326/             # Dated package 7: Unit 4 "memory access out of bounds" at the garden boxes (investigation; fix pending)
+│   ├── README.md                                # Start here for the next session
+│   ├── 01-evidence.md                           # Production traces, rates, stacks
+│   ├── 02-hypothesis-and-plan.md                # Code path, repro, fix options, hand-off format
+│   ├── queries/unit4_crash_context.js           # Read-only query that produced data/
+│   └── data/unit4_crash_context.out
 └── dale-working-docs/                           # (Internal) working notes during development
     └── build-automation-slider-settings-save-051226/
 ```

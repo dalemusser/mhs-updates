@@ -62,6 +62,22 @@ of its README.
 
 ## Updates in this repository
 
+### `unit4-gardenbox-crash-102326/` — 2026-10-23 (investigation, fix pending)
+
+The Unit 4 crash students have been hitting since the September builds
+("Uncaught RuntimeError: memory access out of bounds", 14 of the 15
+runtime-error crashes recorded since 2026-09-14). The production traces
+place every one at Tera's garden boxes: re-opening a box after all three
+cameras are placed, when that box's camera was placed without choosing a
+soil position. The package holds the evidence (`01-evidence.md`, the raw
+traces in `data/`), the code path that fits every trace and why a C#
+index error becomes a WebAssembly trap in this build (`02-hypothesis-and-plan.md`:
+`GardenBoxesUIController.AnimateWateringPlant` indexing
+`_inactiveCameraImagesToFlash[-1]` under *Explicitly Thrown Exceptions
+Only*), the editor repro, the fix options and the hand-off format. The
+next session verifies, fixes, builds and adds `03-for-the-game-dev.md`
+plus the drop-in file. Start with the folder's `README.md`.
+
 ### `gamelogger-fix-093026/` — 2026-09-30
 
 The fix for every known defect in the game's logging, made in the
