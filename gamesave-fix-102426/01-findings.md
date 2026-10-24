@@ -307,8 +307,17 @@ alone when the service confirms the same save; the service's newer save winning 
 copy; one load request per launch shared by the menu and START GAME; an identical repeat of a
 checkpoint not sent again.
 
-**Dev site, Unit 1 build of the fixed files:** see `03-for-the-game-dev.md` § "The check on a
-build" for the recipe and the record of the run.
+**Dev site, Unit 1 builds of the fixed files** (`20261024-savefix1-SaveFixTest`, unit1 v2.9.5,
+before the review changes; `20261024-savefix2-SaveFixTest`, unit1 v2.9.6, the delivered files;
+neither active): the record is the last row of the verification table in `03-for-the-game-dev.md`.
+In short: one load per launch; a real checkpoint save with `mhs_meta` on the service; a blocked
+save host at a checkpoint gives the countdown status with attempts at 5, 10, 20, 40 s while play
+goes on; a save left unsent across a reload is found at the next launch and checked against the
+service's newest before anything is sent; a blocked save host at START GAME keeps the player at
+the main menu with the countdown (attempts at 3, 6, 12, 24, 30 s) and never starts the unit over,
+and resumes at the saved quest when the host returns; with a copy on the device the game resumes
+from it after the third failed attempt and keeps asking; an HTML page on the load is a retried
+failure, not "no saves". The refused key and the transition gate rest on the editor tests.
 
 ## 7. Proposals for the save service (not in this round; decision 4)
 
@@ -348,7 +357,7 @@ build" for the recipe and the record of the run.
   unreachable the unit transition waits for ever instead of five seconds. One line to change (a
   one-second time gap); the patched file is in `Game-Code/Systems/Logging/` as an optional drop-in.
 - **Dead code with the old key:** `Systems/Logging/LogManager.cs` (the logger before `GameLogger`,
-  with `JWTToken = "LEARN_FAST"` and the legacy `/logs` URL) and `Save Load System/SaveLoadManager.cs`
+  with the old key as its `JWTToken` constant and the legacy `/logs` URL) and `Save Load System/SaveLoadManager.cs`
   (entirely commented out) are still compiled into every build. Nothing uses them; deleting both
   removes the last copies of the old key from the game's builds.
 - **Unit vs save** (§3.5, decision 5): a save holds one scene; StrataHub's "Set current" to an

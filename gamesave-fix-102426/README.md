@@ -1,6 +1,6 @@
 # The game's saving — review and fix
 
-**Date opened:** 2026-10-24. **Fix written and verified in the editor:** 2026-10-24 (version 1.0).
+**Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5) and `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, the delivered files), not active for students.
 **Start with `03-for-the-game-dev.md`**: which three files to replace, how to build and hand the
 build back, what students will see, and the background on what each change does. `01-findings.md`
 holds the production evidence and each defect's verdict; `00-plan.md` is the brief the work
