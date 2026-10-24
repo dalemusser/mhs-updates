@@ -62,21 +62,27 @@ of its README.
 
 ## Updates in this repository
 
-### `unit4-gardenbox-crash-102326/` — 2026-10-23 (investigation, fix pending)
+### `unit4-gardenbox-crash-102326/` — 2026-10-23
 
 The Unit 4 crash students have been hitting since the September builds
 ("Uncaught RuntimeError: memory access out of bounds", 14 of the 15
-runtime-error crashes recorded since 2026-09-14). The production traces
-place every one at Tera's garden boxes: re-opening a box after all three
+runtime-error crashes recorded since 2026-09-14, about one student in ten
+who reaches Tera's garden boxes). Re-opening a garden box after all three
 cameras are placed, when that box's camera was placed without choosing a
-soil position. The package holds the evidence (`01-evidence.md`, the raw
-traces in `data/`), the code path that fits every trace and why a C#
-index error becomes a WebAssembly trap in this build (`02-hypothesis-and-plan.md`:
-`GardenBoxesUIController.AnimateWateringPlant` indexing
-`_inactiveCameraImagesToFlash[-1]` under *Explicitly Thrown Exceptions
-Only*), the editor repro, the fix options and the hand-off format. The
-next session verifies, fixes, builds and adds `03-for-the-game-dev.md`
-plus the drop-in file. Start with the folder's `README.md`.
+soil position, makes `GardenBoxesUIController.AnimateWateringPlant` index
+`_inactiveCameraImagesToFlash[-1]`; under the build's *Explicitly Thrown
+Exceptions Only* setting that is a WebAssembly trap, not an exception.
+Confirmed in the editor by driving the controller through the students'
+sequence on the prefab. Two files change
+(`Game-Code/Mini-games/Glyph Games/Teras Garden Boxes/GardenBoxesUIController.cs`
+and `GardenBoxesEventHelper.cs`) plus one reference in
+`TerasGardenBoxesUI.prefab`: the indices in the animation are guarded, the
+Place camera button is enabled only once a soil position is chosen and
+`PlaceCamera()` refuses a placement without one, and the `Dialogue Canvas`
+lookups are null-checked. Start with `03-for-the-game-dev.md`;
+`01-evidence.md` and `data/` hold the production traces,
+`02-hypothesis-and-plan.md` the analysis, `tools/` the PlayMode tests that
+reproduce the crash on the old file and pass on the new one.
 
 ### `gamelogger-fix-093026/` — 2026-09-30
 

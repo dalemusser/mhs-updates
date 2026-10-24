@@ -58,8 +58,11 @@ mhs-updates/
 │   └── Game-Code/
 │       └── Systems/
 │           └── Logging/GameLogger.cs            # Drop-in (bounded cache, no wedging, batch sends)
-├── unit4-gardenbox-crash-102326/             # Dated package 7: Unit 4 "memory access out of bounds" at the garden boxes (investigation; fix pending)
-│   ├── README.md                                # Start here for the next session
+├── unit4-gardenbox-crash-102326/             # Dated package 7: Unit 4 "memory access out of bounds" at the garden boxes (fixed 2026-10-23)
+│   ├── README.md                                # Folder overview
+│   ├── 03-for-the-game-dev.md                   # Start here: two files, one prefab reference, build + hand-over, background
+│   ├── Game-Code/Mini-games/Glyph Games/Teras Garden Boxes/   # GardenBoxesUIController.cs, GardenBoxesEventHelper.cs (drop-ins)
+│   ├── tools/                                   # PlayMode repro tests + prefab YAML helper + how to run
 │   ├── 01-evidence.md                           # Production traces, rates, stacks
 │   ├── 02-hypothesis-and-plan.md                # Code path, repro, fix options, hand-off format
 │   ├── queries/unit4_crash_context.js           # Read-only query that produced data/
