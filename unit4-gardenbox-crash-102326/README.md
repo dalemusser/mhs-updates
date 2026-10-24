@@ -1,6 +1,6 @@
 # Unit 4 crash at Tera's garden boxes — "memory access out of bounds"
 
-**Date opened:** 2026-10-23. **Fix written and verified in the editor:** 2026-10-23/24.
+**Date opened:** 2026-10-23. **Fix written and verified in the editor:** 2026-10-23. **Test build on the dev site:** collection `20261023-gardenbox-GardenBoxFixTest` (unit4 v2.9.2), not active for students.
 **Start with `03-for-the-game-dev.md`**: which two files to replace, the one prefab reference to
 assign, how to build and hand the build back, and the background on what each change does.
 
