@@ -659,7 +659,7 @@
 2026-10 | /api/state/load | 'user_id' must be a 24-character lowercase hex string | 4 | 50..50 B
 
 === api_stats / daily_stats shape ===
-api_stats: {"_id":"6adc3589a03c3baf1bd923f6","bucket":"2026-10-24T04:00:00.000Z","bucket_duration":"1h0m0s","stat_type":"state_load","max_ms":{"low":8,"high":0,"unsigned":false},"min_ms":{"low":7,"high":0,"unsigned":false},"requests":2,"total_ms":{"low":15,"high":0,"unsigned":false},"updated_at":"2026-10-24T04:35:45.678Z"}
+api_stats: {"_id":"…d923f6","bucket":"2026-10-24T04:00:00.000Z","bucket_duration":"1h0m0s","stat_type":"state_load","max_ms":{"low":8,"high":0,"unsigned":false},"min_ms":{"low":7,"high":0,"unsigned":false},"requests":2,"total_ms":{"low":15,"high":0,"unsigned":false},"updated_at":"2026-10-24T04:35:45.678Z"}
 api_stats count: 7038
 daily_stats: empty
 daily_stats count: 0

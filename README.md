@@ -62,23 +62,30 @@ of its README.
 
 ## Updates in this repository
 
-### `gamesave-fix-102426/` — 2026-10-24 (investigation, fix pending)
+### `gamesave-fix-102426/` — 2026-10-24
 
-The game's saving reviewed the way its logging was. The logging fix of
-2026-09-30 found seven defects in the logger; reading the save code
-alongside it showed the same design with none of the hardening: one
-request per checkpoint with no timeout and no retry (a failed save is a
-toast and the progress since the previous checkpoint is lost on reload),
-a failed load at launch treated as "no save" (the unit starts over, and
-the next checkpoint saves the fresh start over the real progress), the
-unit transition waiting on the save flag with no cap, the auth header
-printed to the browser console, unguarded JSON parsing of the responses,
-and the old API key as a fallback. The package holds the brief for the
-session that does the analysis, the fix, the proof on the dev site and the
-hand-off (`00-plan.md`: what is known, the code map, the defects to check
-one by one, the evidence to gather read-only, reproduction on the dev
-site, the rules the fix must follow, delivery, open questions). Start with
-the folder's `README.md`.
+The game's saving reviewed the way its logging was, and fixed. The game
+saved through one request per checkpoint with no timeout and no retry (a
+failed save was a toast and the progress since the previous checkpoint was
+lost), treated a failed load at launch as "no save" (the unit started over
+and the next checkpoint wrote the fresh start over the real progress on the
+server, seen in production), waited on the save flag with no cap at the unit
+transition, printed the bearer value to the browser console on every launch,
+parsed responses unguarded, and carried the old API key as a built-in
+fallback. Three files change (`Game-Code/Systems/Save Load System/GameSaveManager.cs`,
+`CustomSavers/DatabaseSaver.cs`, `SettingsSaveManager.cs`): saves and loads
+are retried for ever with backoff and a status line (reason, countdown,
+attempt); the newest save is kept on the device and sent at the next launch
+when it could not go out; only the service's explicit "no saves" starts a
+new game, and while the service is unreachable the game plays on from the
+device copy; identity and configuration are waited for; requests time out;
+the transition waits at most five seconds; the same checkpoint raised twice
+sends one request; nothing secret is printed. The save service is unchanged.
+Start with `03-for-the-game-dev.md`; `01-findings.md` has the production
+evidence (volumes, ledger, save sizes, duplicate saves, progress going
+backwards, the old key) and each defect's verdict, `tools/` the sixteen
+PlayMode tests with their fake save service and the browser recipe,
+`queries/` and `data/` the read-only queries and their redacted outputs.
 
 ### `unit4-gardenbox-crash-102326/` — 2026-10-23
 

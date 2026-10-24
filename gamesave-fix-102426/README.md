@@ -1,11 +1,10 @@
 # The game's saving — review and fix
 
-**Date opened:** 2026-10-24
-**Status:** INVESTIGATION PACKAGE, nothing changed in the game yet. The brief (`00-plan.md`) holds
-what is already known about the save code from the logging work and the bridge retrospective, the
-code map, the defects to look for (the logger's defects, one by one, applied to saving), how to
-gather the production evidence, how to reproduce on the dev site, the rules the fix must follow,
-and the hand-off format. The next session does the analysis, the fix, the proof, and the hand-off.
+**Date opened:** 2026-10-24. **Fix written and verified in the editor:** 2026-10-24 (version 1.0).
+**Start with `03-for-the-game-dev.md`**: which three files to replace, how to build and hand the
+build back, what students will see, and the background on what each change does. `01-findings.md`
+holds the production evidence and each defect's verdict; `00-plan.md` is the brief the work
+followed, with Dale's decisions in §9.
 
 ## Start here (new session)
 
@@ -36,18 +35,37 @@ Working directory for the session: the workspace that holds `mhs-updates`, `stra
 
 | File | Purpose |
 |---|---|
-| `00-plan.md` | The brief: what is known, the code map, the defects to check, evidence to gather, reproduction on the dev site, fix rules, testing, delivery, open questions |
+| `03-for-the-game-dev.md` | The short page for the developer applying the fix: the three files, build and hand-over, the checks on a build, what students see, background per file, verification record. |
+| `Game-Code/` | The three changed files, mirroring `Assets/Scripts/`: `Systems/Save Load System/GameSaveManager.cs`, `CustomSavers/DatabaseSaver.cs`, `SettingsSaveManager.cs`. |
+| `01-findings.md` | The evidence (volumes, the service's ledger, what the saves look like, duplicate saves, progress going backwards, failed saves, the old key) and the twelve defects of the brief confirmed, cleared or documented; proposals for the service; notes for the game team. |
+| `00-plan.md` | The brief: what was known, the code map, the defects to check, evidence to gather, reproduction, the rules, delivery, and the decisions (§9). |
+| `tools/` | The PlayMode tests with the fake save service, how to run them, and the browser recipe for the checks on a build (`tools/README.md`). |
+| `queries/` | The read-only mongosh scripts and the journal summariser that produced `data/`. |
+| `data/` | Their outputs, ids shortened to their last six characters, hosts and addresses replaced. |
 
-The next session adds `01-findings.md` (the evidence and each defect confirmed or cleared),
-`Game-Code/` (drop-ins mirroring `Assets/Scripts/`), `03-for-the-game-dev.md` (the page for the
-developer applying the fix), `tools/` (queries, tests, browser recipes), and, if the service side
-changes, a note on the `stratasave` change.
+## Summary
 
-## Summary (to be confirmed by the next session)
+The game saved through one HTTP request per checkpoint with no timeout and no retry: a failed save
+was a toast and the progress since the previous checkpoint was lost (the service's ledger shows
+three such saves in four weeks, each cut off by a page reload; the ones that never reached it are
+invisible). A failed *load* at launch was treated as "no save" and started the unit over, and the
+next checkpoint wrote the fresh start over the real progress on the server (seen in production:
+a student's Unit 4 checkpoint 3 became checkpoint 0 after an evening relaunch at home). The unit
+transition waited on the save flag with no cap, the bearer value went to the browser console on
+every launch, the response parsing was unguarded, and the old API key was a built-in fallback.
 
-The game saves through one HTTP request per checkpoint with no timeout and no retry: a failed save
-is a toast and the progress since the previous checkpoint is lost on the next reload. A failed
-*load* at launch is treated the same as "no save" and starts the unit over, and the unit transition
-waits on the save flag with no cap. The logger had exactly this family of defects before its
-2026-09-30 fix (per-request state, no retry, no identity wait, no timeout, an uncapped transition
-gate, unguarded JSON parsing), which is why saving is next.
+The fix replaces the transport (`GameSaveManager.cs`) and the policy (`DatabaseSaver.cs`) and
+removes the key fallback from `SettingsSaveManager.cs`: saves and loads are retried for ever with
+backoff and a status line (reason, countdown, attempt) in the existing toast; the newest save is
+kept on the device and sent at the next launch when it could not go out; a failed load never
+starts a unit over (only the service's explicit "no saves" does), and while the service is
+unreachable the game plays on from the device copy and switches to the service's save if that
+arrives newer; identity and configuration are waited for; requests time out after 30 s; the unit
+transition waits at most five seconds; the same checkpoint raised twice sends one request; nothing
+secret is printed. The save service is unchanged (proposals in `01-findings.md` §7). Sixteen
+PlayMode tests against a fake save service cover the rules; a Unit 1 build of the files was run
+on the dev site (see the verification record in `03-for-the-game-dev.md`).
+
+**Reference snapshot.** The files were written against the game team's project copy of
+2026-09-28 (changelist 12449, Unity 6000.0.74f1) with the logging fix v1.3 and the garden box fix
+applied; the team holds that copy. There is no separate snapshot zip for this bundle.
