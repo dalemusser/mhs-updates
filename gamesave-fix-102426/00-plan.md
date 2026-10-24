@@ -216,15 +216,32 @@ outcome. If `stratasave` changes (sequence numbers, `Retry-After`, a sanity chec
 that is a StrataHub-side commit with its own note here. Add the folder to `../README.md` and
 `../ai/context.md` (already listed as an investigation; update the status line when the fix exists).
 
-## 9. Open questions for Dale (ask early)
+## 9. Decisions (do not ask; proceed on these)
 
-1. When the load fails at launch: wait and retry for ever with status (never start over), or
-   start over after some number of attempts? The first is the rule; confirm it holds here.
-2. Should the game keep a local copy of the last save (IndexedDB through PlayerPrefs) so a student
-   can continue through an outage and the save is sent when the host returns, and if so how a
-   conflict between the local and the server save is resolved?
-3. Is the service expected to protect against an old retried save overwriting a newer one (a
-   client sequence number or timestamp check), and may the service change in this round?
-4. Is the unit-vs-save mismatch (StrataHub "Set current", a new unit's first launch) in scope now?
-5. The restricted-key enforce flip waits on a safe retry path in the game; is the order "ship the
-   save fix, then flip" acceptable, and what is the deadline?
+Decided by Dale on 2026-10-24:
+
+1. **A failed load at launch must not start the unit over when the student has made progress.**
+   The game cannot tell from a failed request whether a save exists, so the rule in code is: only
+   the service's explicit answer "no saves" (`{"saves": []}`) may start a new game; every failure
+   (network error, timeout, 4xx, 5xx, unparsable body) waits and retries with a visible status and
+   never starts over. A local copy of the last save (decision 2) is the cheap way for the game to
+   know that progress exists while the service is unreachable.
+2. **The bearer value is never printed to the console.** Remove the two `Debug.Log` lines in
+   `GameSaveManager` (and any other place the configs are echoed); log the URL at most.
+
+Defaults for the rest, to be followed unless Dale changes them (they are stated in `03-for-the-game-dev.md`
+as assumptions):
+
+3. **Local copy of the last save:** yes. Keep the last successfully recorded save on the device
+   (the `PlayerPrefsSavedGameDataStorer` on the prefab, IndexedDB on WebGL) and the last unsent save
+   as a queued item. At launch the service's answer wins when it arrives; while it cannot be
+   reached, play continues from the local copy and the load keeps retrying in the background. A
+   queued save is sent once the host returns, newest only (an older unsent save is dropped when a
+   newer one exists).
+4. **The service side** stays unchanged in this round; the game fix must work against the current
+   `stratasave`. A small additive change (the service keeping the newest save by a client
+   sequence or timestamp, so a late retry cannot overwrite a newer save) is written up as a
+   proposal in the findings, with the game already sending the fields it would need.
+5. **Unit vs save mismatch** ("Set current", a new unit's first launch): out of scope for the fix;
+   documented in the findings with what the game does today.
+6. **Order:** ship the save fix, then flip the restricted-key enforcement; no deadline set.
