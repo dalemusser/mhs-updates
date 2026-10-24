@@ -33,7 +33,7 @@ removes the key fallback from a third. It retries saves and loads for ever with 
 keeps the newest save on the device and sends it at the next launch if needed, never starts a
 unit over on a failed load, waits for identity and configuration, times requests out, caps the
 unit transition wait, and prints no secrets. Nothing changes in the save service in this round;
-§7 lists what it could do later. Fifteen PlayMode tests against a fake save service cover each
+§7 lists what it could do later. Twenty PlayMode tests against a fake save service cover each
 rule (§6).
 
 ## 2. How saving works (the 2026-09-28 code)
@@ -158,8 +158,9 @@ save (`data/saves_sequences.out`). The recent cases were traced in the game's ev
   re-activation raised the auto-save with the quest's own checkpoint number, so the save written
   at 14:56:13 says checkpoint **1**; the later saves say 0. The quest log was right and the
   checkpoint value wrong, and the next launch would place the player at checkpoint 1's position.
-  Same build 20261005-12466, the collection whose description mentions a Unit 2 save-checkpoint
-  fix; the February cases (checkpoint 11 → 8, then 13) look the same. For the game team (§8).
+  Same build 20261005-12466 (the dev collection `20261005-12466-Debug`, whose page carries no
+  description; the brief's note of a Unit 2 "save checkpoints" fix in it could not be checked
+  further); the February cases (checkpoint 11 → 8, then 13) look the same. For the game team (§8).
 - **Unit went backwards (defect 12, out of scope by decision 5).** Student …c7f231 was in Unit 3's
   dungeon at 13:47 on 2026-10-06; at 13:51 their StrataHub progress record was set to unit 2; at
   13:52 they relaunched into Unit 2, which started fresh (its first quest, "Escape the Ruin",
@@ -223,12 +224,42 @@ data), **cleared** (not a defect as feared), or **documented** (out of this fix'
 | 8 | Instances and lifetime | Cleared, with a finding | The prefab is in both core-systems prefabs, but PixelCrushers' `SaveSystem.Awake` destroys the second game object, so one `DatabaseSaver` lives (DontDestroyOnLoad). The duplicate *saves* of §3.4 come from two raisers, not two instances. | One request in flight; a save identical to the one just sent in this launch is not sent again; the coroutines are on the surviving object; a deactivated object clears its loop flags. |
 | 9 | Console lines with the auth value | Confirmed | `GameSaveManager.Start` and `LoadCoroutine` printed the bearer value on every launch. | Removed; the URL may be logged, the auth never (a test asserts no log line carries the test's auth value). |
 | 10 | `Time.timeScale = 0` | Confirmed | The toast and the post-save pause used scaled waits. | Every wait is `WaitForSecondsRealtime`. |
-| 11 | The old key fallback | Confirmed | `GameSaveManager` (host and key constants) and `SettingsSaveManager` (`_apiKey`). | Both removed: with no config the game waits and looks again (state) or skips the request and reports it to the caller (settings). The Editor-only defaults in `MHSBridge` keep the old key for the developer id, which is what the service's restricted key is for. |
+| 11 | The old key fallback | Confirmed | `GameSaveManager` (host and key constants) and `SettingsSaveManager` (`_apiKey`). | Both removed: with no config the game waits and looks again (state) or skips the request and reports it to the caller (settings). The Editor-only defaults in `MHSBridge` keep the old key for the developer id, which is what the service's restricted key is for. The literal still exists in the built Unit 1 data twice, both from the dead pre-2026 logger `Systems/Logging/LogManager.cs` (`JWTToken` and the folded `"Bearer " + JWTToken`, with the legacy `/logs` URL); nothing instantiates it. Deleting that file and `SaveLoadManager.cs` (all commented out) is a tidy-up for the team (§8). |
 | 12 | Unit vs save mismatch | Documented (decision 5) | §3.5 (…c7f231). Today: a save whose scene is not in the launched unit's build makes that unit start fresh; "Set current" never touches the save; going back to a later unit then starts it fresh too because its save is older. | Unchanged. The per-unit scene check is the same; the metadata the game now writes (`mhs_meta.scene`, checkpoint, time) would let a later change keep one newest save per unit. |
 
 Also fixed on the way: the main menu's background load and START GAME share one load per
 launch (two before); the start path ignores a second START while one is running;
 `CheckIfSceneShouldLoad` no longer indexes a scene name shorter than six characters or a null one.
+
+**From the independent review of the drop-ins (2026-10-24, a reviewer who had not seen the
+analysis; all nine findings applied):**
+
+1. *The transition gate's cap never fired against the real loader.* `TransitionSceneLoader`
+   yields once inside its polling loop for a check that is not ready and once after it, so a
+   check that is not ready is polled every second frame; the gate's "a gap of more than one frame
+   means a new request" rule then reset the request on every poll and the five-second cap could
+   not be reached. The rule is now a one-second time gap. **The v1.3 logger's gate has the same
+   rule and the same flaw** (`GameLogger.cs`, `CallToTransitionToNextUnit`): with the log host
+   unreachable and entries queued, a unit transition is held until the host answers. The one-line
+   fix is delivered as an optional fourth drop-in (`Game-Code/Systems/Logging/GameLogger.cs`).
+2. *A 2xx save answer with a non-service body counted as accepted.* A captive portal or a filter
+   answering the POST with a block page (after a redirect, a 200) would have marked the device copy
+   as sent, and the next launch would have started a new game on the service's `[]`. A save is
+   accepted only when the body is the service's JSON object.
+3. *An empty 200 body on a load counted as "no saves"* and would have started a new game. Only
+   the service's JSON array may mean that; an empty body is a retryable failure. A returned save
+   also has to have a scene name to count as one.
+4. Saves made by builds without this fix carry no `mhs_meta`, so the newer/older comparisons used
+   to be one-sided; the service's own timestamp is now the fallback, with a 90-second allowance
+   for the difference between the server's clock and the device's.
+5. After a resume from the device copy, a newer service save from another unit's scene is no
+   longer applied from inside gameplay (that path led to `LoadNextGameplayScene`); the player
+   stays and the next launch uses the service's save.
+6. A device copy the service rejected for good (400/413) is still used when the service has
+   nothing (it was treated as stale); the pending copies of other players on a shared device are
+   bounded (eight, oldest dropped) so they cannot fill WebGL PlayerPrefs; a request that never
+   calls back is treated as failed after the timeout plus fifteen seconds; a save recorded in this
+   launch is preferred over the record read from the device at launch.
 
 ## 5. What the fix does (short form; the files are described in `03-for-the-game-dev.md`)
 
@@ -263,7 +294,7 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 15 tests, all passing on
+or hanging; `tools/README.md` has the two temporary project settings): 20 tests, all passing on
 2026-10-24 in Unity 6000.0.74f1 (about 50 s). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an
@@ -273,7 +304,8 @@ player id; the transition gate opening after about five seconds with the save st
 failed load that never starts over and resumes when the service answers; `[]` starting a new game
 while an HTML body counts as a failure; the device copy used while the service is down and left
 alone when the service confirms the same save; the service's newer save winning over the device
-copy; one load request per launch shared by the menu and START GAME.
+copy; one load request per launch shared by the menu and START GAME; an identical repeat of a
+checkpoint not sent again.
 
 **Dev site, Unit 1 build of the fixed files:** see `03-for-the-game-dev.md` § "The check on a
 build" for the recipe and the record of the run.
@@ -311,6 +343,14 @@ build" for the recipe and the record of the run.
 - **Two saves per checkpoint** (§3.4): two raisers of `OnSaveGame` for the same checkpoint. The
   fix de-duplicates identical consecutive saves within a launch, so this no longer doubles the
   traffic or eats two of the five retained saves, but the second raise is still wasted work.
+- **The logger's transition gate** (`GameLogger.cs` v1.3, `CallToTransitionToNextUnit`): the
+  frame-count rule resets on every two-frame poll of `TransitionSceneLoader`, so with the log host
+  unreachable the unit transition waits for ever instead of five seconds. One line to change (a
+  one-second time gap); the patched file is in `Game-Code/Systems/Logging/` as an optional drop-in.
+- **Dead code with the old key:** `Systems/Logging/LogManager.cs` (the logger before `GameLogger`,
+  with `JWTToken = "LEARN_FAST"` and the legacy `/logs` URL) and `Save Load System/SaveLoadManager.cs`
+  (entirely commented out) are still compiled into every build. Nothing uses them; deleting both
+  removes the last copies of the old key from the game's builds.
 - **Unit vs save** (§3.5, decision 5): a save holds one scene; StrataHub's "Set current" to an
   earlier unit makes that unit's first checkpoint the newest save, and the later unit then starts
   fresh when the student returns to it. If that matters, keep one newest save per unit on the

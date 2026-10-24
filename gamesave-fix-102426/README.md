@@ -62,7 +62,7 @@ starts a unit over (only the service's explicit "no saves" does), and while the 
 unreachable the game plays on from the device copy and switches to the service's save if that
 arrives newer; identity and configuration are waited for; requests time out after 30 s; the unit
 transition waits at most five seconds; the same checkpoint raised twice sends one request; nothing
-secret is printed. The save service is unchanged (proposals in `01-findings.md` §7). Sixteen
+secret is printed. The save service is unchanged (proposals in `01-findings.md` §7). Twenty
 PlayMode tests against a fake save service cover the rules; a Unit 1 build of the files was run
 on the dev site (see the verification record in `03-for-the-game-dev.md`).
 

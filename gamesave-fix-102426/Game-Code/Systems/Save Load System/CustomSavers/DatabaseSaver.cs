@@ -93,6 +93,16 @@ namespace MHS
         private const float TransitionMaxWaitSeconds = 5f;
         private const float ToastSeconds = 2f;
         private const int LocalRecordFormat = 1;
+        // When the service's save has no mhs_meta (made by an older build) its
+        // time is the server's clock; a device clock may be off by minutes, so
+        // the service's copy counts as newer only by more than this.
+        private const float ClockSkewAllowanceSeconds = 90f;
+        // Pending saves of other players kept aside on a shared device, at most.
+        private const int MaxPendingKeys = 8;
+        private const string PendingIndexKey = "mhs_pending_index";
+        // How long to wait for a request's callback beyond the request timeout
+        // before treating the request as failed.
+        private const float RequestWaitMarginSeconds = 15f;
 
         // One id per launch of the game, and a counter for the saves it makes.
         private static readonly string launchId = Guid.NewGuid().ToString("N");
@@ -141,6 +151,8 @@ namespace MHS
             public bool hasSave;
             public SavedGameData data;
             public GameSaveManager.SaveMeta meta;
+            public string time;            // mhs_meta.saved_at (device clock) or the service's timestamp
+            public bool timeFromDevice;    // true when time is a device clock, as the device copy's is
         }
         private ServerLatest serverLatest;      // null until the service has answered this launch
         private bool fetchRunning;
@@ -154,7 +166,8 @@ namespace MHS
         // Unit transition.
         private bool transitionPending;
         private float transitionRequestedAt;
-        private int lastTransitionCallFrame = -1000;
+        private float lastTransitionCallTime = -1000f;
+        private bool transitionPersisted;
 
         // Status display (the Alert Canvas on this prefab).
         private bool statusShown;
@@ -390,9 +403,9 @@ namespace MHS
                             yield return new WaitForSecondsRealtime(IdentityPollInterval);
                             continue;
                         }
-                        if (serverLatest.hasSave && serverLatest.meta != null && IsNewer(serverLatest.meta.saved_at, item.saved_at))
+                        if (serverLatest.hasSave && ServerNewerThan(serverLatest, item.saved_at))
                         {
-                            Debug.LogWarning($"DatabaseSaver: the save service already holds newer progress ({serverLatest.meta.saved_at}) than the unsent save from {item.saved_at}; the unsent save is dropped.");
+                            Debug.LogWarning($"DatabaseSaver: the save service already holds newer progress ({serverLatest.time}) than the unsent save from {item.saved_at}; the unsent save is dropped.");
                             item.dropped = true;
                             PersistLocal(item);
                             RemovePendingKey(uid);
@@ -426,7 +439,13 @@ namespace MHS
 
                     GameSaveManager.RequestResult result = null;
                     saveManager.SaveJson(uid, GameId, item.save_json, r => result = r);
-                    while (result == null) yield return null;
+                    float deadline = Time.unscaledTime + GameSaveManager.requestTimeoutSeconds + RequestWaitMarginSeconds;
+                    while (result == null && Time.unscaledTime < deadline) yield return null;
+                    if (result == null)
+                    {
+                        // The request never called back (it should always; this is a guard).
+                        result = new GameSaveManager.RequestResult { outcome = GameSaveManager.Outcome.Failed, retryable = true, error = "no answer from the request", reason = "the save service did not answer in time" };
+                    }
 
                     if (result.Accepted)
                     {
@@ -492,6 +511,8 @@ namespace MHS
                 hasSave = true,
                 data = data,
                 meta = new GameSaveManager.SaveMeta { seq = item.seq, saved_at = item.saved_at, session_id = item.session_id, version = item.version, scene = item.scene, checkpoint = item.checkpoint },
+                time = item.saved_at,
+                timeFromDevice = true,
             };
         }
 
@@ -634,15 +655,28 @@ namespace MHS
 
                 if (usedLocal)
                 {
-                    bool serverNewer = serverLatest.hasSave && local != null && serverLatest.meta != null && IsNewer(serverLatest.meta.saved_at, local.saved_at);
+                    bool serverNewer = serverLatest.hasSave && local != null && ServerNewerThan(serverLatest, local.saved_at);
                     if (serverNewer && chosen == serverLatest.data)
                     {
-                        Debug.LogWarning("DatabaseSaver: the save service holds newer progress than this device's copy; loading it.");
-                        ShowStatus("Newer progress found on the save service.\nLoading it...");
-                        // Let a scene load that is under way finish first.
+                        // Let the scene load that the local resume started finish first.
                         while (resumeInProgress || SceneManager.GetActiveScene().name == "Transition") yield return null;
-                        ResumeWith(chosen);
-                        ShowToast("Progress loaded");
+                        if (chosen.sceneName == SceneManager.GetActiveScene().name)
+                        {
+                            // Same scene: apply the newer state in place.
+                            Debug.LogWarning("DatabaseSaver: the save service holds newer progress than this device's copy; loading it.");
+                            ShowStatus("Newer progress found on the save service.\nLoading it...");
+                            ResumeWith(chosen);
+                            ShowToast("Progress loaded");
+                        }
+                        else
+                        {
+                            // Another scene (another unit's): pulling the player out of the
+                            // scene they are in is worse than playing on; the next launch
+                            // resolves it from the service as usual.
+                            Debug.LogWarning($"DatabaseSaver: the save service holds newer progress in another scene ({chosen.sceneName}); the player stays in {SceneManager.GetActiveScene().name} and the next launch uses the service's save.");
+                            saveData = chosen;
+                            HideStatus();
+                        }
                     }
                     else
                     {
@@ -728,21 +762,21 @@ namespace MHS
             if (!server.hasSave)
             {
                 // The service answered "no saves". A sent copy on this device is
-                // stale then (the saves were deleted on purpose); an unsent one is
-                // progress the service never got, and it stays.
-                if (local != null && local.Unsent) return ParseSave(local.save_json);
+                // stale then (the saves were deleted on purpose); one the service
+                // never accepted (unsent, or rejected for good) is progress that
+                // exists only here, and it stays.
+                if (local != null && !local.sent) return ParseSave(local.save_json);
                 return null;
             }
             if (local == null) return server.data;
-            bool serverHasTime = server.meta != null && server.meta.HasTime;
-            if (local.Unsent)
+            if (!local.sent)
             {
                 // The pending save is the newest this device knows; the service's
                 // copy wins only when it is demonstrably newer (another device).
-                if (serverHasTime && IsNewer(server.meta.saved_at, local.saved_at)) return server.data;
+                if (ServerNewerThan(server, local.saved_at)) return server.data;
                 return ParseSave(local.save_json) ?? server.data;
             }
-            if (serverHasTime && IsNewer(local.saved_at, server.meta.saved_at))
+            if (DeviceNewerThanServer(local.saved_at, server))
             {
                 // This device's accepted save is newer than what the service
                 // returned (the service lost it, or returned an older one).
@@ -798,19 +832,28 @@ namespace MHS
                     attempt++;
                     GameSaveManager.LoadResult result = null;
                     saveManager.LoadLatest(uid, GameId, 1, r => result = r);
-                    while (result == null) yield return null;
+                    float deadline = Time.unscaledTime + GameSaveManager.requestTimeoutSeconds + RequestWaitMarginSeconds;
+                    while (result == null && Time.unscaledTime < deadline) yield return null;
+                    if (result == null)
+                    {
+                        result = new GameSaveManager.LoadResult { outcome = GameSaveManager.Outcome.Failed, retryable = true, error = "no answer from the request", reason = "the save service did not answer in time" };
+                    }
 
                     if (result.outcome != GameSaveManager.Outcome.Failed)
                     {
                         var newest = result.Newest;
+                        bool isSave = result.NewestIsASave;
+                        var meta = isSave ? result.NewestMeta : null;
                         serverLatest = new ServerLatest
                         {
-                            hasSave = newest != null && newest.save_data != null,
-                            data = newest?.save_data,
-                            meta = result.NewestMeta,
+                            hasSave = isSave,
+                            data = isSave ? newest.save_data : null,
+                            meta = meta,
+                            time = isSave ? (meta != null ? meta.saved_at : newest.timestamp) : null,
+                            timeFromDevice = meta != null,
                         };
                         fetchFailures = 0;
-                        Print(serverLatest.hasSave ? $"Server save received: {serverLatest.data.sceneName} ({serverLatest.meta?.saved_at ?? "no meta"})" : "Server answered: no saves.");
+                        Print(serverLatest.hasSave ? $"Server save received: {serverLatest.data.sceneName} ({serverLatest.time}{(meta == null ? ", server clock" : "")})" : "Server answered: no saves.");
                         break;
                     }
 
@@ -842,7 +885,14 @@ namespace MHS
         private LocalSaveRecord LocalCopyFor(string uid)
         {
             if (uid == null) return null;
-            if (localReadForUser == uid) return localCopy;
+            if (localReadForUser != uid) ReadLocalCopy(uid);
+            // A save recorded this launch is newer than anything read from the device at launch.
+            if (newestSave != null && newestSave.user_id == uid && (localCopy == null || IsNewer(newestSave.saved_at, localCopy.saved_at, 0f))) return newestSave;
+            return localCopy;
+        }
+
+        private void ReadLocalCopy(string uid)
+        {
             localReadForUser = uid;
             localCopy = null;
 
@@ -851,13 +901,13 @@ namespace MHS
             LocalSaveRecord mine = slot != null && slot.user_id == uid ? slot : null;
             if (pending != null && pending.user_id == uid)
             {
-                if (mine == null || IsNewer(pending.saved_at, mine.saved_at) || (!mine.Unsent && pending.Unsent)) mine = pending;
+                if (mine == null || IsNewer(pending.saved_at, mine.saved_at, 0f) || (!mine.Unsent && pending.Unsent)) mine = pending;
             }
             localCopy = mine;
-            if (mine == null) return null;
+            if (mine == null) return;
 
             Print($"Device copy for this player: {mine.scene}, checkpoint {mine.checkpoint}, {mine.saved_at}, {(mine.Unsent ? "NOT sent" : mine.dropped ? "dropped" : "sent")}.");
-            if (mine.Unsent && (newestSave == null || IsNewer(mine.saved_at, newestSave.saved_at)))
+            if (mine.Unsent && (newestSave == null || IsNewer(mine.saved_at, newestSave.saved_at, 0f)))
             {
                 // Progress the service never got: send it (after the server check).
                 Debug.LogWarning($"DatabaseSaver: an unsent save from an earlier launch was found on this device ({mine.scene}, checkpoint {mine.checkpoint}, {mine.saved_at}); it will be sent once the service is reachable.");
@@ -866,7 +916,6 @@ namespace MHS
                 saveGameInProgress.Value = true;
                 EnsureSendLoop();
             }
-            return mine;
         }
 
         private static LocalSaveRecord ReadRecord(string key)
@@ -912,7 +961,7 @@ namespace MHS
                     var slot = ReadRecord(LocalSaveKey);
                     if (slot != null && slot.Unsent && !string.IsNullOrEmpty(slot.user_id) && slot.user_id != record.user_id)
                     {
-                        PlayerPrefs.SetString(PendingSaveKeyPrefix + slot.user_id, JsonUtility.ToJson(slot));
+                        AddPendingKey(slot.user_id, JsonUtility.ToJson(slot));
                     }
                 }
                 PlayerPrefs.SetString(LocalSaveKey, json);
@@ -933,16 +982,47 @@ namespace MHS
             }
         }
 
+        // The pending saves of other players are few and bounded: an index key
+        // lists them oldest first, and the oldest goes when there are too many,
+        // so a shared device cannot fill its PlayerPrefs with them.
+        private static List<string> ReadPendingIndex()
+        {
+            var list = new List<string>();
+            try
+            {
+                string v = PlayerPrefs.HasKey(PendingIndexKey) ? PlayerPrefs.GetString(PendingIndexKey) : "";
+                foreach (var id in v.Split(',')) if (GameSaveManager.IsValidUserId(id)) list.Add(id);
+            }
+            catch (Exception) { }
+            return list;
+        }
+
+        private static void AddPendingKey(string uid, string json)
+        {
+            var index = ReadPendingIndex();
+            index.Remove(uid);
+            while (index.Count >= MaxPendingKeys)
+            {
+                string oldest = index[0];
+                index.RemoveAt(0);
+                PlayerPrefs.DeleteKey(PendingSaveKeyPrefix + oldest);
+                Debug.LogWarning($"DatabaseSaver: too many pending saves of other players on this device; the oldest (player …{oldest.Substring(18)}) was dropped.");
+            }
+            index.Add(uid);
+            PlayerPrefs.SetString(PendingSaveKeyPrefix + uid, json);
+            PlayerPrefs.SetString(PendingIndexKey, string.Join(",", index));
+        }
+
         private static void RemovePendingKey(string uid)
         {
             if (string.IsNullOrEmpty(uid)) return;
             try
             {
-                if (PlayerPrefs.HasKey(PendingSaveKeyPrefix + uid))
-                {
-                    PlayerPrefs.DeleteKey(PendingSaveKeyPrefix + uid);
-                    PlayerPrefs.Save();
-                }
+                bool had = PlayerPrefs.HasKey(PendingSaveKeyPrefix + uid);
+                if (had) PlayerPrefs.DeleteKey(PendingSaveKeyPrefix + uid);
+                var index = ReadPendingIndex();
+                if (index.Remove(uid)) PlayerPrefs.SetString(PendingIndexKey, string.Join(",", index));
+                if (had) PlayerPrefs.Save();
             }
             catch (Exception) { }
         }
@@ -1008,20 +1088,24 @@ namespace MHS
         public void CallToTransitionToNextUnit()
         {
             float now = Time.unscaledTime;
-            // The loader polls every frame; a gap of more than one frame since the
-            // last call means a new transition is asking.
-            if (!transitionPending || Time.frameCount - lastTransitionCallFrame > 1)
+            // The loader polls every frame or two while it waits; a gap of more
+            // than a second since the last call means a new transition is asking.
+            // (A frame-count rule here would reset on every two-frame poll and the
+            // cap would never fire.)
+            if (!transitionPending || now - lastTransitionCallTime > 1f)
             {
                 transitionPending = true;
                 transitionRequestedAt = now;
+                transitionPersisted = false;
             }
-            lastTransitionCallFrame = Time.frameCount;
+            lastTransitionCallTime = now;
 
             bool nothingUnsent = newestSave == null || !newestSave.Unsent;
             bool timedOut = now - transitionRequestedAt >= TransitionMaxWaitSeconds;
             ReadyToTransition = nothingUnsent || timedOut;
-            if (ReadyToTransition && !nothingUnsent)
+            if (ReadyToTransition && !nothingUnsent && !transitionPersisted)
             {
+                transitionPersisted = true;
                 Debug.LogWarning("DatabaseSaver: the unit transition goes ahead with a save still unsent; it is kept on this device and sent by the next unit's build.");
                 PersistLocal(newestSave);
             }
@@ -1079,15 +1163,31 @@ namespace MHS
             }
         }
 
-        // True when a is a later moment than b (both ISO 8601). Unparsable
-        // values are never "newer".
-        private static bool IsNewer(string a, string b)
+        // True when a is later than b (both ISO 8601) by more than the tolerance.
+        // Unparsable values are never "newer".
+        private static bool IsNewer(string a, string b, float toleranceSeconds)
         {
             if (string.IsNullOrEmpty(a)) return false;
             if (string.IsNullOrEmpty(b)) return true;
             if (!DateTime.TryParse(a, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.RoundtripKind, out var ta)) return false;
             if (!DateTime.TryParse(b, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.RoundtripKind, out var tb)) return true;
-            return ta.ToUniversalTime() > tb.ToUniversalTime();
+            return (ta.ToUniversalTime() - tb.ToUniversalTime()).TotalSeconds > toleranceSeconds;
+        }
+
+        // The service's save is newer than a time from this device's clock. When
+        // the service's time is its own clock (a save without mhs_meta) a clock
+        // skew allowance applies, so a device a minute behind does not throw its
+        // own newer save away.
+        private static bool ServerNewerThan(ServerLatest server, string deviceTime)
+        {
+            if (server == null || !server.hasSave) return false;
+            return IsNewer(server.time, deviceTime, server.timeFromDevice ? 0f : ClockSkewAllowanceSeconds);
+        }
+
+        private static bool DeviceNewerThanServer(string deviceTime, ServerLatest server)
+        {
+            if (server == null || !server.hasSave) return true;
+            return IsNewer(deviceTime, server.time, server.timeFromDevice ? 0f : ClockSkewAllowanceSeconds);
         }
 
         private static string Truncate(string s, int max)

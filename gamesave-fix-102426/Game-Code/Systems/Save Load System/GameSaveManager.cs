@@ -138,6 +138,9 @@ public class GameSaveManager : MonoBehaviour
 
         public GameSave Newest => saves != null && saves.Length > 0 ? saves[0] : null;
         public SaveMeta NewestMeta => metas != null && metas.Length > 0 ? metas[0] : null;
+        // JsonUtility creates an empty SavedGameData for a missing save_data, so a
+        // real save is one with a scene name.
+        public bool NewestIsASave => Newest != null && Newest.save_data != null && !string.IsNullOrEmpty(Newest.save_data.sceneName);
     }
 
     // ---- Legacy API (kept so existing callers compile; one request, no retry) ----
@@ -288,7 +291,9 @@ public class GameSaveManager : MonoBehaviour
 
     /// <summary>
     /// Reads a load response. The service answers with a JSON array of saves,
-    /// newest first, and [] when there are none. Anything else is unreadable.
+    /// newest first, and [] when there are none. Anything else is unreadable:
+    /// an empty body (a filter, a redirect, a misrouted endpoint) is not the
+    /// service saying "no saves", and must not start a new game.
     /// </summary>
     public static bool TryParseLoadBody(string body, out GameSave[] saves, out SaveMeta[] metas, out string error)
     {
@@ -296,7 +301,11 @@ public class GameSaveManager : MonoBehaviour
         metas = new SaveMeta[0];
         error = null;
         string t = (body ?? "").Trim();
-        if (t.Length == 0 || t == "null" || t == "[]") return true;
+        if (t.Length == 0)
+        {
+            error = "the response is empty";
+            return false;
+        }
 
         string wrapped;
         if (t[0] == '[') wrapped = "{\"saves\":" + t + "}";
@@ -423,7 +432,20 @@ public class GameSaveManager : MonoBehaviour
             case UnityWebRequest.Result.Success:
                 if (!isLoad)
                 {
-                    r.outcome = Outcome.Accepted;
+                    // The service answers a save with 201 and a JSON object (the stored
+                    // document). Anything else with a 2xx (a captive portal's page, a
+                    // filter's block page after a redirect) is not an acceptance: calling
+                    // it one would mark the device copy as sent and lose the save.
+                    string tb = (r.body ?? "").TrimStart();
+                    if (tb.StartsWith("{") && tb.IndexOf("\"id\"", StringComparison.Ordinal) >= 0)
+                    {
+                        r.outcome = Outcome.Accepted;
+                        return r;
+                    }
+                    r.outcome = Outcome.Failed;
+                    r.retryable = true;
+                    r.error = "unexpected response body";
+                    r.reason = "the save service answered with something unreadable";
                     return r;
                 }
                 var lr = (LoadResult)r;

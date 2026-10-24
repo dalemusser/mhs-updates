@@ -1,8 +1,8 @@
 # Saving fix: what to do in the game code
 
-**Version:** 1.0 (2026-10-24).
-**Short version:** replace three C# files, build, upload through MHS Builds. No prefab, asset,
-scene or host-page changes, and nothing changes in the save service. The evidence and each
+**Version:** 1.0 (2026-10-24; includes the changes from an independent review of the same day).
+**Short version:** replace three C# files (a fourth is optional), build, upload through MHS
+Builds. No prefab, asset, scene or host-page changes, and nothing changes in the save service. The evidence and each
 defect's verdict are in `01-findings.md`; this page is only what you need to apply it: the files,
 the build and hand-over steps, what students will see, and then the background on what each file
 fixes.
@@ -20,6 +20,7 @@ your copy of `SettingsSaveManager.cs` is still the CRLF original, diff ignoring 
 | `Systems/Save Load System/GameSaveManager.cs` | `Systems/Save Load System/GameSaveManager.cs` | The transport: one request per call, classified answer, timeout, no built-in host or key, nothing secret in the console. |
 | `Systems/Save Load System/CustomSavers/DatabaseSaver.cs` | `Systems/Save Load System/CustomSavers/DatabaseSaver.cs` | The policy: retry for ever with a visible status, the newest save kept on the device, a failed load never starts over, capped transition wait. |
 | `Systems/Save Load System/SettingsSaveManager.cs` | `Systems/Save Load System/SettingsSaveManager.cs` | Only the built-in host and key are removed and a 30 s timeout added. |
+| *optional:* `Systems/Logging/GameLogger.cs` | `Systems/Logging/GameLogger.cs` | The logging fix v1.3 file with one change: the unit-transition gate's "new request" rule is a one-second time gap instead of a frame count. The frame rule reset on every two-frame poll of `TransitionSceneLoader`, so with the log host unreachable the transition waited for ever instead of five seconds. Nothing else differs from v1.3; diff to confirm. |
 
 Nothing that calls these classes needs to change:
 
@@ -135,9 +136,15 @@ browser's request interception:
 | Built-in host and key as the fallback when the host page gives no settings config. | Removed; without a config the request is skipped and the caller told `false`, like the empty-id guard. |
 | No timeout. | 30 s on both requests; the `Authorization` header is set only when there is a value. |
 
+### `GameLogger.cs` (optional)
+
+| Issue | What the new file does |
+|---|---|
+| The transition gate's five-second cap never fired: `TransitionSceneLoader` polls a not-ready check every second frame, and the gate took a gap of more than one frame as a new request, resetting its clock on every poll. With the log host unreachable the unit transition waited until the host answered. | A new request is a gap of more than one second between calls. Everything else is the v1.3 file. |
+
 ## Verification record
 
 | Where | Before the fix | After the fix |
 |---|---|---|
-| Editor: the PlayMode tests in `tools/SaveFixTests.cs` (Unity 6000.0.74f1, batch mode, 2026-10-24) | — (the tests describe the new rules; on the old files they do not compile against the new API) | 16 tests pass in about 55 s: payload helpers; save retried with a countdown until accepted and no auth value in any log line; a newer save replaces an unsent one (one request once the service is back); an unsent save survives a relaunch and is sent then; an unsent save is dropped when the service already holds newer progress; a refused key is retried; a rejected payload is not; a timeout is retried; the save waits for a valid id; the transition gate opens after about five seconds with the save kept; a failed load never starts over and resumes when the service answers; `[]` starts a new game while an HTML body is a failure; the device copy is used while the service is down and left alone when it confirms; the service's newer save wins; one load request per launch; an identical repeat of a checkpoint is not sent again. |
+| Editor: the PlayMode tests in `tools/SaveFixTests.cs` (Unity 6000.0.74f1, batch mode, 2026-10-24) | — (the tests describe the new rules; on the old files they do not compile against the new API) | 20 tests pass in about 60 s: payload helpers; save retried with a countdown until accepted and no auth value in any log line; a newer save replaces an unsent one (one request once the service is back); an unsent save survives a relaunch and is sent then; an unsent save is dropped when the service already holds newer progress; a refused key is retried; a rejected payload is not; a timeout is retried; the save waits for a valid id; the transition gate opens after about five seconds with the save kept; a failed load never starts over and resumes when the service answers; `[]` starts a new game while an HTML body is a failure; the device copy is used while the service is down and left alone when it confirms; the service's newer save wins; one load request per launch; an identical repeat of a checkpoint is not sent again. |
 | WebGL build of Unit 1 on the dev site | — | (filled in below once the run is done) |

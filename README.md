@@ -83,7 +83,7 @@ the transition waits at most five seconds; the same checkpoint raised twice
 sends one request; nothing secret is printed. The save service is unchanged.
 Start with `03-for-the-game-dev.md`; `01-findings.md` has the production
 evidence (volumes, ledger, save sizes, duplicate saves, progress going
-backwards, the old key) and each defect's verdict, `tools/` the sixteen
+backwards, the old key) and each defect's verdict, `tools/` the twenty
 PlayMode tests with their fake save service and the browser recipe,
 `queries/` and `data/` the read-only queries and their redacted outputs.
 

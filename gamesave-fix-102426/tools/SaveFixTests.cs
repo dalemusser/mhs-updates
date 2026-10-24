@@ -48,7 +48,8 @@ namespace MHS.SaveFixTests
     public class FakeSaveService : IDisposable
     {
         public string BaseUrl;
-        public volatile string mode = "ok"; // ok | down | refuse | reject | html | hang | toolarge
+        public volatile string mode = "ok"; // ok | down | refuse | reject | html | hang | toolarge | empty
+        public volatile string loadTimestamp = null; // when set, the "timestamp" of every save in a load answer
         public volatile int hangMs = 6000;
         public readonly List<string> saveBodies = new List<string>();
         public readonly List<string> loadBodies = new List<string>();
@@ -103,6 +104,7 @@ namespace MHS.SaveFixTests
                 case "reject": status = 400; text = "{\"error\":\"Missing required fields\"}"; break;
                 case "toolarge": status = 413; text = "{\"error\":\"too large\"}"; break;
                 case "html": status = 200; text = "<html><body>Blocked by the filter</body></html>"; type = "text/html"; break;
+                case "empty": status = 200; text = ""; break;
                 default:
                     if (isSave)
                     {
@@ -121,7 +123,7 @@ namespace MHS.SaveFixTests
                             for (int k = stored.Count - 1; k >= 0; k--)
                             {
                                 if (sb.Length > 1) sb.Append(',');
-                                sb.Append("{\"id\":\"000000000000000000000abc\",\"user_id\":\"x\",\"game\":\"mhs\",\"timestamp\":\"" + DateTime.UtcNow.ToString("o") + "\",\"save_data\":").Append(stored[k]).Append('}');
+                                sb.Append("{\"id\":\"000000000000000000000abc\",\"user_id\":\"x\",\"game\":\"mhs\",\"timestamp\":\"" + (loadTimestamp ?? DateTime.UtcNow.ToString("o")) + "\",\"save_data\":").Append(stored[k]).Append('}');
                             }
                         }
                         sb.Append(']');
@@ -321,7 +323,9 @@ namespace MHS.SaveFixTests
             Assert.IsTrue(payload.EndsWith("}}"));
 
             Assert.IsTrue(GameSaveManager.TryParseLoadBody("[]", out var s0, out _, out _)); Assert.AreEqual(0, s0.Length);
-            Assert.IsTrue(GameSaveManager.TryParseLoadBody("null", out var s1, out _, out _)); Assert.AreEqual(0, s1.Length);
+            Assert.IsTrue(GameSaveManager.TryParseLoadBody(" [ ] ", out var s1, out _, out _)); Assert.AreEqual(0, s1.Length);
+            Assert.IsFalse(GameSaveManager.TryParseLoadBody("", out _, out _, out var emptyErr)); StringAssert.Contains("empty", emptyErr);
+            Assert.IsFalse(GameSaveManager.TryParseLoadBody("null", out _, out _, out _));
             string body = "[{\"id\":\"1\",\"user_id\":\"" + Uid + "\",\"game\":\"mhs\",\"timestamp\":\"t\",\"save_data\":" + withMeta + "}]";
             Assert.IsTrue(GameSaveManager.TryParseLoadBody(body, out var s2, out var metas, out _));
             Assert.AreEqual(1, s2.Length);
@@ -531,6 +535,7 @@ namespace MHS.SaveFixTests
                     _rig.saver.CallToTransitionToNextUnit();
                     if (_rig.saver.ReadyToTransition) { readyAt = Time.realtimeSinceStartup - start; break; }
                     yield return null;
+                    yield return null; // the real loader polls a not-ready check every second frame
                 }
                 Assert.IsTrue(readyAt >= 4.5f && readyAt <= 6.5f, "ready after about five seconds, was " + readyAt);
                 Assert.IsTrue(_rig.saver.HasUnsentSave, "the save is still kept");
@@ -659,6 +664,108 @@ namespace MHS.SaveFixTests
                 _rig.saveEvent.Raise(0);
                 yield return WaitUntil(() => _svc.SaveCount == 2, 10, "a changed save is sent");
                 StringAssert.Contains("\\\"v\\\":\\\"changed\\\"", _svc.NewestStored);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T17_SaveAnsweredWithAnHtmlPageIsNotAccepted()
+        {
+            yield return Setup();
+            try
+            {
+                _svc.mode = "html"; // a filter's page with a 200, as a captive portal or a redirect produces
+                _rig.testSaver.value = "behind-a-filter";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.StatusText.Contains("answered with something unreadable"), 10, "the unreadable-answer status");
+                Assert.IsTrue(_rig.saver.HasUnsentSave, "not marked sent");
+                var rec = JsonUtility.FromJson<DatabaseSaver.LocalSaveRecord>(PlayerPrefs.GetString("mhs_last_save"));
+                Assert.IsFalse(rec.sent);
+                _svc.mode = "ok";
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 15, "acceptance once the service answers properly");
+                Assert.AreEqual(1, _svc.stored.Count);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T18_EmptyLoadAnswerIsAFailure_NotNoSaves()
+        {
+            yield return Setup();
+            try
+            {
+                _svc.stored.Add(ServerSave("server-1", DateTime.UtcNow.AddMinutes(-10)));
+                _svc.mode = "empty";
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.FetchFailures >= 1, 10, "the empty body to count as a failure");
+                Assert.IsFalse(_rig.saver.ServerAnswered);
+                Assert.IsNull(DatabaseSaver.saveData, "no new game started");
+                _svc.mode = "ok";
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "the resume once the service answers");
+                Assert.AreEqual("server-1", _rig.testSaver.lastApplied);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T19_ACopyTheServiceRejectedIsStillResumedWhenTheServiceHasNothing()
+        {
+            yield return Setup();
+            try
+            {
+                _svc.mode = "reject";
+                LogAssert.ignoreFailingMessages = true;
+                _rig.testSaver.value = "only-here";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the rejection to end the save");
+                _svc.mode = "ok"; // nothing stored
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the rejected copy");
+                Assert.AreEqual("only-here", _rig.testSaver.lastApplied);
+                Assert.AreEqual(0, _svc.stored.Count, "the rejected copy is not resent");
+            }
+            finally { LogAssert.ignoreFailingMessages = false; Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T20_OlderBuildSaveWithoutMeta_ServerClockDecidesWithAnAllowance()
+        {
+            yield return Setup();
+            try
+            {
+                // An unsent save on this device...
+                _svc.mode = "down";
+                _rig.testSaver.value = "device";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.SaveAttempt >= 1 && _rig.saver.StatusText.Contains("Retrying in"), 10, "first attempt to be answered");
+                // ...and on the service a save made by an older build (no mhs_meta) whose server
+                // timestamp is only 30 s later: within the clock allowance, the device's save wins.
+                var old = new SavedGameData { sceneName = SceneManager.GetActiveScene().name };
+                old.SetData("SaveFixTestSaver", -1, "{\"v\":\"old-build\"}");
+                _svc.stored.Add(JsonUtility.ToJson(old));
+                _svc.loadTimestamp = DateTime.UtcNow.AddSeconds(30).ToString("o");
+                _svc.mode = "ok";
+                yield return Launch();
+                yield return WaitUntil(() => _rig.saver.ServerAnswered && !_rig.saver.HasUnsentSave, 15, "the recovered save to be decided");
+                Assert.AreEqual(2, _svc.stored.Count, "the device's save was sent");
+                StringAssert.Contains("\\\"v\\\":\\\"device\\\"", _svc.NewestStored);
+
+                // A server-clock timestamp an hour later is beyond any clock skew: the service wins.
+                _svc.stored.Clear();
+                _svc.stored.Add(JsonUtility.ToJson(old));
+                _svc.loadTimestamp = DateTime.UtcNow.AddHours(1).ToString("o");
+                _svc.mode = "down";
+                yield return Launch();
+                _rig.testSaver.value = "device-2";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.SaveAttempt >= 1 && _rig.saver.StatusText.Contains("Retrying in"), 10, "first attempt to be answered");
+                _svc.mode = "ok";
+                int before = _svc.SaveCount;
+                yield return Launch();
+                yield return WaitUntil(() => _rig.saver.ServerAnswered && !_rig.saver.HasUnsentSave, 15, "the recovered save to be decided");
+                Assert.AreEqual(before, _svc.SaveCount, "the device's older save was dropped, not sent");
+                Assert.AreEqual(1, _svc.stored.Count);
             }
             finally { Cleanup(); }
         }
