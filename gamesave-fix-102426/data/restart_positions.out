@@ -1,0 +1,36 @@
+
+### …c7f22a relaunch 2026-10-07T01:27:17Z; last save before: 2026-10-06T16:10:47.852Z Unit 4 Dev
+  saved position record: PlayerPositionSaver {
+    "scene": 2,
+    "position": {
+        "x": -99.70429992675781,
+        "y": -23.021760940551759,
+        "z": -340.936279296875
+    },
+    "rotation": {
+        "x": 0.0,
+        "y": 0.78368127
+  first positions after relaunch: 01:27:28 {"x":787.31,"y":-69.1,"z":-639.68} | 01:27:39 {"z":-639.68,"x":787.31,"y":-69.1} | 01:27:49 {"y":-69.1,"z":-639.68,"x":787.31} | 01:27:59 {"x":787.31,"y":-69.1,"z":-639.68}
+  first dialogue events: 01:27:43 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":88,"nodeId":0} | 01:27:44 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":88,"nodeId":19} | 01:27:44 DialogueEvent {"dialogueEventType":"DialogueStartEvent","conversationId":88} | 01:30:33 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":88,"nodeId":1} | 01:30:39 DialogueEvent {"nodeId":2,"dialogueEventType":"DialogueNodeEvent","conversationId":88} | 01:30:47 DialogueEvent {"dialogueEventType":"DialogueFinishEvent","conversationId":88}
+  event types in 6 min: {"DEBUGMenu":3,"gameWindowFocusEvent":2,"gameStartEvent":1,"PlayerPositionEvent":25,"DialogueEvent":6,"questEvent":1,"InputEvent":7,"gameWindowUnfocusEvent":1}
+
+### …8b8703 relaunch 2026-10-15T14:55:57Z; last save before: 2026-10-15T14:45:14.699Z Unit 2 Prod (Refactor)
+  saved position record: PlayerPositionSaver {
+    "scene": 2,
+    "position": {
+        "x": 585.0180053710938,
+        "y": 138.59536743164063,
+        "z": 1451.741943359375
+    },
+    "rotation": {
+        "x": 0.0,
+        "y": 0.2180892676
+  first positions after relaunch: 14:56:13 {"x":1095.80994,"y":153.11,"z":1366.37573} | 14:56:23 {"y":138.195374,"z":1451.742,"x":585.018} | 14:57:34 {"z":174.636215,"x":330.338135,"y":-73.01} | 14:57:44 {"x":330.338135,"y":-70.34184,"z":174.636215}
+  first dialogue events: 14:57:42 DialogueEvent {"nodeId":1,"dialogueEventType":"DialogueNodeEvent","conversationId":10} | 14:57:42 DialogueEvent {"dialogueEventType":"DialogueStartEvent","conversationId":10} | 14:57:46 DialogueEvent {"conversationId":10,"dialogueEventType":"DialogueFinishEvent"} | 14:57:46 DialogueEvent {"nodeId":2,"dialogueEventType":"DialogueNodeEvent","conversationId":10} | 14:57:46 DialogueEvent {"dialogueEventType":"DialogueStartEvent","conversationId":10} | 14:57:49 DialogueEvent {"dialogueEventType":"DialogueFinishEvent","conversationId":10} | 14:57:51 DialogueEvent {"nodeId":224,"dialogueEventType":"DialogueNodeEvent","conversationId":10} | 14:57:51 DialogueEvent {"dialogueEventType":"DialogueStartEvent","conversationId":10} | 14:58:58 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":10,"nodeId":3} | 14:59:07 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":10,"nodeId":4} | 14:59:14 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":10,"nodeId":6} | 14:59:21 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":10,"nodeId":7}
+  event types in 6 min: {"gameWindowFocusEvent":2,"gameStartEvent":2,"DEBUGMenu":3,"questEvent":2,"PlayerPositionEvent":28,"DaniEvent":2,"InputEvent":56,"crash":1,"DialogueEvent":27}
+
+### …8b8703 relaunch 2026-10-15T14:38:18Z; last save before: none
+  saved position record: none
+  first positions after relaunch: 14:38:48 {"x":1095.80994,"y":153.11,"z":1366.37573} | 14:38:57 {"x":723.9399,"y":132.43663,"z":1257.78235} | 14:39:07 {"x":723.9399,"y":128.260834,"z":1257.78235} | 14:39:17 {"x":723.9399,"y":128.260834,"z":1257.78235}
+  first dialogue events: 14:42:47 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":20,"nodeId":1} | 14:42:47 DialogueEvent {"dialogueEventType":"DialogueStartEvent","conversationId":20} | 14:42:52 DialogueEvent {"conversationId":20,"dialogueEventType":"DialogueFinishEvent"} | 14:42:58 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":20,"nodeId":4} | 14:42:58 DialogueEvent {"dialogueEventType":"DialogueStartEvent","conversationId":20} | 14:43:01 DialogueEvent {"dialogueEventType":"DialogueFinishEvent","conversationId":20} | 14:43:12 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":20,"nodeId":5} | 14:43:12 DialogueEvent {"dialogueEventType":"DialogueStartEvent","conversationId":20} | 14:43:17 DialogueEvent {"nodeId":6,"dialogueEventType":"DialogueNodeEvent","conversationId":20} | 14:43:24 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":20,"nodeId":8} | 14:43:46 DialogueEvent {"nodeId":10,"dialogueEventType":"DialogueNodeEvent","conversationId":20} | 14:43:51 DialogueEvent {"dialogueEventType":"DialogueNodeEvent","conversationId":20,"nodeId":13}
+  event types in 6 min: {"DEBUGMenu":2,"gameWindowFocusEvent":2,"gameStartEvent":1,"gameWindowUnfocusEvent":1,"InputEvent":291,"PlayerPositionEvent":33,"questEvent":1,"DialogueEvent":15}

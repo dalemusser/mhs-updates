@@ -1,0 +1,60 @@
+window: 2026-09-26T12:51:57.940-0700 .. 2026-10-24T12:28:13.902-0700
+
+== level/msg counts ==
+   9181  info   cleanup: removed old states
+    154  info   template page compiled
+     87  warn   restricted API key used outside its user ids
+     59  warn   CSRF validation failed
+     58  info   game state deleted
+     21  info   player settings deleted
+     15  warn   health check: mongodb ping failed
+      8  warn   API request rejected: invalid API key
+      6  error  failed to encode settings response
+      3  error  failed to save game state
+
+== restricted-key use outside its user ids (path, ids, refused) ==
+11 ('/api/settings/load', ('…c7f56d',), False)
+7 ('/api/settings/load', ('…c7f578',), False)
+7 ('/api/state/save', ('…c7f56d',), False)
+6 ('/api/settings/load', ('…c7f542',), False)
+6 ('/api/state/save', ('…c7f578',), False)
+5 ('/api/state/save', ('…c7f542',), False)
+5 ('/api/state/save', ('…c7f579',), False)
+4 ('/api/state/save', ('…58a168',), False)
+4 ('/api/state/save', ('…58a16a',), False)
+4 ('/api/state/load', ('…c7f56d',), False)
+4 ('/api/settings/load', ('…c7f579',), False)
+3 ('/api/state/save', ('…c7f53b',), False)
+3 ('/api/settings/load', ('…c7f537',), False)
+2 ('/api/settings/load', ('…c7f53b',), False)
+2 ('/api/state/load', ('…c7f537',), False)
+2 ('/api/state/save', ('…58a169',), False)
+2 ('/api/state/load', ('…c7f578',), False)
+2 ('/api/state/save', ('…c7f570',), False)
+2 ('/api/settings/load', ('…c7f570',), False)
+1 ('/api/state/load', ('…234567',), False)
+1 ('/api/state/load', ('mhs_developer',), False)
+1 ('/api/state/load', ('…c7f53b',), False)
+1 ('/api/state/save', ('…58a163',), False)
+1 ('/api/settings/save', ('…58a169',), False)
+1 ('/api/state/save', ('…58a1ae',), False)
+by day: {'2026-10-02': 2, '2026-10-04': 10, '2026-10-05': 74, '2026-10-07': 1}
+
+== rejected requests by day/msg/path ==
+1 ('2026-10-02', 'API request rejected: invalid API key', '/api/settings/delete')
+4 ('2026-10-02', 'API request rejected: invalid API key', '/api/state/delete')
+3 ('2026-10-02', 'API request rejected: invalid API key', '/api/state/load')
+
+== failed/cleanup warn+error lines (first 60) ==
+('2026-09-29T10:46:33.944-0700', 'error', 'failed to save game state', 'context canceled', '…8b6785', 'mhs')
+('2026-09-30T06:58:42.767-0700', 'error', 'failed to encode settings response', 'write tcp <ip>:443-><ip>:57564: write: broken pipe', '', '')
+('2026-09-30T06:58:42.983-0700', 'error', 'failed to encode settings response', 'write tcp <ip>:443-><ip>:57550: write: broken pipe', '', '')
+('2026-09-30T06:58:43.348-0700', 'error', 'failed to encode settings response', 'write tcp <ip>:443-><ip>:57540: write: broken pipe', '', '')
+('2026-09-30T06:58:43.501-0700', 'error', 'failed to encode settings response', 'write tcp <ip>:443-><ip>:57594: write: broken pipe', '', '')
+('2026-09-30T06:58:43.614-0700', 'error', 'failed to encode settings response', 'write tcp <ip>:443-><ip>:57578: write: broken pipe', '', '')
+('2026-09-30T06:58:45.322-0700', 'error', 'failed to encode settings response', 'write tcp <ip>:443-><ip>:57572: write: broken pipe', '', '')
+('2026-09-30T08:15:05.008-0700', 'error', 'failed to save game state', 'context canceled', '…c7f540', 'mhs')
+('2026-10-06T07:00:05.829-0700', 'error', 'failed to record API stats', 'connection(<docdb-host>:27017[-17584]) incomplete read of message header: context deadline exceeded: read tcp <ip>:40248-><ip>:27017: i/o timeout', '', '')
+('2026-10-07T13:20:47.065-0700', 'error', 'failed to save game state', 'context canceled', '…c7f56c', 'mhs')
+
+== cleanup counts == {('cleanup: removed old states', 1): 8992, ('cleanup: removed old states', 3): 7, ('cleanup: removed old states', 2): 180, ('cleanup: removed old states', 4): 1, ('cleanup: removed old states', 5): 1}

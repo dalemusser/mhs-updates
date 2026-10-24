@@ -1,0 +1,78 @@
+saves since 2026-09-14: 1970; bytes min=41902 p50=42456 p90=45351 p99=45421 max=45454; with SettingsSaver record: 0; with CharacterCustomization record: 0
+record types since 2026-09-14: DialogueSystemSaver n=1970 avg=41884 max=42228; PositionSaver n=2395 avg=266 max=310; MultiActiveSaver n=2214 avg=243 max=774; DoorLockSaver n=7417 avg=51 max=52; MultiEnabledSaver n=2961 avg=98 max=350; ActiveSaver n=3995 avg=22 max=23; CustomWaypointSaver n=270 avg=143 max=158; CheckpointSaver n=2383 avg=15 max=16; EnabledSaver n=1049 avg=24 max=24; Prefab_SuperNutrientPipe n=261 avg=81 max=82; UIObjectSwitcher_Gameplay_Unit3 n=261 avg=53 max=53; Geometry_Intact n=261 avg=22 max=22; PuzzleSaver n=90 avg=29 max=29
+
+########## …8b8703 window 2026-10-15T14:00:00Z .. 2026-10-15T15:30:00Z
+mhs_user_progress: {"completed_units":["unit1","unit2","unit3","unit4"],"created_at":"2026-10-06T14:32:07.958Z","current_unit":"unit5","updated_at":"2026-10-19T13:31:02.908Z"}
+saves: 2026-10-15T14:45:14.699Z Unit 2 Prod (Refactor) cp=4 | 2026-10-15T14:56:13.571Z Unit 2 Prod (Refactor) cp=1 | 2026-10-15T15:00:03.637Z Unit 3 Dev cp=0 | 2026-10-15T15:12:11.879Z Unit 3 Dev cp=0 | 2026-10-16T14:35:51.921Z Unit 3 Dev cp=0
+events: 1513
+  14:38:18 DEBUGMenu MainMenu v20261005-12466 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  14:38:18 gameWindowFocusEvent MainMenu v20261005-12466 {"":true}
+  14:38:18 gameStartEvent MainMenu v20261005-12466 {"":true}
+  14:38:23 gameWindowUnfocusEvent Transition v20261005-12466 {"":false}
+  14:38:31 gameWindowFocusEvent Transition v20261005-12466 {"":true}
+  14:38:37 DEBUGMenu Unit 2 Prod (Refactor) v20261005-12466 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  14:38:48 questEvent Unit 2 Prod (Refactor) v20261005-12466 {"questEventType":"questActiveEvent","questID":"23","questName":"Foraged Forging"}
+  14:48:17 gameWindowUnfocusEvent Unit 2 Prod (Refactor) v20261005-12466 {"":false}
+  14:48:22 gameWindowFocusEvent Unit 2 Prod (Refactor) v20261005-12466 {"":true}
+  14:55:56 DEBUGMenu MainMenu v20261005-12466 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  14:55:57 gameWindowFocusEvent MainMenu v20261005-12466 {"":true}
+  14:55:57 gameStartEvent MainMenu v20261005-12466 {"":true}
+  14:56:06 DEBUGMenu Unit 2 Prod (Refactor) v20261005-12466 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  14:56:13 questEvent Unit 2 Prod (Refactor) v20261005-12466 {"questEventType":"questActiveEvent","questID":"23","questName":"Foraged Forging"}
+  14:57:10 DEBUGMenu MainMenu v20261005-12466 {"isOpened":false,"actionType":"DebugMenuStateChanged"}
+  14:57:10 gameStartEvent MainMenu v20261005-12466 {"":true}
+  14:57:10 gameWindowFocusEvent MainMenu v20261005-12466 {"":true}
+  14:57:28 DEBUGMenu Unit 3 Dev v20261005-12466 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  14:57:34 crash  v2.8.9 {"unitId":"unit3","workspace":"mhs","isPWA":true,"type":"unhandled_rejection","message":"A user gesture is req
+  15:00:03 questEvent Unit 3 Dev v20261005-12466 {"questEventType":"questActiveEvent","questID":"16","questName":"Supply Run"}
+  15:10:05 gameWindowUnfocusEvent Unit 3 Dev v20261005-12466 {"":false}
+  15:10:07 gameWindowFocusEvent Unit 3 Dev v20261005-12466 {"":true}
+audit events naming the user (recent): 
+
+########## …c7f22a window 2026-10-06T15:00:00Z .. 2026-10-07T02:30:00Z
+mhs_user_progress: {"completed_units":["unit1","unit2","unit3"],"created_at":"2026-09-22T14:14:37.363Z","current_unit":"unit4","updated_at":"2026-10-05T13:52:23.060Z"}
+saves: 2026-10-05T16:05:30.923Z Unit 4 Dev - Dungeon cp=0 | 2026-10-06T13:46:31.036Z Unit 4 Dev - Dungeon cp=0 | 2026-10-06T14:24:55.529Z Unit 4 Dev cp=3 | 2026-10-06T16:10:47.852Z Unit 4 Dev cp=3 | 2026-10-07T01:30:40.008Z Unit 4 Dev cp=0
+events: 96
+  16:09:52 gameWindowFocusEvent MainMenu v20260914- {"":true}
+  16:09:52 gameStartEvent MainMenu v20260914- {"":true}
+  16:10:32 DEBUGMenu Unit 4 Dev v20260914- {"isOpened":false,"actionType":"DebugMenuStateChanged"}
+  16:10:37 crash  v2.8.1 {"stack":"","phase":"running","unitId":"unit4","workspace":"mhs","isPWA":true,"type":"unhandled_rejection","me
+  16:10:37 questEvent Unit 4 Dev v20260914- {"questEventType":"questActiveEvent","questID":"40","questName":"Power Play"}
+  16:11:29 gameWindowUnfocusEvent Unit 4 Dev v20260914- {"":false}
+  01:27:17 DEBUGMenu MainMenu v20261005-12466 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  01:27:17 gameWindowFocusEvent MainMenu v20261005-12466 {"":true}
+  01:27:17 gameStartEvent MainMenu v20261005-12466 {"":true}
+  01:27:24 DEBUGMenu Unit 4 Dev v20261005-12466 {"actionType":"DebugMenuStateChanged","isOpened":false}
+  01:30:39 questEvent Unit 4 Dev v20261005-12466 {"questEventType":"questActiveEvent","questID":"39","questName":"Well, What Have We Here?"}
+  01:31:31 gameWindowUnfocusEvent Unit 4 Dev v20261005-12466 {"":false}
+  01:31:35 gameWindowFocusEvent Unit 4 Dev v20261005-12466 {"":true}
+audit events naming the user (recent): 
+
+########## …c7f231 window 2026-10-06T13:00:00Z .. 2026-10-06T14:30:00Z
+mhs_user_progress: {"completed_units":["unit1"],"created_at":"2026-09-22T14:13:48.523Z","current_unit":"unit2","updated_at":"2026-10-06T13:51:39.474Z"}
+saves: 2026-10-05T14:21:35.570Z Unit 3 Dungeon Dev cp=0 | 2026-10-06T13:47:54.148Z Unit 3 Dungeon Dev cp=0 | 2026-10-06T13:54:13.986Z Unit 2 Prod (Refactor) cp=0 | 2026-10-06T14:03:04.584Z Unit 2 Prod (Refactor) cp=1 | 2026-10-06T14:09:57.210Z Unit 2 Prod (Refactor) cp=1
+events: 1392
+  13:47:13 gameWindowFocusEvent MainMenu v20260914- {"":true}
+  13:47:13 gameStartEvent MainMenu v20260914- {"":true}
+  13:47:29 DEBUGMenu Unit 3 Dungeon Dev v20260914- {"actionType":"DebugMenuStateChanged","isOpened":false}
+  13:47:34 questEvent Unit 3 Dungeon Dev v20260914- {"questEventType":"questActiveEvent","questID":"18","questName":"Forsaken Facility"}
+  13:52:34 gameWindowFocusEvent MainMenu v20260914- {"":true}
+  13:52:34 gameStartEvent MainMenu v20260914- {"":true}
+  13:52:47 DEBUGMenu Unit 2 Prod (Refactor) v20260914- {"isOpened":false,"actionType":"DebugMenuStateChanged"}
+  13:54:13 questEvent Unit 2 Prod (Refactor) v20260914- {"questEventType":"questActiveEvent","questID":"21","questName":"Escape the Ruin"}
+  13:59:09 questEvent Unit 2 Prod (Refactor) v20260914- {"questEventType":"questFinishEvent","questID":"21","questName":"Escape the Ruin","questSuccessOrFailure":"Suc
+  13:59:47 gameWindowUnfocusEvent Unit 2 Prod (Refactor) v20260914- {"":false}
+  13:59:52 gameWindowFocusEvent Unit 2 Prod (Refactor) v20260914- {"":true}
+  14:03:04 questEvent Unit 2 Prod (Refactor) v20260914- {"questEventType":"questActiveEvent","questID":"23","questName":"Foraged Forging"}
+  14:06:48 questEvent Unit 2 Prod (Refactor) v20260914- {"questEventType":"questFinishEvent","questID":"23","questName":"Foraged Forging","questSuccessOrFailure":"Suc
+  14:07:28 questEvent Unit 2 Prod (Refactor) v20260914- {"questEventType":"questActiveEvent","questID":"22","questName":"Getting the Band Back Together"}
+  14:09:18 gameWindowUnfocusEvent Unit 2 Prod (Refactor) v20260914- {"":false}
+  14:09:18 gameWindowFocusEvent Unit 2 Prod (Refactor) v20260914- {"":true}
+  14:09:19 gameWindowUnfocusEvent Unit 2 Prod (Refactor) v20260914- {"":false}
+  14:09:46 gameWindowFocusEvent MainMenu v20260914- {"":true}
+  14:09:46 gameStartEvent MainMenu v20260914- {"":true}
+  14:09:56 DEBUGMenu Unit 2 Prod (Refactor) v20260914- {"actionType":"DebugMenuStateChanged","isOpened":false}
+  14:09:57 questEvent Unit 2 Prod (Refactor) v20260914- {"questEventType":"questActiveEvent","questID":"24","questName":"Investigate the Temple"}
+  14:09:58 questEvent Unit 2 Prod (Refactor) v20260914- {"questID":"24","questName":"Investigate the Temple","questEventType":"questActiveEvent"}
+  14:13:09 gameWindowFocusEvent Unit 2 Prod (Refactor) v20260914- {"":true}
+audit events naming the user (recent): 

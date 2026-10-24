@@ -1,0 +1,665 @@
+=== all time: path / status / error_message / n / first / last ===
+/api/settings/load | 400 | Missing required fields | 8083 | 2026-03-06 | 2026-07-23
+/api/settings/load | 400 | 'user_id' must be a 24-character lowercase hex string | 962 | 2026-05-26 | 2026-10-02
+/api/settings/load | 400 | Invalid JSON payload | 51 | 2026-03-24 | 2026-04-01
+/api/settings/load | 401 |  | 213 | 2026-03-20 | 2026-03-24
+/api/settings/load | 500 | Failed to load settings: context canceled | 3 | 2026-03-24 | 2026-05-06
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169468]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-41422]) incomplete read of message header: context canceled | 1 | 2026-06-03 | 2026-06-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195972]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170484]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-92656]) incomplete read of full message: context canceled | 1 | 2026-03-19 | 2026-03-19
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-196015]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201198]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201179]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195976]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170361]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170523]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202222]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170453]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170475]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170340]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170369]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-355096]) incomplete read of full message: context canceled | 1 | 2026-05-08 | 2026-05-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169500]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170368]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170470]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170476]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202236]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195871]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170437]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201221]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195877]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-128209]) incomplete read of full message: context canceled | 1 | 2026-03-26 | 2026-03-26
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195999]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170389]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-92658]) incomplete read of full message: context canceled | 1 | 2026-03-19 | 2026-03-19
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201275]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169483]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195868]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169383]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170432]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202203]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195977]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170541]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201292]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170502]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201200]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195878]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201253]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202207]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195952]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-127153]) incomplete read of message header: context canceled | 1 | 2026-03-26 | 2026-03-26
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170364]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170480]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201199]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170371]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170522]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170546]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170498]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170416]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170456]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-82955]) incomplete read of full message: context canceled | 1 | 2026-03-17 | 2026-03-17
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195912]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170472]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170405]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202276]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201206]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170360]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-82976]) incomplete read of message header: context canceled | 1 | 2026-03-17 | 2026-03-17
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170390]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170392]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170495]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201216]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201308]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201260]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-122847]) incomplete read of full message: context canceled | 1 | 2026-03-25 | 2026-03-25
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170524]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195935]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201256]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195858]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170342]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170409]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170370]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195875]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170384]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169416]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201236]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-344342]) incomplete read of message header: context canceled | 1 | 2026-05-06 | 2026-05-06
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201193]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170435]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201257]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170455]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170458]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201167]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-386693]) incomplete read of message header: context canceled | 1 | 2026-05-14 | 2026-05-14
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170459]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-344348]) incomplete read of message header: context canceled | 1 | 2026-05-06 | 2026-05-06
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-41423]) incomplete read of message header: context canceled | 1 | 2026-06-03 | 2026-06-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170366]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201279]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-196018]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201195]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170471]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201262]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170382]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202242]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201197]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195993]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202215]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195870]) incomplete read of message header: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201201]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195914]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-196019]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201177]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170481]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195951]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169452]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170496]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201220]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170393]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170494]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170386]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170539]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170501]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170391]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-196034]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201293]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201176]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201295]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195984]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202221]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201239]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170543]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170417]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170548]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170406]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170525]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169502]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-127883]) incomplete read of full message: context canceled | 1 | 2026-03-26 | 2026-03-26
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201278]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-196011]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201235]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202244]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170485]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-196013]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170358]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201237]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170429]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170414]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170506]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201218]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195893]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202275]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169454]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170477]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202218]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195891]) incomplete read of message header: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-158879]) incomplete read of message header: context canceled | 1 | 2026-04-01 | 2026-04-01
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169419]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169467]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195958]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202223]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170408]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-386696]) incomplete read of message header: context canceled | 1 | 2026-05-14 | 2026-05-14
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201298]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170563]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169386]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195975]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170526]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170363]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201217]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170415]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170434]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170515]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169418]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-196016]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170431]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170411]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170545]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195881]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-98025]) incomplete read of message header: context canceled | 1 | 2026-03-20 | 2026-03-20
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195917]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-201258]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170388]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202238]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195929]) incomplete read of message header: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-196017]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170383]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195876]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170394]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170500]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170433]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170450]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195892]) incomplete read of message header: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195974]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170387]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170430]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170520]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202216]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195933]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202219]) incomplete read of message header: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195918]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-112651]) incomplete read of full message: context canceled | 1 | 2026-03-23 | 2026-03-23
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-371293]) incomplete read of full message: context canceled | 1 | 2026-05-11 | 2026-05-11
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-82973]) incomplete read of message header: context canceled | 1 | 2026-03-17 | 2026-03-17
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169414]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170516]) incomplete read of message header: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170474]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170439]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-169485]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170538]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170564]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170344]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195956]) incomplete read of message header: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195949]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-202220]) incomplete read of full message: context canceled | 1 | 2026-04-09 | 2026-04-09
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170549]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195910]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170497]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-195934]) incomplete read of full message: context canceled | 1 | 2026-04-08 | 2026-04-08
+/api/settings/load | 500 | Failed to load settings: connection(<docdb-host>:27017[-170473]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/settings/save | 400 | Missing required fields | 78 | 2026-01-30 | 2026-07-17
+/api/settings/save | 400 | 'user_id' must be a 24-character lowercase hex string | 21 | 2026-05-25 | 2026-09-11
+/api/settings/save | 400 | Invalid JSON payload | 7 | 2026-03-10 | 2026-10-20
+/api/settings/save | 401 |  | 5 | 2026-03-20 | 2026-03-24
+/api/state/load | 400 | Missing required fields | 580 | 2026-01-29 | 2026-09-04
+/api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | 113 | 2026-05-25 | 2026-10-03
+/api/state/load | 401 |  | 3 | 2026-10-03 | 2026-10-03
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-148648]) incomplete read of full message: context canceled | 1 | 2026-03-30 | 2026-03-30
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-170326]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-154140]) incomplete read of full message: context canceled | 1 | 2026-03-31 | 2026-03-31
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-154119]) incomplete read of full message: context canceled | 1 | 2026-03-31 | 2026-03-31
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-154155]) incomplete read of full message: context canceled | 1 | 2026-03-31 | 2026-03-31
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-148652]) incomplete read of message header: context canceled | 1 | 2026-03-30 | 2026-03-30
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-154137]) incomplete read of full message: context canceled | 1 | 2026-03-31 | 2026-03-31
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-148662]) incomplete read of message header: context canceled | 1 | 2026-03-30 | 2026-03-30
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-154136]) incomplete read of full message: context canceled | 1 | 2026-03-31 | 2026-03-31
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-148654]) incomplete read of full message: context canceled | 1 | 2026-03-30 | 2026-03-30
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-122868]) incomplete read of full message: context canceled | 1 | 2026-03-25 | 2026-03-25
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-153532]) incomplete read of full message: context canceled | 1 | 2026-03-31 | 2026-03-31
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-170345]) incomplete read of full message: context canceled | 1 | 2026-04-03 | 2026-04-03
+/api/state/load | 500 | Failed to load saves: connection(<docdb-host>:27017[-148647]) incomplete read of message header: context canceled | 1 | 2026-03-30 | 2026-03-30
+/api/state/save | 400 | Missing required fields | 916 | 2026-02-06 | 2026-09-04
+/api/state/save | 400 | Invalid JSON payload | 145 | 2026-02-18 | 2026-09-22
+/api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | 29 | 2026-05-25 | 2026-09-11
+/api/state/save | 405 |  | 15 | 2026-03-25 | 2026-03-25
+/api/state/save | 500 | Failed to save data: context canceled | 9 | 2026-03-12 | 2026-10-07
+/api/state/save | 500 | Failed to save data: connection(<docdb-host>:27017[-358374]) incomplete read of message header: context canceled | 1 | 2026-05-09 | 2026-05-09
+/api/state/save | 500 | Failed to save data: connection(<docdb-host>:27017[-226381]) incomplete read of message header: context canceled | 1 | 2026-04-14 | 2026-04-14
+/api/state/save | 500 | Failed to save data: connection(<docdb-host>:27017[-408202]) incomplete read of message header: context canceled | 1 | 2026-05-18 | 2026-05-18
+/load | 400 | Missing required fields | 15 | 2026-01-29 | 2026-04-15
+/load | 401 |  | 3 | 2026-09-10 | 2026-09-10
+/save | 400 | Missing required fields | 512 | 2026-01-29 | 2026-04-16
+/save | 400 | Invalid JSON payload | 3 | 2026-01-30 | 2026-01-30
+
+=== last 28 days: day / path / status / n ===
+2026-09-29 | /api/state/save | 500 | 1
+2026-09-30 | /api/settings/save | 400 | 2
+2026-09-30 | /api/state/save | 500 | 1
+2026-10-02 | /api/settings/load | 400 | 3
+2026-10-02 | /api/state/load | 400 | 3
+2026-10-03 | /api/state/load | 400 | 1
+2026-10-03 | /api/state/load | 401 | 3
+2026-10-07 | /api/state/save | 500 | 1
+2026-10-20 | /api/settings/save | 400 | 1
+
+=== 5xx on state paths, all time: time / path / message / total_ms / body_size / ua ===
+2026-03-12T12:48:30.262Z | /api/state/save | Failed to save data: context canceled | 8474 | 1867816 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-25T16:27:39.400Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-122868]) incomplete read of full message: context canceled | 187 | 46 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-25T16:40:23.612Z | /api/state/save | Failed to save data: context canceled | 528 | 2459781 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-25T19:39:57.941Z | /api/state/save | Failed to save data: context canceled | 282 | 2045386 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-30T15:25:22.276Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-148648]) incomplete read of full message: context canceled | 166 | 52 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-30T15:25:22.288Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-148654]) incomplete read of full message: context canceled | 197 | 52 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-30T15:25:22.296Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-148662]) incomplete read of message header: context canceled | 187 | 52 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-30T15:25:22.313Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-148652]) incomplete read of message header: context canceled | 148 | 52 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-30T15:25:22.319Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-148647]) incomplete read of message header: context canceled | 182 | 52 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-31T13:42:36.254Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-153532]) incomplete read of full message: context canceled | 22 | 49 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-31T16:37:40.021Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-154155]) incomplete read of full message: context canceled | 432 | 47 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-31T16:37:40.038Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-154140]) incomplete read of full message: context canceled | 401 | 47 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-31T16:37:40.038Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-154136]) incomplete read of full message: context canceled | 335 | 47 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-31T16:37:40.038Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-154137]) incomplete read of full message: context canceled | 400 | 47 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-03-31T16:37:40.038Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-154119]) incomplete read of full message: context canceled | 402 | 47 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-04-03T18:45:53.269Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-170345]) incomplete read of full message: context canceled | 31 | 71 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-04-03T18:45:53.314Z | /api/state/load | Failed to load saves: connection(<docdb-host>:27017[-170326]) incomplete read of full message: context canceled | 28 | 71 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-04-14T08:18:14.503Z | /api/state/save | Failed to save data: connection(<docdb-host>:27017[-226381]) incomplete read of message header: context canceled | 536 | 2348746 | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+2026-05-09T07:43:09.334Z | /api/state/save | Failed to save data: context canceled | 2125 | 2355457 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-05-09T08:02:58.915Z | /api/state/save | Failed to save data: connection(<docdb-host>:27017[-358374]) incomplete read of message header: context canceled | 2162 | 2351952 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-05-17T19:27:04.651Z | /api/state/save | Failed to save data: context canceled | 2839 | 2088280 | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+2026-05-18T19:10:58.198Z | /api/state/save | Failed to save data: connection(<docdb-host>:27017[-408202]) incomplete read of message header: context canceled | 264 | 2389985 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-05-27T04:36:07.900Z | /api/state/save | Failed to save data: context canceled | 1029 | 2330472 | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+2026-09-29T17:46:33.884Z | /api/state/save | Failed to save data: context canceled | 62 | 49976 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-09-30T15:15:04.645Z | /api/state/save | Failed to save data: context canceled | 364 | 49905 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+2026-10-07T20:20:46.557Z | /api/state/save | Failed to save data: context canceled | 508 | 47720 | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 
+
+=== 4xx on state paths, last 90 days: time / path / status / message / body preview (shortened) / ua ===
+2026-07-29T22:31:43.462Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T05:14:52.451Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T05:14:59.452Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T05:16:20.569Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T05:16:23.588Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T05:19:23.128Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T05:19:24.572Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T05:48:15.004Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T05:48:16.140Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T06:10:50.399Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T06:10:51.119Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T06:11:21.843Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"Dialogue | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T19:57:17.158Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T19:57:18.004Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-30T22:32:47.845Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-31T07:15:33.980Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-31T07:16:57.950Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-31T07:54:53.328Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-31T07:54:55.516Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-31T07:55:17.705Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"Dialogue | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-31T07:57:00.556Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-07-31T14:53:35.417Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T14:54:34.321Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:26:52.145Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:27:17.423Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:27:17.505Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:27:17.516Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:28:43.210Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:29:07.776Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:35:41.380Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:36:06.586Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:42:24.137Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dungeon Dev","m_list":[{"key":"DialogueDialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-07-31T15:48:34.785Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dungeon Dev","m_list":[{"key":"DialogueDialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-06T20:05:18.205Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-06T20:05:58.179Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-06T20:08:05.285Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-06T20:39:29.704Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-06T20:47:27.508Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-07T16:56:22.160Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-07T16:58:34.016Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-07T17:21:58.333Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-07T17:22:28.101Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-07T17:28:14.648Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-07T17:28:41.981Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-07T17:30:54.869Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-07T17:32:10.858Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-07T20:52:07.935Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-07T20:52:07.990Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-07T20:52:40.377Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-07T20:53:16.155Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-07T21:13:29.093Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-08T07:48:13.226Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-08T07:48:17.894Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-11T00:09:33.928Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-11T00:09:43.125Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-11T00:10:54.885Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"ke | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-11T02:08:25.402Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-11T02:08:26.856Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-11T03:13:03.387Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-11T04:10:26.819Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-11T05:41:54.707Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-11T07:18:32.144Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-11T19:04:06.187Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20
+2026-08-11T19:04:46.886Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"Dialogue | Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20
+2026-08-12T22:59:47.369Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-12T23:00:51.023Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-12T23:04:50.732Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-12T23:05:32.187Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-12T23:33:44.279Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-12T23:34:19.880Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-12T23:35:28.363Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-12T23:43:59.364Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-12T23:48:45.085Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-13T19:30:57.270Z | /api/state/save | 400 | Invalid JSON payload |  | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-13T20:28:14.961Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-13T20:29:45.741Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-14T17:55:42.189Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-14T20:15:41.510Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-14T22:40:57.431Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-16T00:00:22.869Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-16T00:22:10.056Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-16T00:22:12.041Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-16T00:30:33.630Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-16T00:32:57.180Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dungeon Dev","m_list":[{"key":"DialogueDialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-16T00:33:50.735Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dungeon Dev","m_list":[{"key":"DialogueDialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-16T00:46:12.557Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T14:48:04.420Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T14:49:54.438Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T14:56:52.276Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:02:36.383Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:06:23.537Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:09:57.838Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:14:11.345Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:14:11.354Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:14:11.372Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:14:11.413Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:19:07.586Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:19:07.589Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:19:07.591Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:19:07.594Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:19:57.343Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:20:32.743Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:20:32.791Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:20:32.817Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T15:20:32.826Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:27:40.067Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:28:18.174Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:29:00.209Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:29:00.213Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:29:00.281Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:31:19.722Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:33:44.298Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:33:44.311Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:33:44.311Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:33:44.314Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:33:48.107Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:35:35.867Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:35:57.915Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:36:37.198Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:37:14.548Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:39:48.195Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:41:07.682Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:43:02.137Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:44:48.844Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:47:30.524Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:50:35.466Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:51:41.061Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T18:52:18.147Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T20:47:16.617Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T20:48:46.800Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T20:49:34.395Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T20:51:20.728Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T20:54:07.089Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T20:56:45.520Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T20:59:37.726Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T21:02:24.495Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T21:02:24.510Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T21:02:24.510Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T21:02:24.518Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T21:04:53.010Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-17T21:07:05.217Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T15:43:31.571Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20
+2026-08-18T15:43:33.286Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20
+2026-08-18T15:43:42.629Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"ke | Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20
+2026-08-18T15:43:42.636Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"ke | Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20
+2026-08-18T15:43:42.641Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"ke | Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20
+2026-08-18T15:43:42.646Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"ke | Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20
+2026-08-18T15:53:11.108Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-18T15:53:11.983Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-18T15:53:19.373Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"ke | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-18T15:53:19.374Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"ke | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-18T15:53:19.415Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"ke | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-18T15:53:19.429Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"ke | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-18T16:37:53.246Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T16:38:53.889Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T18:18:03.369Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T18:19:18.681Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T18:24:22.160Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T18:26:02.288Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T18:27:14.707Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T18:28:53.970Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T18:32:04.947Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-18T18:34:43.404Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-21T23:53:40.358Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-21T23:53:46.644Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-24T16:24:25.988Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-24T16:25:52.027Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-25T14:57:05.162Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20
+2026-08-25T14:57:07.188Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20
+2026-08-25T14:58:33.148Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"Dialogue | Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20
+2026-08-25T16:17:33.747Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-25T16:20:10.169Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-25T19:27:40.270Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-25T19:29:33.668Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-26T00:26:23.819Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T17:02:11.804Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-26T17:03:42.454Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dungeon Dev","m_list":[{"key":"DialogueDialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-26T17:25:33.239Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T17:25:54.190Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T17:40:03.294Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T17:47:46.648Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T18:01:24.225Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T18:06:31.130Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T18:36:04.244Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T18:42:17.120Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T18:50:44.613Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T18:53:52.720Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T19:11:54.348Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T19:20:31.330Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T19:28:14.911Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T19:36:42.884Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T19:48:21.562Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T23:31:25.607Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-26T23:31:26.518Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T14:17:09.049Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:17:24.574Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:18:35.567Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:18:39.014Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:20:42.880Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:21:02.026Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:21:12.672Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:22:27.915Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:22:45.977Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:25:23.408Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T14:25:24.883Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T16:07:22.962Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T16:07:38.791Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T16:08:43.760Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T16:08:47.583Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T19:56:26.508Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T19:56:28.720Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T19:56:58.185Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"Dialogue | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T19:57:00.182Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"Dialogue | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T19:58:44.973Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"Dialogue | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T20:03:15.900Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T20:05:52.080Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T20:08:57.269Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T20:11:01.060Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dungeon Dev","m_list":[{"key":"DialogueDialo | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T20:24:42.144Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T20:26:19.729Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T20:26:55.536Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T20:58:56.760Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T20:59:26.582Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T21:02:45.523Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T21:15:29.452Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T21:17:25.584Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T21:19:02.115Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T21:42:09.645Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T21:45:31.484Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T22:58:15.912Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T23:01:18.375Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T23:04:04.348Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T23:04:45.621Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T23:18:39.398Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T23:21:06.548Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T23:39:52.204Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-27T23:42:47.711Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-27T23:43:19.795Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T03:26:41.505Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 5 Dev - Dungeon","m_list":[{"key":"DialogueDia | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T03:55:45.580Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 5 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T16:54:09.239Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 2 Prod (Refactor)","m_list":[{"key":"DialogueD | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T17:04:36.818Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T20:48:55.939Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T20:48:58.428Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T20:49:09.074Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 3 Dev","m_list":[{"key":"Dialogue | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T20:51:24.137Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T20:52:27.320Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T20:55:05.029Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T21:22:29.555Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:22:31.121Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:23:53.491Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T21:25:09.336Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T21:27:01.193Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T21:33:32.216Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T21:49:22.975Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:49:26.809Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:49:54.766Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:49:58.052Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:50:22.946Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:50:25.191Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:50:49.735Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:50:50.912Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:51:15.473Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:51:17.452Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:56:21.427Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T21:56:22.390Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T22:38:28.548Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T22:41:35.991Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T22:42:10.745Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T22:53:03.413Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T22:53:27.027Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T22:55:58.311Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T22:56:24.242Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T23:01:39.636Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T23:02:13.023Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T23:15:53.444Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T23:16:18.499Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-08-28T23:17:32.775Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T23:17:57.216Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T23:19:34.918Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-08-28T23:20:05.923Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-02T23:07:17.606Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-02T23:07:18.923Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-02T23:07:53.547Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-02T23:07:55.307Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-02T23:08:17.237Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-02T23:08:22.575Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-02T23:08:55.059Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-02T23:08:56.208Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-02T23:09:28.092Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-02T23:09:29.114Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-04T18:16:26.362Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-04T18:22:12.507Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-04T18:23:12.113Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 4 Dev - Anderson Base","m_list":[{"key":"Dialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-04T18:23:12.120Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 4 Dev - Anderson Base","m_list":[{"key":"Dialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-04T18:23:38.994Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 4 Dev - Anderson Base","m_list":[{"key":"Dialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-04T18:23:39.003Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 4 Dev - Anderson Base","m_list":[{"key":"Dialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-04T18:24:07.161Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 4 Dev","m_list":[{"key":"DialogueDialogueSyste | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-04T18:25:13.101Z | /api/state/load | 400 | Missing required fields | {"user_id":"","game":"mhs","limit":1} | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-04T18:27:46.074Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 4 Dev - Anderson Base","m_list":[{"key":"Dialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-04T18:27:46.076Z | /api/state/save | 400 | Missing required fields | {"user_id":"","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 4 Dev - Anderson Base","m_list":[{"key":"Dialo | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-07T15:15:54.256Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36
+2026-09-07T15:15:54.980Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36
+2026-09-09T15:23:43.783Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-09T15:23:44.404Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T14:25:49.383Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T14:25:54.298Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T16:01:23.729Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T16:01:23.976Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T16:03:19.654Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T16:03:32.882Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T16:22:45.390Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T16:22:45.926Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T16:56:52.380Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T16:57:29.333Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-09-10T19:47:43.254Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64; rv:155.0) Gecko/20
+2026-09-10T19:47:55.042Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64; rv:155.0) Gecko/20
+2026-09-11T16:17:28.070Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64; rv:155.0) Gecko/20
+2026-09-11T16:17:29.244Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (X11; Linux x86_64; rv:155.0) Gecko/20
+2026-09-11T16:18:27.377Z | /api/state/save | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","save_data":{"m_version":0,"m_sceneName":"Unit 1 Dev","m_list":[{"key":"Dialogue | Mozilla/5.0 (X11; Linux x86_64; rv:155.0) Gecko/20
+2026-09-22T13:13:44.949Z | /api/state/save | 400 | Invalid JSON payload |  | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-09-22T13:26:27.075Z | /api/state/save | 400 | Invalid JSON payload |  | Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebK
+2026-10-02T15:18:03.296Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-10-02T15:18:52.912Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-10-02T15:54:03.536Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+2026-10-03T06:31:38.776Z | /api/state/load | 401 |  | {"user_id":"…000001","game":"keycheck"} | curl/8.7.1
+2026-10-03T06:31:39.070Z | /api/state/load | 401 |  | {"user_id":"…000001","game":"keycheck"} | curl/8.7.1
+2026-10-03T06:47:40.603Z | /api/state/load | 401 |  | {"user_id":"…000001","game":"keycheck"} | curl/8.7.1
+2026-10-03T06:58:31.270Z | /api/state/load | 400 | 'user_id' must be a 24-character lowercase hex string | {"user_id":"mhs_developer","game":"mhs","limit":1} | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Ap
+
+=== state 400s by month and message (all time) ===
+2026-01 | /api/state/load | Missing required fields | 21 | 37..37 B
+2026-02 | /api/state/load | Missing required fields | 138 | 37..37 B
+2026-02 | /api/state/save | Missing required fields | 304 | 21666..1819436 B
+2026-02 | /api/state/save | Invalid JSON payload | 11 | 0..0 B
+2026-03 | /api/state/load | Missing required fields | 179 | 37..37 B
+2026-03 | /api/state/save | Invalid JSON payload | 86 | 0..0 B
+2026-03 | /api/state/save | Missing required fields | 298 | 21674..2606452 B
+2026-04 | /api/state/load | Missing required fields | 90 | 37..37 B
+2026-04 | /api/state/save | Missing required fields | 100 | 21674..2449815 B
+2026-04 | /api/state/save | Invalid JSON payload | 8 | 0..0 B
+2026-05 | /api/state/load | 'user_id' must be a 24-character lowercase hex string | 6 | 44..52 B
+2026-05 | /api/state/load | Missing required fields | 33 | 37..68 B
+2026-05 | /api/state/save | 'user_id' must be a 24-character lowercase hex string | 7 | 59..45040 B
+2026-05 | /api/state/save | Missing required fields | 46 | 83..2362721 B
+2026-05 | /api/state/save | Invalid JSON payload | 37 | 0..0 B
+2026-06 | /api/state/load | Missing required fields | 14 | 37..37 B
+2026-06 | /api/state/load | 'user_id' must be a 24-character lowercase hex string | 10 | 50..50 B
+2026-06 | /api/state/save | Missing required fields | 21 | 45020..49966 B
+2026-07 | /api/state/load | 'user_id' must be a 24-character lowercase hex string | 27 | 46..50 B
+2026-07 | /api/state/load | Missing required fields | 18 | 37..37 B
+2026-07 | /api/state/save | 'user_id' must be a 24-character lowercase hex string | 6 | 45028..50029 B
+2026-07 | /api/state/save | Missing required fields | 30 | 21694..2072055 B
+2026-08 | /api/state/load | Missing required fields | 84 | 37..37 B
+2026-08 | /api/state/load | 'user_id' must be a 24-character lowercase hex string | 38 | 50..50 B
+2026-08 | /api/state/save | 'user_id' must be a 24-character lowercase hex string | 15 | 47918..50026 B
+2026-08 | /api/state/save | Missing required fields | 110 | 45143..50921 B
+2026-08 | /api/state/save | Invalid JSON payload | 1 | 0..0 B
+2026-09 | /api/state/load | Missing required fields | 3 | 37..37 B
+2026-09 | /api/state/load | 'user_id' must be a 24-character lowercase hex string | 28 | 50..50 B
+2026-09 | /api/state/save | Missing required fields | 7 | 45626..45879 B
+2026-09 | /api/state/save | 'user_id' must be a 24-character lowercase hex string | 1 | 45068..45068 B
+2026-09 | /api/state/save | Invalid JSON payload | 2 | 0..0 B
+2026-10 | /api/state/load | 'user_id' must be a 24-character lowercase hex string | 4 | 50..50 B
+
+=== api_stats / daily_stats shape ===
+api_stats: {"_id":"6adc3589a03c3baf1bd923f6","bucket":"2026-10-24T04:00:00.000Z","bucket_duration":"1h0m0s","stat_type":"state_load","max_ms":{"low":8,"high":0,"unsigned":false},"min_ms":{"low":7,"high":0,"unsigned":false},"requests":2,"total_ms":{"low":15,"high":0,"unsigned":false},"updated_at":"2026-10-24T04:35:45.678Z"}
+api_stats count: 7038
+daily_stats: empty
+daily_stats count: 0

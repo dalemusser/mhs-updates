@@ -1,0 +1,91 @@
+runtime_error crashes: 15
+
+crash 2026-09-30T17:53:30.832Z …8b6782 unit4 v2.8.1
+  last save before: none (retention or never saved)
+  save after:       2026-10-02T17:33:21.834Z Unit 4 Dev cp=6 (+2860 min)
+  save after:       2026-10-02T17:44:00.035Z Unit 4 Dev cp=6 (+2870 min)
+  first events after: 15s DialogueEvent; 15s DialogueEvent; 15s gameWindowUnfocusEvent; 15s gameWindowFocusEvent; 15s gameWindowFocusEvent; 15s gameStartEvent
+
+crash 2026-10-01T17:47:50.693Z …8b678e unit4 v2.8.1
+  last save before: none (retention or never saved)
+  save after:       2026-10-01T17:58:32.395Z Unit 5 Dev - Dungeon cp=-1 (+11 min)
+  save after:       2026-10-02T17:23:40.238Z Unit 5 Dev - Dungeon cp=0 (+1416 min)
+  first events after: 25s DialogueEvent; 25s DialogueEvent; 25s DialogueEvent; 25s DialogueEvent; 25s ObjectInterEvent; 25s InputEvent
+
+crash 2026-10-05T15:00:06.391Z …c7f53d unit4 v2.8.1
+  last save before: none (retention or never saved)
+  save after:       2026-10-07T13:21:39.783Z Unit 5 Dev - Dungeon cp=-1 (+2782 min)
+  save after:       2026-10-07T13:26:03.621Z Unit 5 Dev - Dungeon cp=0 (+2786 min)
+  first events after: 61s DialogueEvent; 61s DialogueEvent; 61s gameWindowUnfocusEvent; 61s gameWindowFocusEvent; 62s gameWindowFocusEvent; 62s gameStartEvent
+
+crash 2026-10-05T15:17:27.107Z …c7f56d unit4 v2.8.1
+  last save before: none (retention or never saved)
+  save after:       2026-10-08T14:11:24.129Z Unit 5 Dev - Dungeon cp=-1 (+4254 min)
+  save after:       2026-10-08T14:15:41.884Z Unit 5 Dev - Dungeon cp=0 (+4258 min)
+  first events after: 45s PlayerPositionEvent; 46s gameWindowFocusEvent; 46s PlayerPositionEvent; 46s DialogueEvent; 46s DialogueEvent; 46s PlayerPositionEvent
+
+crash 2026-10-06T14:32:04.098Z …c7f227 unit4 v2.8.1
+  last save before: none (retention or never saved)
+  save after:       2026-10-06T15:14:24.772Z Unit 5 Dev - Dungeon cp=-1 (+42 min)
+  save after:       2026-10-07T14:21:22.589Z Unit 5 Dev - Dungeon cp=0 (+1429 min)
+  first events after: 1863s gameWindowFocusEvent; 1863s gameStartEvent; 1872s DEBUGMenu; 1878s PlayerPositionEvent; 1880s InputEvent; 1880s InputEvent
+
+crash 2026-10-07T15:08:12.683Z …c7f535 unit4 v2.8.1
+  last save before: none (retention or never saved)
+  save after:       2026-10-08T13:44:06.650Z Unit 5 Dev - Dungeon cp=0 (+1356 min)
+  save after:       2026-10-08T13:46:30.069Z Unit 5 Dev - Dungeon cp=0 (+1358 min)
+  first events after: 79931s PuzzlePieceVisibleEvent; 79931s PuzzlePieceVisibleEvent; 79931s PuzzlePieceVisibleEvent; 79931s PuzzlePieceVisibleEvent; 79931s PuzzlePieceVisibleEvent; 79931s PuzzlePieceVisibleEvent
+
+crash 2026-10-08T13:31:13.601Z …c7f538 unit4 v2.8.1
+  last save before: none (retention or never saved)
+  save after:       2026-10-08T13:42:10.356Z Unit 5 Dev - Dungeon cp=0 (+11 min)
+  save after:       2026-10-08T13:50:48.541Z Unit 5 Dev cp=0 (+20 min)
+  first events after: 82s InputEvent; 82s InputEvent; 82s InputEvent; 82s InputEvent; 82s InputEvent; 82s InputEvent
+
+crash 2026-10-12T14:11:25.049Z …6b1473 unit2 v2.8.1
+  last save before: none (retention or never saved)
+  save after:       2026-10-15T14:04:08.963Z Unit 2 Prod (Refactor) cp=12 (+4313 min)
+  save after:       2026-10-15T14:04:39.119Z Unit 2 Prod (Refactor) cp=12 (+4313 min)
+  first events after: 0s PuzzlePieceVisibleEvent; 0s PuzzlePieceVisibleEvent; 0s InputEvent; 0s InputEvent; 0s PuzzlePieceVisibleEvent; 1s PuzzlePieceVisibleEvent
+
+crash 2026-10-15T15:33:15.801Z …b56b08 unit4 v2.8.4
+  last save before: none (retention or never saved)
+  save after:       2026-10-16T14:58:56.609Z Unit 5 Dev - Dungeon cp=-1 (+1406 min)
+  save after:       2026-10-16T15:04:07.707Z Unit 5 Dev - Dungeon cp=0 (+1411 min)
+  first events after: 111s DialogueEvent; 111s DialogueEvent; 111s gameStartEvent; 111s gameWindowFocusEvent; 111s DEBUGMenu; 120s DEBUGMenu
+
+crash 2026-10-16T04:31:43.529Z …b56aeb unit4 v2.8.4
+  last save before: none (retention or never saved)
+  save after:       2026-10-16T13:11:18.361Z Unit 5 Dev - Dungeon cp=-1 (+520 min)
+  save after:       2026-10-16T13:18:12.924Z Unit 5 Dev - Dungeon cp=0 (+526 min)
+  first events after: 83s gameWindowFocusEvent; 83s gameWindowUnfocusEvent; 83s DialogueEvent; 83s DialogueEvent; 83s gameStartEvent; 83s gameWindowFocusEvent
+
+crash 2026-10-16T13:50:05.357Z …b56ae3 unit4 v2.8.4
+  last save before: none (retention or never saved)
+  save after:       2026-10-19T22:23:00.678Z Unit 5 Dev - Dungeon cp=0 (+4833 min)
+  save after:       2026-10-19T22:25:31.625Z Unit 5 Dev - Dungeon cp=0 (+4835 min)
+  first events after: 35s gameWindowFocusEvent; 35s gameWindowUnfocusEvent; 35s gameWindowFocusEvent; 35s gameWindowUnfocusEvent; 35s DialogueEvent; 35s DialogueEvent
+
+crash 2026-10-16T15:47:14.489Z …b56b0a unit4 v2.8.4
+  last save before: none (retention or never saved)
+  save after:       2026-10-20T20:48:17.103Z Unit 5 Dev - Dungeon cp=0 (+6061 min)
+  save after:       2026-10-20T20:50:44.228Z Unit 5 Dev - Dungeon cp=0 (+6063 min)
+  first events after: 27s gameWindowFocusEvent; 27s gameWindowUnfocusEvent; 27s gameWindowFocusEvent; 27s gameWindowUnfocusEvent; 27s gameWindowFocusEvent; 27s gameWindowUnfocusEvent
+
+crash 2026-10-20T17:47:32.486Z …b56bdd unit4 v2.8.9
+  last save before: none (retention or never saved)
+  save after:       2026-10-20T17:48:35.491Z Unit 4 Dev cp=6 (+1 min)
+  save after:       2026-10-20T17:59:31.516Z Unit 4 Dev cp=6 (+12 min)
+  first events after: 2s gameWindowUnfocusEvent; 55s gameWindowUnfocusEvent; 55s gameWindowFocusEvent; 55s gameWindowUnfocusEvent; 55s gameStartEvent; 55s gameWindowFocusEvent
+
+crash 2026-10-20T19:36:02.996Z …b56c18 unit4 v2.8.9
+  last save before: 2026-10-20T19:33:23.096Z Unit 4 Dev cp=6 (3 min before)
+  save after:       2026-10-20T19:37:34.567Z Unit 4 Dev cp=6 (+2 min)
+  save after:       2026-10-20T19:47:40.929Z Unit 4 Dev cp=6 (+12 min)
+  first events after: 80s DialogueEvent; 80s DialogueEvent; 81s gameStartEvent; 81s gameWindowFocusEvent; 81s DEBUGMenu; 89s DEBUGMenu
+
+crash 2026-10-20T21:38:26.411Z …b56c17 unit4 v2.8.9
+  last save before: none (retention or never saved)
+  save after:       2026-10-21T21:21:28.782Z Unit 5 Dev - Dungeon cp=0 (+1423 min)
+  save after:       2026-10-21T21:24:04.591Z Unit 5 Dev - Dungeon cp=0 (+1426 min)
+  first events after: 19s DialogueEvent; 19s DialogueEvent; 19s gameStartEvent; 19s gameWindowFocusEvent; 19s DEBUGMenu; 26s DEBUGMenu

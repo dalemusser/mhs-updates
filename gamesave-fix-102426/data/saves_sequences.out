@@ -1,0 +1,49 @@
+saves read: 5591
+checkpoint saver keys seen: {"CheckpointTrackerUnit3CheckpointSaver":851,"CheckpointTrackerUnit1CheckpointSaver":699,"CheckpointTrackerUnit2CheckpointSaver":857,"CheckpointTrackerUnit4CheckpointSaver":1302,"CheckpointTrackerUnit5DungeonCheckpointSaver":1934,"CheckpointTrackerUnit5CheckpointSaver":1011}
+saves with 0 / 1 / >1 checkpoint records: 5 / 4538 / 1048
+approx save_data bytes (sum of record strings): min=10403 p50=46660 p90=2071002 p99=2703046 max=8644398
+collStats: count=5592 avgObjSize=784312.1564735336 size=4385873579 storageSize=906346496
+record types: SettingsSaver n=2757 avg=1452709 max=8624527; DialogueSystemSaver n=5589 avg=32769 max=42322; CharCustomCharacterCustomization_DataController n=586 avg=309572 max=2051637; PositionSaver n=7564 avg=270 max=311; MultiActiveSaver n=7159 avg=241 max=774; DoorLockSaver n=20643 avg=51 max=52; MultiEnabledSaver n=9323 avg=100 max=381; ActiveSaver n=11680 avg=22 max=23; CustomWaypointSaver n=842 avg=145 max=158; CheckpointSaver n=6654 avg=15 max=16; EnabledSaver n=3539 avg=24 max=24; Prefab_SuperNutrientPipe n=844 avg=81 max=82; UIObjectSwitcher_Gameplay_Unit3 n=854 avg=53 max=53; PuzzleSaver n=340 avg=29 max=29; Geometry_Intact n=340 avg=22 max=22
+largest 5: [{"uid":"…dada21","t":"2026-03-25T13:40:14.310Z","scene":"Unit 1 Dev","size":8644398,"nrec":4,"biggestKey":"SettingsSaver","biggest":8624527},{"uid":"…dada21","t":"2026-03-25T13:40:19.260Z","scene":"Unit 1 Dev","size":8644398,"nrec":4,"biggestKey":"SettingsSaver","biggest":8624527},{"uid":"…dada21","t":"2026-03-25T13:40:20.885Z","scene":"Unit 1 Dev","size":8644398,"nrec":4,"biggestKey":"SettingsSaver","biggest":8624527},{"uid":"…dada21","t":"2026-03-25T13:42:12.729Z","scene":"Unit 1 Dev","size":8644397,"nrec":4,"biggestKey":"SettingsSaver","biggest":8624527},{"uid":"…dada21","t":"2026-03-25T13:40:14.443Z","scene":"Unit 1 Dev","size":8644396,"nrec":4,"biggestKey":"SettingsSaver","biggest":8624527}]
+students with saves: 1208; saves per student: {"1":66,"2":33,"3":35,"4":22,"5":1050,"6":1,"10":1}; students with >1 save: 1142
+close pairs (<2 s apart): 374 in 261 students; identical content: 336; examples: [{"uid":"…f3e246","t":"2026-03-06T20:09:02.837Z","gapMs":405,"scene":"Unit 1 Dev","cpA":-1,"cpB":-1,"sizeA":1658374,"sizeB":1658374,"identical":true},{"uid":"…9cf70b","t":"2025-05-14T19:29:09.448Z","gapMs":1,"scene":"Unit 1 Dev","cpA":3,"cpB":3,"sizeA":10426,"sizeB":10426,"identical":true},{"uid":"…9cf70f","t":"2025-05-13T19:57:24.871Z","gapMs":28,"scene":"Unit 1 Dev","cpA":4,"cpB":4,"sizeA":10407,"sizeB":10408,"identical":false},{"uid":"…9cf710","t":"2025-05-13T19:54:26.640Z","gapMs":70,"scene":"Unit 1 Dev","cpA":3,"cpB":3,"sizeA":10419,"sizeB":10419,"identical":true},{"uid":"…9cf713","t":"2025-05-14T19:25:58.992Z","gapMs":26,"scene":"Unit 1 Dev","cpA":3,"cpB":3,"sizeA":10419,"sizeB":10419,"identical":true},{"uid":"…9cf716","t":"2025-05-14T19:27:46.308Z","gapMs":61,"scene":"Unit 1 Dev","cpA":4,"cpB":4,"sizeA":10407,"sizeB":10407,"identical":true},{"uid":"…9cf716","t":"2025-05-14T19:35:09.689Z","gapMs":39,"scene":"Unit 1 Dev","cpA":4,"cpB":4,"sizeA":10408,"sizeB":10407,"identical":false},{"uid":"…9cf71e","t":"2026-01-06T19:25:54.604Z","gapMs":18,"scene":"Unit 1 Dev","cpA":3,"cpB":3,"sizeA":1511028,"sizeB":1511028,"identical":true},{"uid":"…9cf71e","t":"2026-01-06T19:25:54.649Z","gapMs":45,"scene":"Unit 1 Dev","cpA":3,"cpB":3,"sizeA":1511028,"sizeB":1511028,"identical":true},{"uid":"…9cf731","t":"2025-05-14T19:17:11.999Z","gapMs":4,"scene":"Unit 1 Dev","cpA":4,"cpB":4,"sizeA":10406,"sizeB":10406,"identical":true}]
+gap between consecutive saves (s): n=4383 p10=8 p50=388 p90=84379; under 2 s: 374; under 10 s: 456; under 60 s: 701
+checkpoint regressions in the same scene (later save with a lower checkpoint): 19 in 19 students
+  {"uid":"…0bab0d","scene":"Unit 2 Prod (Refactor)","cpFrom":0,"cpTo":-1,"at":"2025-10-09T19:46:33.680Z","gapMin":1,"laterCps":""}
+  {"uid":"…9cf6fc","scene":"Unit 1 Dev","cpFrom":4,"cpTo":1,"at":"2025-05-07T01:01:16.607Z","gapMin":5,"laterCps":""}
+  {"uid":"…9cf7b1","scene":"Unit 1 Dev","cpFrom":2,"cpTo":0,"at":"2025-05-15T15:19:35.322Z","gapMin":0,"laterCps":"0,0"}
+  {"uid":"…613949","scene":"Unit 1 Dev","cpFrom":4,"cpTo":0,"at":"2025-05-15T15:54:23.680Z","gapMin":3,"laterCps":"1"}
+  {"uid":"…9faba9","scene":"Unit 3 Dev","cpFrom":8,"cpTo":1,"at":"2026-02-19T19:37:47.995Z","gapMin":0,"laterCps":"1,1"}
+  {"uid":"…3d0c21","scene":"Unit 2 Prod (Refactor)","cpFrom":11,"cpTo":-1,"at":"2026-01-09T21:19:33.612Z","gapMin":3,"laterCps":""}
+  {"uid":"…60a6c4","scene":"Unit 3 Dev","cpFrom":4,"cpTo":1,"at":"2026-02-13T19:00:33.771Z","gapMin":0,"laterCps":"1,1"}
+  {"uid":"…6fd51e","scene":"Unit 2 Prod (Refactor)","cpFrom":11,"cpTo":8,"at":"2026-02-26T19:24:10.061Z","gapMin":3,"laterCps":"13,13"}
+  {"uid":"…6fd53c","scene":"Unit 2 Prod (Refactor)","cpFrom":11,"cpTo":8,"at":"2026-02-27T21:48:44.792Z","gapMin":34,"laterCps":"13,13"}
+  {"uid":"…c803f6","scene":"Unit 2 Prod (Refactor)","cpFrom":0,"cpTo":-1,"at":"2026-03-26T16:22:23.267Z","gapMin":1430,"laterCps":"-1,5,5"}
+  {"uid":"…c804e1","scene":"Unit 2 Prod (Refactor)","cpFrom":5,"cpTo":0,"at":"2026-03-25T18:40:34.294Z","gapMin":1,"laterCps":"0,6,-1"}
+  {"uid":"…dada42","scene":"Unit 2 Prod (Refactor)","cpFrom":0,"cpTo":-1,"at":"2026-04-01T16:31:28.265Z","gapMin":8614,"laterCps":""}
+  {"uid":"…dada46","scene":"Unit 2 Prod (Refactor)","cpFrom":5,"cpTo":-1,"at":"2026-04-01T16:33:17.334Z","gapMin":1422,"laterCps":""}
+  {"uid":"…e467d9","scene":"Unit 2 Prod (Refactor)","cpFrom":13,"cpTo":-1,"at":"2026-04-10T14:45:42.007Z","gapMin":5,"laterCps":"0"}
+  {"uid":"…e467de","scene":"Unit 2 Prod (Refactor)","cpFrom":5,"cpTo":-1,"at":"2026-04-10T14:01:35.850Z","gapMin":1402,"laterCps":"0,5"}
+  {"uid":"…e46803","scene":"Unit 2 Prod (Refactor)","cpFrom":5,"cpTo":-1,"at":"2026-04-10T18:50:13.146Z","gapMin":1396,"laterCps":""}
+  {"uid":"…a39431","scene":"Unit 5 Dev - Dungeon","cpFrom":0,"cpTo":-1,"at":"2026-05-15T17:08:06.759Z","gapMin":75,"laterCps":"-1,-1,-1"}
+  {"uid":"…c7f22a","scene":"Unit 4 Dev","cpFrom":3,"cpTo":0,"at":"2026-10-07T01:30:40.008Z","gapMin":560,"laterCps":""}
+  {"uid":"…8b8703","scene":"Unit 2 Prod (Refactor)","cpFrom":4,"cpTo":1,"at":"2026-10-15T14:56:13.571Z","gapMin":11,"laterCps":"0,0,0"}
+unit went backwards between consecutive saves: 14
+  {"uid":"…613957","from":"Unit 5 Dev - Dungeon","to":"Unit 2 Prod (Refactor)","at":"2026-04-14T21:42:19.945Z","gapMin":1487}
+  {"uid":"…9fabaa","from":"Unit 5 Dev","to":"Unit 1 Dev","at":"2026-03-23T20:54:42.000Z","gapMin":16305}
+  {"uid":"…3d0c20","from":"Unit 2 Prod (Refactor)","to":"Unit 1 Dev","at":"2026-02-03T18:21:41.955Z","gapMin":38466}
+  {"uid":"…3d0c30","from":"Unit 5 Dev - Dungeon","to":"Unit 1 Dev","at":"2026-09-08T21:24:58.065Z","gapMin":291117}
+  {"uid":"…6fd525","from":"Unit 3 Dev","to":"Unit 2 Prod (Refactor)","at":"2026-02-26T14:37:38.495Z","gapMin":2604}
+  {"uid":"…12b31c","from":"Unit 4 Dev - Anderson Base","to":"Unit 3 Dev","at":"2026-02-25T13:53:16.498Z","gapMin":7031}
+  {"uid":"…0efb09","from":"Unit 2 Prod (Refactor)","to":"Unit 1 Dev","at":"2026-05-26T03:37:09.768Z","gapMin":9}
+  {"uid":"…f24dac","from":"Unit 5 Dev - Dungeon","to":"Unit 1 Dev","at":"2026-09-15T22:40:20.576Z","gapMin":219884}
+  {"uid":"…a39437","from":"Unit 2 Prod (Refactor)","to":"Unit 1 Dev","at":"2026-05-18T13:56:38.851Z","gapMin":5754}
+  {"uid":"…a3949d","from":"Unit 3 Dungeon Dev","to":"Unit 2 Prod (Refactor)","at":"2026-05-19T15:54:53.768Z","gapMin":17}
+  {"uid":"…e9d215","from":"Unit 2 Prod (Refactor)","to":"Unit 1 Dev","at":"2026-04-22T21:58:39.347Z","gapMin":2463}
+  {"uid":"…798190","from":"Unit 3 Dev","to":"Unit 1 Dev","at":"2026-07-24T23:20:08.801Z","gapMin":267}
+  {"uid":"…c7f231","from":"Unit 3 Dungeon Dev","to":"Unit 2 Prod (Refactor)","at":"2026-10-06T13:54:13.986Z","gapMin":6}
+  {"uid":"…2092f0","from":"Unit 5 Dev","to":"Unit 1 Dev","at":"2026-09-15T22:59:17.548Z","gapMin":149}
+saves still present per day (Central), last 28 days: 2026-09-28:5/1 2026-09-29:17/8 2026-09-30:73/26 2026-10-01:97/40 2026-10-02:153/49 2026-10-03:5/1 2026-10-05:46/20 2026-10-06:155/50 2026-10-07:146/46 2026-10-08:229/73 2026-10-09:33/11 2026-10-11:9/2 2026-10-12:33/13 2026-10-13:12/7 2026-10-15:104/34 2026-10-16:239/73 2026-10-17:5/1 2026-10-18:43/13 2026-10-19:85/27 2026-10-20:219/65 2026-10-21:49/29 2026-10-22:88/32 2026-10-23:52/13
+newest save scene per student: {"Unit 3 Dev":109,"Unit 2 Prod (Refactor)":187,"Unit 4 Dev":97,"Unit 4 Dev - Dungeon":102,"Unit 1 Dev":163,"Unit 5 Dev - Dungeon":75,"Unit 5 Dev":399,"Unit 4 Dev - Anderson Base":47,"Unit 3 Dungeon Dev":27,"MainMenu":2}
+newest save checkpoint value distribution: {"0":633,"1":13,"2":19,"3":75,"4":48,"5":23,"6":52,"7":26,"8":4,"9":18,"10":8,"11":2,"12":4,"13":15,"14":18,"-1":248,"null":2}
+saves at cp -1/0 by scene (unit-start saves): {"Unit 3 Dev cp=0":347,"Unit 1 Dev cp=0":237,"Unit 2 Prod (Refactor) cp=0":101,"Unit 2 Prod (Refactor) cp=-1":114,"Unit 1 Dev cp=-1":54,"Unit 4 Dev - Dungeon cp=0":388,"Unit 5 Dev - Dungeon cp=-1":407,"Unit 4 Dev cp=0":180,"Unit 5 Dev cp=-1":427,"Unit 4 Dev - Dungeon cp=-1":24,"Unit 5 Dev - Dungeon cp=0":520,"Unit 4 Dev - Anderson Base cp=0":333,"Unit 5 Dev cp=0":583,"Unit 3 Dungeon Dev cp=0":129,"MainMenu cp=-1":1}

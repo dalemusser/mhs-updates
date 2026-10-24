@@ -1,0 +1,141 @@
+bucket durations: [{"_id":"1h0m0s","n":6271,"first":"2026-01-29T03:00:00.000Z","last":"2026-10-24T04:00:00.000Z"},{"_id":"1m0s","n":767,"first":"2026-01-29T03:37:00.000Z","last":"2026-02-10T02:22:00.000Z"}]
+2026-09-21 settings_load 1h0m0s req=324 err=0 avg_ms=351 max_ms=19576
+2026-09-21 settings_save 1h0m0s req=54 err=0 avg_ms=500 max_ms=761
+2026-09-21 state_load 1h0m0s req=204 err=0 avg_ms=9 max_ms=816
+2026-09-21 state_save 1h0m0s req=162 err=0 avg_ms=20 max_ms=237
+2026-09-22 settings_load 1h0m0s req=454 err=0 avg_ms=474 max_ms=6923
+2026-09-22 settings_save 1h0m0s req=12 err=0 avg_ms=617 max_ms=846
+2026-09-22 state_load 1h0m0s req=261 err=0 avg_ms=9 max_ms=133
+2026-09-22 state_save 1h0m0s req=215 err=2 avg_ms=18 max_ms=147
+2026-09-23 settings_load 1h0m0s req=741 err=0 avg_ms=285 max_ms=11420
+2026-09-23 settings_save 1h0m0s req=78 err=0 avg_ms=527 max_ms=1694
+2026-09-23 state_load 1h0m0s req=421 err=0 avg_ms=7 max_ms=250
+2026-09-23 state_save 1h0m0s req=343 err=0 avg_ms=26 max_ms=1528
+2026-09-24 settings_load 1h0m0s req=999 err=0 avg_ms=334 max_ms=5959
+2026-09-24 settings_save 1h0m0s req=15 err=1 avg_ms=588 max_ms=1271
+2026-09-24 state_load 1h0m0s req=547 err=0 avg_ms=8 max_ms=151
+2026-09-24 state_save 1h0m0s req=507 err=0 avg_ms=27 max_ms=1505
+2026-09-25 settings_load 1h0m0s req=1058 err=0 avg_ms=276 max_ms=1580
+2026-09-25 settings_save 1h0m0s req=9 err=0 avg_ms=466 max_ms=737
+2026-09-25 state_load 1h0m0s req=545 err=0 avg_ms=12 max_ms=2383
+2026-09-25 state_save 1h0m0s req=513 err=0 avg_ms=24 max_ms=1380
+2026-09-26 settings_load 1h0m0s req=29 err=0 avg_ms=231 max_ms=486
+2026-09-26 state_load 1h0m0s req=16 err=0 avg_ms=6 max_ms=14
+2026-09-26 state_save 1h0m0s req=10 err=0 avg_ms=21 max_ms=43
+2026-09-28 settings_load 1h0m0s req=538 err=0 avg_ms=256 max_ms=4668
+2026-09-28 settings_save 1h0m0s req=5 err=0 avg_ms=529 max_ms=618
+2026-09-28 state_load 1h0m0s req=283 err=0 avg_ms=8 max_ms=289
+2026-09-28 state_save 1h0m0s req=310 err=0 avg_ms=28 max_ms=604
+2026-09-29 settings_load 1h0m0s req=1414 err=0 avg_ms=248 max_ms=2209
+2026-09-29 settings_save 1h0m0s req=75 err=0 avg_ms=530 max_ms=1279
+2026-09-29 state_load 1h0m0s req=773 err=0 avg_ms=8 max_ms=884
+2026-09-29 state_save 1h0m0s req=602 err=1 avg_ms=21 max_ms=1068
+2026-09-30 settings_load 1h0m0s req=1983 err=0 avg_ms=409 max_ms=20553
+2026-09-30 settings_save 1h0m0s req=25 err=2 avg_ms=668 max_ms=1972
+2026-09-30 state_load 1h0m0s req=1117 err=0 avg_ms=17 max_ms=1979
+2026-09-30 state_save 1h0m0s req=964 err=1 avg_ms=38 max_ms=2014
+2026-10-01 settings_load 1h0m0s req=1584 err=0 avg_ms=378 max_ms=13075
+2026-10-01 settings_save 1h0m0s req=6 err=0 avg_ms=545 max_ms=824
+2026-10-01 state_load 1h0m0s req=889 err=0 avg_ms=11 max_ms=842
+2026-10-01 state_save 1h0m0s req=805 err=0 avg_ms=35 max_ms=2118
+2026-10-02 settings_load 1h0m0s req=770 err=3 avg_ms=313 max_ms=2372
+2026-10-02 settings_save 1h0m0s req=3 err=0 avg_ms=549 max_ms=781
+2026-10-02 state_load 1h0m0s req=407 err=3 avg_ms=9 max_ms=432
+2026-10-02 state_save 1h0m0s req=319 err=0 avg_ms=24 max_ms=975
+2026-10-03 settings_load 1h0m0s req=48 err=0 avg_ms=149 max_ms=523
+2026-10-03 state_load 1h0m0s req=35 err=1 avg_ms=18 max_ms=243
+2026-10-03 state_save 1h0m0s req=20 err=0 avg_ms=17 max_ms=83
+2026-10-04 settings_load 1h0m0s req=5 err=0 avg_ms=360 max_ms=478
+2026-10-04 state_load 1h0m0s req=3 err=0 avg_ms=7 max_ms=9
+2026-10-04 state_save 1h0m0s req=3 err=0 avg_ms=24 max_ms=36
+2026-10-05 settings_load 1h0m0s req=1300 err=0 avg_ms=288 max_ms=2763
+2026-10-05 settings_save 1h0m0s req=59 err=0 avg_ms=154 max_ms=623
+2026-10-05 state_load 1h0m0s req=703 err=0 avg_ms=10 max_ms=499
+2026-10-05 state_save 1h0m0s req=652 err=0 avg_ms=30 max_ms=1436
+2026-10-06 settings_load 1h0m0s req=1677 err=0 avg_ms=266 max_ms=12968
+2026-10-06 settings_save 1h0m0s req=61 err=0 avg_ms=203 max_ms=1511
+2026-10-06 state_load 1h0m0s req=888 err=0 avg_ms=18 max_ms=3088
+2026-10-06 state_save 1h0m0s req=780 err=0 avg_ms=29 max_ms=1940
+2026-10-07 settings_load 1h0m0s req=1387 err=0 avg_ms=235 max_ms=5982
+2026-10-07 settings_save 1h0m0s req=12 err=0 avg_ms=412 max_ms=888
+2026-10-07 state_load 1h0m0s req=766 err=0 avg_ms=12 max_ms=934
+2026-10-07 state_save 1h0m0s req=693 err=1 avg_ms=23 max_ms=2292
+2026-10-08 settings_load 1h0m0s req=1364 err=0 avg_ms=199 max_ms=6943
+2026-10-08 settings_save 1h0m0s req=67 err=0 avg_ms=669 max_ms=1976
+2026-10-08 state_load 1h0m0s req=773 err=0 avg_ms=7 max_ms=97
+2026-10-08 state_save 1h0m0s req=764 err=0 avg_ms=30 max_ms=2011
+2026-10-09 settings_load 1h0m0s req=560 err=0 avg_ms=240 max_ms=2970
+2026-10-09 settings_save 1h0m0s req=14 err=0 avg_ms=630 max_ms=2943
+2026-10-09 state_load 1h0m0s req=276 err=0 avg_ms=9 max_ms=184
+2026-10-09 state_save 1h0m0s req=295 err=0 avg_ms=21 max_ms=428
+2026-10-10 settings_load 1h0m0s req=28 err=0 avg_ms=9 max_ms=13
+2026-10-10 state_load 1h0m0s req=14 err=0 avg_ms=7 max_ms=11
+2026-10-10 state_save 1h0m0s req=16 err=0 avg_ms=14 max_ms=26
+2026-10-11 settings_load 1h0m0s req=47 err=0 avg_ms=3 max_ms=18
+2026-10-11 state_load 1h0m0s req=24 err=0 avg_ms=6 max_ms=17
+2026-10-11 state_save 1h0m0s req=29 err=0 avg_ms=13 max_ms=18
+2026-10-12 settings_load 1h0m0s req=516 err=0 avg_ms=177 max_ms=2361
+2026-10-12 settings_save 1h0m0s req=15 err=0 avg_ms=512 max_ms=656
+2026-10-12 state_load 1h0m0s req=269 err=0 avg_ms=6 max_ms=65
+2026-10-12 state_save 1h0m0s req=308 err=0 avg_ms=17 max_ms=165
+2026-10-13 settings_load 1h0m0s req=752 err=0 avg_ms=133 max_ms=5453
+2026-10-13 settings_save 1h0m0s req=33 err=0 avg_ms=471 max_ms=3127
+2026-10-13 state_load 1h0m0s req=382 err=0 avg_ms=12 max_ms=597
+2026-10-13 state_save 1h0m0s req=504 err=0 avg_ms=23 max_ms=888
+2026-10-14 settings_load 1h0m0s req=1190 err=0 avg_ms=105 max_ms=2657
+2026-10-14 settings_save 1h0m0s req=6 err=0 avg_ms=389 max_ms=1128
+2026-10-14 state_load 1h0m0s req=589 err=0 avg_ms=8 max_ms=177
+2026-10-14 state_save 1h0m0s req=824 err=0 avg_ms=19 max_ms=1169
+2026-10-15 settings_load 1h0m0s req=1564 err=0 avg_ms=85 max_ms=3836
+2026-10-15 settings_save 1h0m0s req=41 err=0 avg_ms=25 max_ms=557
+2026-10-15 state_load 1h0m0s req=718 err=0 avg_ms=12 max_ms=3004
+2026-10-15 state_save 1h0m0s req=974 err=0 avg_ms=31 max_ms=5492
+2026-10-16 settings_load 1h0m0s req=1201 err=0 avg_ms=93 max_ms=1325
+2026-10-16 settings_save 1h0m0s req=37 err=0 avg_ms=457 max_ms=787
+2026-10-16 state_load 1h0m0s req=558 err=0 avg_ms=12 max_ms=1244
+2026-10-16 state_save 1h0m0s req=725 err=0 avg_ms=30 max_ms=2534
+2026-10-17 settings_load 1h0m0s req=41 err=0 avg_ms=318 max_ms=489
+2026-10-17 state_load 1h0m0s req=18 err=0 avg_ms=9 max_ms=62
+2026-10-17 state_save 1h0m0s req=30 err=0 avg_ms=17 max_ms=103
+2026-10-18 settings_load 1h0m0s req=85 err=0 avg_ms=111 max_ms=1792
+2026-10-18 settings_save 1h0m0s req=1 err=0 avg_ms=27 max_ms=27
+2026-10-18 state_load 1h0m0s req=41 err=0 avg_ms=16 max_ms=194
+2026-10-18 state_save 1h0m0s req=59 err=0 avg_ms=22 max_ms=199
+2026-10-19 settings_load 1h0m0s req=477 err=0 avg_ms=155 max_ms=1175
+2026-10-19 settings_save 1h0m0s req=2 err=0 avg_ms=25 max_ms=28
+2026-10-19 state_load 1h0m0s req=228 err=0 avg_ms=13 max_ms=382
+2026-10-19 state_save 1h0m0s req=289 err=0 avg_ms=21 max_ms=483
+2026-10-20 settings_load 1h0m0s req=800 err=0 avg_ms=208 max_ms=2034
+2026-10-20 settings_save 1h0m0s req=34 err=1 avg_ms=568 max_ms=1662
+2026-10-20 state_load 1h0m0s req=382 err=0 avg_ms=7 max_ms=322
+2026-10-20 state_save 1h0m0s req=540 err=0 avg_ms=19 max_ms=234
+2026-10-21 settings_load 1h0m0s req=233 err=0 avg_ms=213 max_ms=960
+2026-10-21 settings_save 1h0m0s req=25 err=0 avg_ms=524 max_ms=1582
+2026-10-21 state_load 1h0m0s req=146 err=0 avg_ms=11 max_ms=70
+2026-10-21 state_save 1h0m0s req=113 err=0 avg_ms=18 max_ms=59
+2026-10-22 settings_load 1h0m0s req=274 err=0 avg_ms=277 max_ms=1452
+2026-10-22 settings_save 1h0m0s req=7 err=0 avg_ms=955 max_ms=1558
+2026-10-22 state_load 1h0m0s req=142 err=0 avg_ms=15 max_ms=155
+2026-10-22 state_save 1h0m0s req=143 err=0 avg_ms=21 max_ms=94
+2026-10-23 settings_load 1h0m0s req=176 err=0 avg_ms=153 max_ms=1139
+2026-10-23 settings_save 1h0m0s req=3 err=0 avg_ms=619 max_ms=1234
+2026-10-23 state_load 1h0m0s req=84 err=0 avg_ms=19 max_ms=263
+2026-10-23 state_save 1h0m0s req=77 err=0 avg_ms=27 max_ms=77
+2026-10-24 settings_load 1h0m0s req=3 err=0 avg_ms=18 max_ms=34
+2026-10-24 state_load 1h0m0s req=2 err=0 avg_ms=8 max_ms=8
+--- totals last 35 days by type
+{"_id":{"t":"settings_delete","bd":"1h0m0s"},"req":26,"err":0,"max":{"low":16,"high":0,"unsigned":false}}
+{"_id":{"t":"settings_load","bd":"1h0m0s"},"req":23622,"err":3,"max":{"low":20553,"high":0,"unsigned":false}}
+{"_id":{"t":"settings_save","bd":"1h0m0s"},"req":699,"err":4,"max":{"low":3127,"high":0,"unsigned":false}}
+{"_id":{"t":"state_delete","bd":"1h0m0s"},"req":68,"err":0,"max":{"low":293,"high":0,"unsigned":false}}
+{"_id":{"t":"state_load","bd":"1h0m0s"},"req":12504,"err":4,"max":{"low":3088,"high":0,"unsigned":false}}
+{"_id":{"t":"state_save","bd":"1h0m0s"},"req":12588,"err":5,"max":{"low":5492,"high":0,"unsigned":false}}
+--- slowest hourly buckets for state_save (max_ms), last 35 days
+2026-10-15T14:00:00.000Z 1h0m0s req=68 err=undefined max_ms=5492 avg_ms=97
+2026-10-15T15:00:00.000Z 1h0m0s req=122 err=undefined max_ms=2740 avg_ms=41
+2026-10-16T21:00:00.000Z 1h0m0s req=14 err=undefined max_ms=2534 avg_ms=359
+2026-10-07T15:00:00.000Z 1h0m0s req=81 err=undefined max_ms=2292 avg_ms=43
+2026-10-01T13:00:00.000Z 1h0m0s req=239 err=undefined max_ms=2118 avg_ms=61
+2026-09-30T16:00:00.000Z 1h0m0s req=93 err=undefined max_ms=2014 avg_ms=48
+2026-10-08T15:00:00.000Z 1h0m0s req=111 err=undefined max_ms=2011 avg_ms=45
+2026-10-06T13:00:00.000Z 1h0m0s req=94 err=undefined max_ms=1940 avg_ms=58
