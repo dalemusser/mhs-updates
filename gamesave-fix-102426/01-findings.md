@@ -316,7 +316,11 @@ leftover record on a page without a service held every transition for the cap (V
 reference-less stray saver could take charge in Editor flows (V7); the pending index could list
 keys already gone (V8); the no-settings decision lived in one loop (V9). Tests T31–T37 cover
 V1–V3, V6–V8 and the R1 and R7 cases the 1.2 suite had not proved; T23 and T29 were reworked to
-prove their names (V10). The fade helper's other users are named in `03` (V11); a record made
+prove their names (V10). A third review of the 1.3 delta found one residual in V3: the generalised
+drop compared a save of this launch against a server-clock time when the service's newest came from
+an old build, so a device clock minutes slow could drop a real checkpoint during the rollout. A save
+of this launch is now dropped only against a save that carries a device-clock time; a recovered save
+keeps the broader rule (T38). The fade helper's other users are named in `03` (V11); a record made
 before the player id is known is documented as not counted by the reconcile (V12).
 
 Noted, not changed: the transition gates reset under frame gaps over one second in a hidden tab
@@ -370,7 +374,7 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 36 tests, all passing on
+or hanging; `tools/README.md` has the two temporary project settings): 37 tests, all passing on
 2026-10-26 in Unity 6000.0.74f1 (about two minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an

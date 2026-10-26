@@ -3,7 +3,7 @@
 // GameSaveManager and DatabaseSaver against a fake save service on localhost that can be
 // up, down (503), refusing (401), rejecting (400), answering HTML, or hanging; and the
 // GameLogger's unit-transition gate (T21), with no log endpoint so nothing is sent; and the
-// findings of the second review of 2026-10-25 (T22-T30) and of the review of version 1.2 (T31-T37).
+// findings of the second review of 2026-10-25 (T22-T30) and of the review of version 1.2 (T31-T38).
 //
 // Setup and cleanup are inline (not [UnitySetUp]/[UnityTearDown]): in this project those made the
 // editor's test runner overflow its stack (see unit4-gardenbox-crash-102326/tools/README.md).
@@ -1325,6 +1325,32 @@ namespace MHS.SaveFixTests
                     yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the real saver's save accepted");
                 }
                 finally { UnityEngine.Object.DestroyImmediate(stray); }
+            }
+            finally { Cleanup(); }
+        }
+        [UnityTest]
+        public IEnumerator T38_ASaveOfThisLaunchIsNotDroppedOnTheServersClockAlone()
+        {
+            yield return Setup();
+            try
+            {
+                // The service's newest is an old build's save (no metadata), whose server-clock
+                // time is three minutes ahead of this device's clock. A save made in this launch
+                // still goes out: a server-clock comparison alone never drops it.
+                var old = new SavedGameData { sceneName = SceneManager.GetActiveScene().name };
+                old.SetData("SaveFixTestSaver", -1, "{\"v\":\"old-build\"}");
+                _svc.stored.Add(JsonUtility.ToJson(old));
+                _svc.loadTimestamp = DateTime.UtcNow.AddMinutes(3).ToString("o");
+                typeof(DatabaseSaver).GetMethod("ApplyGameProgressFromDatabase", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(_rig.saver, null);
+                yield return WaitUntil(() => _rig.saver.ServerAnswered, 10, "the menu's fetch");
+                _rig.testSaver.value = "this-launch";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the save to be decided");
+                Assert.AreEqual(2, _svc.stored.Count, "sent, not dropped");
+                StringAssert.Contains("\\\"v\\\":\\\"this-launch\\\"", _svc.NewestStored);
+                var rec = JsonUtility.FromJson<DatabaseSaver.LocalSaveRecord>(PlayerPrefs.GetString("mhs_last_save"));
+                Assert.IsTrue(rec.sent);
+                Assert.IsFalse(rec.dropped);
             }
             finally { Cleanup(); }
         }

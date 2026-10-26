@@ -2,7 +2,7 @@
 
 | File | Purpose |
 |---|---|
-| `SaveFixTests.cs` | PlayMode tests that run the real `GameSaveManager` and `DatabaseSaver` against a fake save service on localhost (`FakeSaveService` in the same file: up, down with 503, refusing with 401, rejecting with 400, answering an HTML page, hanging). Thirty-six tests, one per rule of the fix (T21 is the `GameLogger`'s unit-transition gate, driven the way `TransitionSceneLoader` polls it, with no log endpoint so nothing is sent; T22–T30 the second review's findings; T31–T37 the review of version 1.2); see `../01-findings.md` §6 and `../03-for-the-game-dev.md`, Verification record. |
+| `SaveFixTests.cs` | PlayMode tests that run the real `GameSaveManager` and `DatabaseSaver` against a fake save service on localhost (`FakeSaveService` in the same file: up, down with 503, refusing with 401, rejecting with 400, answering an HTML page, hanging). Thirty-seven tests, one per rule of the fix (T21 is the `GameLogger`'s unit-transition gate, driven the way `TransitionSceneLoader` polls it, with no log endpoint so nothing is sent; T22–T30 the second review's findings; T31–T38 the review of version 1.2 and its follow-up); see `../01-findings.md` §6 and `../03-for-the-game-dev.md`, Verification record. |
 | `../queries/` | The read-only mongosh scripts and the journal summariser that produced `../data/` (recipe in `../../gamelogger-fix-093026/tools/queries/README.md`). |
 
 ## Running the tests

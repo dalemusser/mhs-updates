@@ -477,13 +477,18 @@ namespace MHS
                         continue;
                     }
                     recoveredWaiting = false;
-                    if (serverLatest != null && serverLatest.hasSave && ServerNewerThan(serverLatest, item.saved_at))
+                    if (serverLatest != null && serverLatest.hasSave && ServerNewerThan(serverLatest, item.saved_at)
+                        && (newestRecovered || serverLatest.timeFromDevice))
                     {
                         // The service already holds newer progress than this save (another
                         // device, a stale tab): sending it would roll that back. This holds
                         // for any unsent save, not only a recovered one; the game's own
                         // accepted saves are never newer than a later record, so the normal
-                        // path is untouched.
+                        // path is untouched. A save made in this launch is dropped only
+                        // against a save that carries a device-clock time (made by this
+                        // build), never on the server's clock alone: a device clock running
+                        // minutes slow would otherwise look older than an old build's save
+                        // received just before. A recovered save keeps the broader rule.
                         Debug.LogWarning($"DatabaseSaver: the save service already holds newer progress ({serverLatest.time}) than the unsent save from {item.saved_at}; the unsent save is dropped.");
                         item.dropped = true;
                         PersistAfterRequest(item);
