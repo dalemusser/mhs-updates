@@ -40,7 +40,10 @@ namespace MHS
     //    device can beat it, and progress made since a resume is never rewound.
     //  - A page with no save-service settings at all plays without saving: the
     //    settings are static for a page, so there is nothing to wait for.
-    //  - One saver per launch; a second one in a scene stays inert.
+    //  - An unsent save is never sent over newer progress the service is known to
+    //    hold (a late send from a stale tab or a second device must not roll it back).
+    //  - One saver per launch; a second one in a scene, or one without its
+    //    references, stays inert.
     [RequireComponent(typeof(PlayerPrefsSavedGameDataStorer))]
     public class DatabaseSaver : MonoBehaviour, ICheckForUnitTransition
     {
@@ -186,6 +189,7 @@ namespace MHS
         private bool recoveredWaiting;          // the send loop holds a recovered save until the service has answered
         private bool noServiceConfig;           // this page has no save-service settings: nothing is loaded or saved
         private float noConfigSince = -1f;
+        private string resumedBaseTime;         // the time of the state START resumed from while the service was unreachable
 
         // Unit transition.
         private bool transitionPending;
@@ -253,6 +257,16 @@ namespace MHS
 
         private void OnEnable()
         {
+            bool wired = slotNumber != null && OnSaveGame != null && OnLoadGameFromSlot != null && autoSave != null
+                && playerId != null && enableDebugLogs != null && GetComponent<GameSaveManager>() != null;
+            if (!wired)
+            {
+                // A saver without its references (a stray component on a UI prefab) can
+                // neither save nor load; it stays inert and never takes charge.
+                isDuplicate = true;
+                Debug.LogWarning($"DatabaseSaver on '{gameObject.name}' in scene '{SceneManager.GetActiveScene().name}' has no references assigned (or no GameSaveManager on its object); it stays inert.");
+                return;
+            }
             if (live != null && live != this && live.isActiveAndEnabled)
             {
                 // A second saver: the gameplay core-systems prefab carries the SaveSystem
@@ -266,13 +280,6 @@ namespace MHS
             }
             isDuplicate = false;
             live = this;
-
-            Assert.IsNotNull(slotNumber, $"SOAP Variable {slotNumber} cannot be null");
-            Assert.IsNotNull(OnSaveGame, $"SOAP Variable {OnSaveGame} cannot be null");
-            Assert.IsNotNull(OnLoadGameFromSlot, $"SOAP Variable {OnLoadGameFromSlot} cannot be null");
-            Assert.IsNotNull(autoSave, $"SOAP Variable {autoSave} cannot be null");
-            Assert.IsNotNull(playerId, $"SOAP Variable {playerId} cannot be null");
-            Assert.IsNotNull(enableDebugLogs, $"SOAP Variable {enableDebugLogs} cannot be null");
 
             saveManager = GetComponent<GameSaveManager>();
             SceneManager.activeSceneChanged += OnActiveSceneChanged;
@@ -317,6 +324,7 @@ namespace MHS
 
         public void InitializeDataAfterSceneLoaded(Scene scene)
         {
+            if (isDuplicate) return;
             if (scene.name == SceneNameReference.MainMenu)
             {
                 ApplyGameProgressFromDatabase();
@@ -432,7 +440,7 @@ namespace MHS
                     if (noServiceConfig)
                     {
                         // Nothing can be sent from this page; the record stays on the device.
-                        HideStatus();
+                        HideStatusUnlessToast();
                         saveGameInProgress.Value = false;
                         break;
                     }
@@ -455,32 +463,33 @@ namespace MHS
                         PersistLocal(item);
                     }
 
-                    if (newestRecovered)
+                    if (newestRecovered && serverLatest == null)
                     {
-                        // A save left over from an earlier launch. Before it goes out,
-                        // make sure the service does not already hold something newer
-                        // (made on another device meanwhile); a late send must not
-                        // roll progress back.
-                        if (serverLatest == null)
-                        {
-                            EnsureFetch(false);
-                            // The fetch's own line (reason, countdown, attempt) owns the
-                            // display once it has failed; until then say what is happening.
-                            recoveredWaiting = true;
-                            if (fetchFailures == 0 && !resumedLocally) SetStatus("Saving an earlier checkpoint... checking the save service");
-                            yield return new WaitForSecondsRealtime(IdentityPollInterval);
-                            continue;
-                        }
-                        recoveredWaiting = false;
-                        if (serverLatest.hasSave && ServerNewerThan(serverLatest, item.saved_at))
-                        {
-                            Debug.LogWarning($"DatabaseSaver: the save service already holds newer progress ({serverLatest.time}) than the unsent save from {item.saved_at}; the unsent save is dropped.");
-                            item.dropped = true;
-                            PersistAfterRequest(item);
-                            RemovePendingKey(uid);
-                            FinishItem(item, "");
-                            continue;
-                        }
+                        // A save left over from an earlier launch waits for the service's
+                        // answer before it goes out (something newer may have been made on
+                        // another device meanwhile).
+                        EnsureFetch(false);
+                        // The fetch's own line (reason, countdown, attempt) owns the display
+                        // once it has failed; until then say what is happening.
+                        recoveredWaiting = true;
+                        if (fetchFailures == 0 && FetchLineOwner() == FetchLineKind.Recovered) SetStatus("Saving an earlier checkpoint... checking the save service");
+                        yield return new WaitForSecondsRealtime(IdentityPollInterval);
+                        continue;
+                    }
+                    recoveredWaiting = false;
+                    if (serverLatest != null && serverLatest.hasSave && ServerNewerThan(serverLatest, item.saved_at))
+                    {
+                        // The service already holds newer progress than this save (another
+                        // device, a stale tab): sending it would roll that back. This holds
+                        // for any unsent save, not only a recovered one; the game's own
+                        // accepted saves are never newer than a later record, so the normal
+                        // path is untouched.
+                        Debug.LogWarning($"DatabaseSaver: the save service already holds newer progress ({serverLatest.time}) than the unsent save from {item.saved_at}; the unsent save is dropped.");
+                        item.dropped = true;
+                        PersistAfterRequest(item);
+                        RemovePendingKey(uid);
+                        FinishItem(item, "");
+                        continue;
                     }
 
                     if (saveManager == null) saveManager = GetComponent<GameSaveManager>();
@@ -492,13 +501,14 @@ namespace MHS
                     }
                     if (saveManager.SaveConfig == null)
                     {
+                        if (NoServiceConfigAfterGrace()) continue; // the loop ends at its top
                         if (!configWarned)
                         {
                             configWarned = true;
                             Debug.LogWarning("DatabaseSaver: no save endpoint configured (MHSBridge has no state_save config); holding the save until there is one.");
                         }
                         SetStatus("Saving... waiting for the save service settings");
-                        yield return new WaitForSecondsRealtime(ConfigPollInterval);
+                        yield return new WaitForSecondsRealtime(IdentityPollInterval);
                         continue;
                     }
 
@@ -582,7 +592,7 @@ namespace MHS
             {
                 saveGameInProgress.Value = false;
                 if (!string.IsNullOrEmpty(toast)) ShowToast(toast);
-                else HideStatus();
+                else HideStatusUnlessToast();
             }
         }
 
@@ -711,34 +721,49 @@ namespace MHS
             {
                 Print("Loading Game From Database...");
                 ShowStatus("Loading your progress...");
+                ServerLatest aged = null;
                 if (serverLatest != null && Time.unscaledTime - serverLatestAt > serverAnswerMaxAgeSeconds)
                 {
                     // The menu's answer is old (a tab left open): ask again rather than
-                    // resume progress another device may have moved past meanwhile.
+                    // resume progress another device may have moved past meanwhile. The
+                    // old answer stays as the fallback should the service not answer now.
                     Print($"The service's answer is {Time.unscaledTime - serverLatestAt:F0} s old; asking again.");
+                    aged = serverLatest;
                     serverLatest = null;
                 }
                 EnsureFetch(true);
 
                 bool usedLocal = false;
                 resumedLocally = false;
+                resumedBaseTime = null;
                 LocalSaveRecord local = null;
                 while (serverLatest == null && !noServiceConfig)
                 {
                     string uid = ResolveUserId();
                     if (uid != null && local == null) local = LocalCopyFor(uid);
-                    if (!usedLocal && local != null && fetchFailures > 0)
+                    if (!usedLocal && fetchFailures > 0 && (local != null || (aged != null && aged.hasSave)))
                     {
-                        // The service is not answering and this device has this
-                        // player's last save: play on from it, keep asking.
-                        var localData = ParseSave(local.save_json);
-                        if (localData != null)
+                        // The service is not answering. Play on from what this device knows
+                        // (its earlier answer from the service, or the copy of the last save;
+                        // ChooseResume ranks them) and keep asking.
+                        bool fromAged = aged != null && aged.hasSave;
+                        var fallback = fromAged ? ChooseResume(local, aged) : (local != null ? ParseSave(local.save_json) : null);
+                        if (fallback != null)
                         {
                             usedLocal = true;
                             resumedLocally = true;
-                            Debug.LogWarning($"DatabaseSaver: the save service is not answering ({lastFetchFailure?.reason}); resuming from the copy on this device ({local.scene}, checkpoint {local.checkpoint}, {local.saved_at}{(local.Unsent ? ", not yet sent" : "")}) and still checking the server.");
+                            if (fromAged && fallback == aged.data)
+                            {
+                                resumedBaseTime = aged.time;
+                                Debug.LogWarning($"DatabaseSaver: the save service is not answering ({lastFetchFailure?.reason}); resuming from its earlier answer ({aged.data.sceneName}, {aged.time}) and still checking the server.");
+                            }
+                            else
+                            {
+                                resumedBaseTime = local.saved_at;
+                                Debug.LogWarning($"DatabaseSaver: the save service is not answering ({lastFetchFailure?.reason}); resuming from the copy on this device ({local.scene}, checkpoint {local.checkpoint}, {local.saved_at}{(local.Unsent ? ", not yet sent" : "")}) and still checking the server.");
+                            }
                             ShowStatus("Using the progress saved on this device.\nStill checking the save service...");
-                            ResumeWith(localData);
+                            ResumeWith(fallback);
                         }
                     }
                     yield return new WaitForSecondsRealtime(0.25f);
@@ -755,14 +780,16 @@ namespace MHS
                 }
 
                 // The service has answered. Decide against this device's newest
-                // progress as of now (a resume from the device copy may have been
-                // played on since), not against the copy read at the start.
+                // progress as of now: the state the game resumed from (if it did) and
+                // anything recorded since, not the copy read at the start.
                 var latestHere = LocalCopyFor(ResolveUserId());
                 var chosen = ChooseResume(latestHere, serverLatest);
 
                 if (usedLocal)
                 {
-                    bool serverNewer = serverLatest.hasSave && (latestHere == null || ServerNewerThan(serverLatest, latestHere.saved_at));
+                    string baseTime = latestHere != null ? latestHere.saved_at : null;
+                    if (resumedBaseTime != null && (baseTime == null || IsNewer(resumedBaseTime, baseTime, 0f))) baseTime = resumedBaseTime;
+                    bool serverNewer = serverLatest.hasSave && (baseTime == null || ServerNewerThan(serverLatest, baseTime));
                     if (serverNewer && chosen == serverLatest.data)
                     {
                         // Let the scene load that the local resume started finish first.
@@ -782,12 +809,12 @@ namespace MHS
                             // resolves it from the service as usual.
                             Debug.LogWarning($"DatabaseSaver: the save service holds newer progress in another scene ({chosen.sceneName}); the player stays in {SceneManager.GetActiveScene().name} and the next launch uses the service's save.");
                             saveData = chosen;
-                            HideStatus();
+                            HideStatusUnlessToast();
                         }
                     }
                     else
                     {
-                        HideStatus();
+                        HideStatusUnlessToast();
                     }
                     yield break;
                 }
@@ -897,6 +924,20 @@ namespace MHS
             return server.data;
         }
 
+        // The save-service settings are static for a page: either the host gave them
+        // before the game started or it never will. After a short grace (the bridge
+        // object may still be coming up) the page is taken to have no save service;
+        // both loops stop on it, and START GAME plays a new game without saving.
+        private bool NoServiceConfigAfterGrace()
+        {
+            if (noServiceConfig) return true;
+            if (noConfigSince < 0) noConfigSince = Time.unscaledTime;
+            if (Time.unscaledTime - noConfigSince < noServiceConfigStartSeconds) return false;
+            noServiceConfig = true;
+            Debug.LogWarning($"DatabaseSaver: no save-service settings on this page (MHSBridge has no state_save/state_load config after {noServiceConfigStartSeconds:F0} s); nothing will be loaded or saved.");
+            return true;
+        }
+
         // ---- The shared fetch of the service's newest save ----
 
         private void EnsureFetch(bool visible)
@@ -917,6 +958,23 @@ namespace MHS
                 int limit = 1;
                 while (serverLatest == null && !noServiceConfig)
                 {
+                    // The settings come first: a page without any does not get a player
+                    // id either, and must not wait for one for ever.
+                    if (saveManager == null) saveManager = GetComponent<GameSaveManager>();
+                    if (saveManager == null || saveManager.LoadConfig == null)
+                    {
+                        if (NoServiceConfigAfterGrace()) break;
+                        if (!configWarned)
+                        {
+                            configWarned = true;
+                            Debug.LogWarning("DatabaseSaver: no load endpoint configured (MHSBridge has no state_load config); waiting for it.");
+                        }
+                        if (FetchLineVisible()) SetStatus(FetchLineWaiting("waiting for the save service settings"));
+                        yield return new WaitForSecondsRealtime(IdentityPollInterval);
+                        continue;
+                    }
+                    noConfigSince = -1f;
+
                     string uid = ResolveUserId();
                     if (uid == null)
                     {
@@ -929,30 +987,6 @@ namespace MHS
                         yield return new WaitForSecondsRealtime(IdentityPollInterval);
                         continue;
                     }
-                    if (saveManager == null) saveManager = GetComponent<GameSaveManager>();
-                    if (saveManager == null || saveManager.LoadConfig == null)
-                    {
-                        // The settings are static for a page: either the host gave them
-                        // before the game started or it never will. After a short grace
-                        // (the bridge object may still be coming up) this page is taken
-                        // to have no save service, and the game plays without saving.
-                        if (noConfigSince < 0) noConfigSince = Time.unscaledTime;
-                        if (Time.unscaledTime - noConfigSince >= noServiceConfigStartSeconds)
-                        {
-                            noServiceConfig = true;
-                            Debug.LogWarning($"DatabaseSaver: no save-service settings on this page (MHSBridge has no state_load config after {noServiceConfigStartSeconds:F0} s); nothing will be loaded or saved.");
-                            break;
-                        }
-                        if (!configWarned)
-                        {
-                            configWarned = true;
-                            Debug.LogWarning("DatabaseSaver: no load endpoint configured (MHSBridge has no state_load config); waiting for it.");
-                        }
-                        if (FetchLineVisible()) SetStatus(FetchLineWaiting("waiting for the save service settings"));
-                        yield return new WaitForSecondsRealtime(IdentityPollInterval);
-                        continue;
-                    }
-                    noConfigSince = -1f;
 
                     attempt++;
                     if (FetchLineVisible()) SetStatus(FetchLineWaiting(attempt == 1 ? null : $"(attempt {attempt})"));
@@ -1159,21 +1193,27 @@ namespace MHS
 
         private static bool EvictOldestPending()
         {
+            // Frees the oldest pending copy that is actually present; entries whose
+            // key is already gone (a failed write, an unreadable record discarded)
+            // are only dropped from the index.
             var index = ReadPendingIndex();
-            if (index.Count == 0) return false;
-            string oldest = index[0];
-            index.RemoveAt(0);
+            bool evicted = false;
             try
             {
-                PlayerPrefs.DeleteKey(PendingSaveKeyPrefix + oldest);
+                while (index.Count > 0 && !evicted)
+                {
+                    string oldest = index[0];
+                    index.RemoveAt(0);
+                    string key = PendingSaveKeyPrefix + oldest;
+                    if (!PlayerPrefs.HasKey(key)) continue;
+                    PlayerPrefs.DeleteKey(key);
+                    evicted = true;
+                    Debug.LogWarning($"DatabaseSaver: the device's storage is full; the oldest pending save of another player (…{oldest.Substring(18)}) was dropped.");
+                }
                 PlayerPrefs.SetString(PendingIndexKey, string.Join(",", index));
             }
-            catch (Exception)
-            {
-                return false;
-            }
-            Debug.LogWarning($"DatabaseSaver: the device's storage is full; the oldest pending save of another player (…{oldest.Substring(18)}) was dropped.");
-            return true;
+            catch (Exception) { }
+            return evicted;
         }
 
         // The pending saves of other players are few and bounded: an index key
@@ -1203,8 +1243,8 @@ namespace MHS
                 Debug.LogWarning($"DatabaseSaver: too many pending saves of other players on this device; the oldest (player …{oldest.Substring(18)}) was dropped.");
             }
             index.Add(uid);
+            PlayerPrefs.SetString(PendingIndexKey, string.Join(",", index)); // the index first: a failed data write leaves a listed, absent key, which eviction skips
             PlayerPrefs.SetString(PendingSaveKeyPrefix + uid, json);
-            PlayerPrefs.SetString(PendingIndexKey, string.Join(",", index));
         }
 
         private static void RemovePendingKey(string uid)
@@ -1299,7 +1339,7 @@ namespace MHS
             }
             lastTransitionCallTime = now;
 
-            bool nothingUnsent = newestSave == null || !newestSave.Unsent;
+            bool nothingUnsent = newestSave == null || !newestSave.Unsent || noServiceConfig;
             bool timedOut = now - transitionRequestedAt >= TransitionMaxWaitSeconds;
             ReadyToTransition = nothingUnsent || timedOut;
             if (ReadyToTransition && !nothingUnsent && !transitionPersisted)
@@ -1424,6 +1464,12 @@ namespace MHS
             yield return new WaitForSecondsRealtime(seconds);
             statusHideRoutine = null;
             HideStatus();
+        }
+
+        // Hides the line unless a toast is showing; the toast ends on its own.
+        private void HideStatusUnlessToast()
+        {
+            if (statusHideRoutine == null) HideStatus();
         }
 
         private void HideStatus()

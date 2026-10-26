@@ -87,15 +87,19 @@ new game, and while the service is unreachable the game plays on from the
 device copy; identity and configuration are waited for; requests time out;
 the transition waits at most five seconds; the same checkpoint raised twice
 sends one request; nothing secret is printed. The save service is unchanged.
-Delivered as version 1.2 (1.0 was the fix; 1.1 made the `GameLogger.cs`
+Delivered as version 1.3 (1.0 was the fix; 1.1 made the `GameLogger.cs`
 change a required file of the bundle and added its test; 1.2 applied a
 second review's findings, `04-review-102526.md`: three more rollback paths
 in the outage handling closed, a page without save settings plays unsaved
 instead of waiting for ever, and the developer key left the Editor defaults
-and the page templates for a developer config file).
+and the page templates for a developer config file; 1.3 applied the
+findings of a review of 1.2: the no-settings rule now runs without an
+identity, the refetch at START keeps the earlier answer as its fallback, an
+unsent save is never sent over newer progress the service is known to hold,
+and smaller items).
 Start with `03-for-the-game-dev.md`; `01-findings.md` has the production
 evidence (volumes, ledger, save sizes, duplicate saves, progress going
-backwards, the old key) and each defect's verdict, `tools/` the twenty-nine
+backwards, the old key) and each defect's verdict, `tools/` the thirty-six
 PlayMode tests with their fake save service and the browser recipe,
 `queries/` and `data/` the read-only queries and their redacted outputs.
 

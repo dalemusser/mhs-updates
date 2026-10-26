@@ -306,6 +306,19 @@ every item confirmed in the code. What changed in 1.2:
     in the tests so the no-auth check sees the `Print` lines too; the fake service honours the
     request's limit.
 
+**Version 1.3 (2026-10-26).** The 1.2 delta was reviewed the same way before the hand-off
+(`04-review-102526.md` §7, twelve items). Fixed: the no-settings rule did not run on a page
+without an identity, the very page it was decided for (V1); the refetch at START threw the known
+answer away, so an outage at that moment resumed an older device copy or waited (V2); an unsent
+save of this launch could go out over newer progress the service was known to hold (V3); a
+direct status write bypassed the line's owner (V4); two hides could cut a toast short (V5); a
+leftover record on a page without a service held every transition for the cap (V6); the
+reference-less stray saver could take charge in Editor flows (V7); the pending index could list
+keys already gone (V8); the no-settings decision lived in one loop (V9). Tests T31–T37 cover
+V1–V3, V6–V8 and the R1 and R7 cases the 1.2 suite had not proved; T23 and T29 were reworked to
+prove their names (V10). The fade helper's other users are named in `03` (V11); a record made
+before the player id is known is documented as not counted by the reconcile (V12).
+
 Noted, not changed: the transition gates reset under frame gaps over one second in a hidden tab
 (bounded, resolves on return); the device copy lives under the page's directory, so unit builds
 share it on StrataHub but not when each unit is served from its own folder; a staff reset while a
@@ -357,8 +370,8 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 29 tests, all passing on
-2026-10-25 in Unity 6000.0.74f1 (about 90 s; 21 of them from 2026-10-24). They cover: the payload helpers; save retried with a
+or hanging; `tools/README.md` has the two temporary project settings): 36 tests, all passing on
+2026-10-26 in Unity 6000.0.74f1 (about two minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an
 unsent save dropped when the service already holds newer progress; a refused key retried, not
@@ -372,7 +385,11 @@ checkpoint not sent again; the logger's transition gate opening after about five
 entry queued and no log endpoint; and, from 1.2 (§4.3), the stale menu answer refetched at START,
 no rewind after a device-copy resume, the page without save settings, the unreadable newest
 document, the recovered-save line, the newer save during a retry wait, the inert second saver, and
-the accepted copy that does not beat the service.
+the accepted copy that does not beat the service; and, from 1.3, START playing without saving on
+a page with neither identity nor settings, the earlier answer used when the refetch fails, an
+unsent save dropped when the service holds newer progress, an older save's late acceptance
+leaving the newer one on the device, the attempt line during a load request, the pending index
+after a vanished key, a reference-less saver staying inert.
 
 **Dev site, Unit 1 builds of the fixed files** (`20261024-savefix1-SaveFixTest`, unit1 v2.9.5,
 before the review changes; `20261024-savefix2-SaveFixTest`, unit1 v2.9.6, the delivered files;

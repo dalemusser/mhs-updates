@@ -1,6 +1,6 @@
 # The game's saving — review and fix
 
-**Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0; 1.1 of 2026-10-25 made the `GameLogger.cs` change a required file of the bundle; 1.2 of 2026-10-25 applies the findings of a second review, `04-review-102526.md`, and takes the developer key out of the game's source). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5), `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, version 1.0) and `20261025-savefix3-SaveFixTest` (unit1 v2.9.7, version 1.2, the delivered files), not active for students.
+**Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0; 1.1 of 2026-10-25 made the `GameLogger.cs` change a required file of the bundle; 1.2 of 2026-10-25 applies the findings of a second review, `04-review-102526.md`, and takes the developer key out of the game's source; 1.3 of 2026-10-26 applies the findings of a review of 1.2, §7 of the same document). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5), `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, version 1.0) and `20261025-savefix3-SaveFixTest` (unit1 v2.9.7, version 1.2, the delivered files), not active for students.
 **Start with `03-for-the-game-dev.md`**: Part 1 is what to do (the files, the developer config file, build and
 hand-over); Part 2 is the supporting information (checks, what students see, what each change does). `01-findings.md`
 holds the production evidence and each defect's verdict; `00-plan.md` is the brief the work
@@ -72,7 +72,7 @@ review before the hand-off (`04-review-102526.md`) closed three more rollback pa
 handling (a newer save lost while an older one was in flight, a stale answer resumed from a
 long-open tab, progress rewound after a device-copy resume), made a page without save settings
 play unsaved instead of waiting for ever, and took the developer key out of the Editor defaults
-and the page templates (a developer config file replaces it). Twenty-nine PlayMode tests against
+and the page templates (a developer config file replaces it). Thirty-six PlayMode tests against
 a fake save service cover the rules; Unit 1 builds of the files were run on the dev site (see the
 verification record in `03-for-the-game-dev.md`).
 

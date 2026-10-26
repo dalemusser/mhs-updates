@@ -102,8 +102,9 @@ That is all there is to do. Everything below is reference material.
   `serverAnswerMaxAgeSeconds`, `noServiceConfigStartSeconds`); the game leaves them alone.
 - `GameLogger`: the public API is unchanged; one line differs from v1.3.
 - `UICanvasGroupFadeInOut` and `MHSBridge`: no API change; the bridge's change is in its
-  Editor-only branch. Three canvases in the project use the fade helper; each of them wants its
-  fade to finish while the game is paused, which is what the change gives them.
+  Editor-only branch. The fade helper is also on the scene fader prefab and the sandbox loader;
+  both have their scene-load fades off, so only their explicit fades change, and they now run on
+  real time, which is what each of them wants while the game is paused.
 - `SettingsSaveManager.cs` and `GameLogger.cs` are the logging fix v1.3 files plus this bundle's
   change to each. The `playerOverrideId` field on the `AuthManager` prefab works as before.
 
@@ -234,6 +235,14 @@ browser's request interception (recipe in `tools/README.md`):
 | A full device storage blocked the slot write for the session (R9). | The move-aside of another player's unsent copy and the slot write shared one guard. | Separate guards: the oldest pending copy is evicted and the move retried, then the slot is written regardless; the per-record ceiling is 128 KB (today's saves are 45 KB). |
 | A newer save waited out the previous countdown and inherited its attempt number (R11). | — | It goes out at once with its own count. |
 | A second saver lived for a frame in every gameplay scene (R12). | The gameplay core-systems prefab carries the SaveSystem prefab too; the PixelCrushers singleton removes it a frame later, after its `Start`. | A second instance stays inert (it also silences the bare `DatabaseSaver` component on the pause menu's Load Button, which should be deleted). |
+| *From the review of 1.2 (`04-review-102526.md` §7):* a page with neither identity nor save settings waited at START for ever (V1). | The id was checked before the settings, so the no-settings rule never ran without an id. | The settings are decided first: a page without them plays a new game without saving after five seconds whether or not it has an identity; one with settings but no identity still waits. |
+| The refetch at START threw the known answer away (V2). | A service outage at that moment resumed an older device copy, or waited at the menu, although a recent answer was known. | The earlier answer is the fallback when the refetch fails: it outranks an accepted device copy, an unsent copy newer than it still wins, a stale "no saves" is not acted on, and the later reconcile compares against the state actually resumed from. |
+| An unsent save of this launch went out over newer progress the service was known to hold (V3). | The "service holds newer progress" check covered recovered saves only. | It covers any unsent save once the service's newest is known; the game's own accepted saves are never newer than a later record, so the normal path is unchanged. A fork played offline from an older copy still loses to newer progress made elsewhere by time; that is the decided rule. |
+| Two writers during the first in-flight load with a recovered save (V4); toasts cut short by a hide (V5). | — | The recovered-save line goes through the line's owner; the loops' hides skip while a toast shows. |
+| A page without a save service, with a leftover record, waited the cap at every unit transition (V6). | — | The gate ignores a record that cannot be sent from this page. |
+| The reference-less stray saver could take charge in Editor flows (V7). | The in-charge mark was set before the references were checked. | A saver without its references, or without a `GameSaveManager` on its object, is never in charge and no longer throws. |
+| The pending index could list keys that were gone, defeating the eviction retry (V8). | — | The index is written before the data; eviction skips entries already gone. |
+| The no-settings decision lived in the fetch loop only (V9). | A scene opened directly with a leftover record waited for the settings for ever. | One shared decision, used by both loops. |
 
 ### `SettingsSaveManager.cs`
 
@@ -273,5 +282,6 @@ browser's request interception (recipe in `tools/README.md`):
 - 1.0 (2026-10-24): the fix, with the changes from an independent review of the same day.
 - 1.1 (2026-10-25): `GameLogger.cs` made a required part of the bundle; its test added.
 - 1.2 (2026-10-25): the findings of a second review applied (`04-review-102526.md`); the
-  developer key taken out of the game's source and page templates; eight tests added. If you
-  applied an earlier version, replace all eight files again.
+  developer key taken out of the game's source and page templates; eight tests added.
+- 1.3 (2026-10-26): the findings of a review of 1.2 applied (`04-review-102526.md` §7); seven
+  tests added. If you applied an earlier version, replace all eight files again.
