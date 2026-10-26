@@ -411,6 +411,12 @@ host blocked resumes from the device copy at "Gear Up" with the *Still checking 
 N s (attempt K)* line, the re-fired checkpoint's countdown owns the line, and once the host is back
 the newer save goes out and nothing is rewound (R3, R6).
 
+**Version 1.3** (2026-10-26; `20261026-savefix4-SaveFixTest`, unit1 v2.9.8, not active; also served from a
+plain page with neither identity nor settings): the plain page plays a new game without saving after
+the five-second grace (V1); on the dev site a START with the host down after the menu's answer had
+aged does not act on the stale "no saves" and waits with the countdown until the service answers
+(V2); the rest of 1.3 rests on the editor tests T31–T37.
+
 ## 7. Proposals for the save service (not in this round; decision 4)
 
 1. **Order by the client's time when it is there.** The game now sends `save_data.mhs_meta.saved_at`
