@@ -328,7 +328,14 @@ service's newest is a different answer; when a newer service save is applied in 
 record made before it is dropped there. Every drop shows a toast. The review's other items (W2–W11:
 the no-settings flag over a known answer and with a partial setup, the silent another-unit session,
 the send loop's order, the in-place apply on the server's clock, two status writers during the first
-fetch, an over-eviction, the Addressables path, three test weaknesses) are fixed too (T39–T42). The fade helper's other users are named in `03` (V11); a record made
+fetch, an over-eviction, the Addressables path, three test weaknesses) are fixed too (T39–T42). A
+focused review of the new base logic (§9 of the review) then closed the gaps in it: START's refusal
+of an answer could be undone by the send loop's own adoption; a fetch answer arriving after the
+game's own save was accepted replaced the base; the quarter second before START decided; a save
+made during the resume window going out before the service's first answer; a save superseded while
+in flight becoming the base. Answers are now compared by the save they carry, the send loop never
+adopts or decides while START is deciding, a save made in that window waits for the first answer,
+and a superseded save that is accepted is followed by the current state (T43–T46). The fade helper's other users are named in `03` (V11); a record made
 before the player id is known is documented as not counted by the reconcile (V12).
 
 Noted, not changed: the transition gates reset under frame gaps over one second in a hidden tab
@@ -382,8 +389,8 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 41 tests, all passing on
-2026-10-26 in Unity 6000.0.74f1 (about two and a half minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
+or hanging; `tools/README.md` has the two temporary project settings): 45 tests, all passing on
+2026-10-26 in Unity 6000.0.74f1 (about three minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an
 unsent save dropped when the service already holds newer progress; a refused key retried, not

@@ -194,6 +194,9 @@ namespace MHS
         private float noConfigSince = -1f;
         private string resumedBaseTime;         // the time of the state START resumed from while the service was unreachable
         private ServerLatest baselineServer;    // the service answer this launch adopted as its base (resumed from, applied, or its own accepted save)
+        // START's decision that the service's answer is further along elsewhere and
+        // must not be adopted: saves of this session are dropped against it.
+        private static readonly ServerLatest NotAdopted = new ServerLatest();
 
         // Unit transition.
         private bool transitionPending;
@@ -469,7 +472,7 @@ namespace MHS
                             configWarned = true;
                             Debug.LogWarning("DatabaseSaver: no save endpoint configured (MHSBridge has no state_save config); holding the save until there is one.");
                         }
-                        SetStatus("Saving... waiting for the save service settings");
+                        SetStatus(saveManager.LoadConfig != null ? "Saving... the page's save service settings are incomplete" : "Saving... waiting for the save service settings");
                         yield return new WaitForSecondsRealtime(IdentityPollInterval);
                         continue;
                     }
@@ -492,17 +495,28 @@ namespace MHS
                         PersistLocal(item);
                     }
 
-                    if (newestRecovered && serverLatest == null)
+                    if (serverLatest == null && (newestRecovered || startRunning))
                     {
-                        // A save left over from an earlier launch waits for the service's
-                        // answer before it goes out (something newer may have been made on
-                        // another device meanwhile). The fetch's lines own the display.
+                        // No answer from the service yet this launch, and a reason to wait
+                        // for the first one before this save goes out: it is a save left
+                        // over from an earlier launch, or START is still deciding (the game
+                        // resumed from the device copy and a checkpoint fired since). Sent
+                        // now it could overwrite progress the service holds from elsewhere.
+                        // The device keeps it meanwhile; the fetch's lines own the display.
                         EnsureFetch(false);
-                        recoveredWaiting = true;
+                        recoveredWaiting = newestRecovered;
+                        if (recoveredWaiting && fetchFailures == 0 && string.IsNullOrEmpty(StatusText) && FetchLineOwner() == FetchLineKind.Recovered) SetStatus(FetchLineWaiting(null));
                         yield return new WaitForSecondsRealtime(IdentityPollInterval);
                         continue;
                     }
                     recoveredWaiting = false;
+                    if (serverLatest != null && startRunning && !SameAnswer(serverLatest, baselineServer))
+                    {
+                        // START is deciding what to make of this answer (adopt it, apply it,
+                        // or refuse it); the decision about this save waits for that.
+                        yield return new WaitForSecondsRealtime(0.25f);
+                        continue;
+                    }
                     if (serverLatest != null && baselineServer == null) baselineServer = serverLatest; // the launch's first knowledge of the service
 
                     bool superseded = false;
@@ -520,7 +534,7 @@ namespace MHS
                             // from, whatever two devices' clocks say. It is superseded only
                             // when the service has moved on to an answer this launch did not
                             // adopt as its base (someone else saved since).
-                            superseded = baselineServer != null && !ReferenceEquals(serverLatest, baselineServer);
+                            superseded = !SameAnswer(serverLatest, baselineServer);
                         }
                     }
                     if (superseded)
@@ -552,6 +566,19 @@ namespace MHS
                     if (result.Accepted)
                     {
                         item.sent = true;
+                        if (item.dropped)
+                        {
+                            // Superseded while its request was in flight (a newer service
+                            // save was applied meanwhile): the service now holds a state the
+                            // screen has left. The current state is saved over it.
+                            Debug.LogWarning("DatabaseSaver: a save superseded while in flight was accepted; saving the current state over it.");
+                            PersistAfterRequest(item);
+                            RemovePendingKey(uid);
+                            saveAttempt = 0;
+                            delay = SaveRetryInitial;
+                            SaveGameToDatabase();
+                            continue;
+                        }
                         PersistAfterRequest(item);
                         RemovePendingKey(uid);
                         RememberAsServerNewest(item);
@@ -844,8 +871,8 @@ namespace MHS
                             Debug.LogWarning("DatabaseSaver: the save service holds newer progress than this device's copy; loading it.");
                             ShowStatus("Newer progress found on the save service.\nLoading it...");
                             DropUnsentAsSuperseded();
+                            baselineServer = serverLatest; // before the apply: a checkpoint it re-fires is progress on the new base
                             ResumeWith(chosen);
-                            baselineServer = serverLatest;
                             ShowToast("Progress loaded");
                         }
                         else
@@ -857,6 +884,7 @@ namespace MHS
                             // launch resolves it from the service as usual.
                             Debug.LogWarning($"DatabaseSaver: the save service holds newer progress in another scene ({chosen.sceneName}); the player stays in {SceneManager.GetActiveScene().name}, this session's saves are not sent, and the next launch uses the service's save.");
                             saveData = chosen;
+                            baselineServer = NotAdopted;
                             ShowToast("The save service has newer progress in another unit.\nThis session is not saved.");
                         }
                     }
@@ -872,8 +900,11 @@ namespace MHS
                 if (chosen != null)
                 {
                     HideStatus();
+                    // The service's save won over an unsent record made here (a save in
+                    // flight during the refetch, say): that record is superseded.
+                    if (chosen == serverLatest.data) DropUnsentAsSuperseded();
+                    baselineServer = serverLatest; // before the apply: a checkpoint it re-fires is progress on this base
                     ResumeWith(chosen);
-                    baselineServer = serverLatest;
                     yield break;
                 }
 
@@ -1029,7 +1060,8 @@ namespace MHS
                             configWarned = true;
                             Debug.LogWarning("DatabaseSaver: no load endpoint configured (MHSBridge has no state_load config); waiting for it.");
                         }
-                        if (FetchLineVisible()) SetStatus(FetchLineWaiting("waiting for the save service settings"));
+                        bool partial = saveManager != null && saveManager.SaveConfig != null;
+                        if (FetchLineVisible()) SetStatus(FetchLineWaiting(partial ? "the page's save service settings are incomplete" : "waiting for the save service settings"));
                         yield return new WaitForSecondsRealtime(IdentityPollInterval);
                         continue;
                     }
@@ -1057,6 +1089,14 @@ namespace MHS
                     if (result == null)
                     {
                         result = new GameSaveManager.LoadResult { outcome = GameSaveManager.Outcome.Failed, retryable = true, error = "no answer from the request", reason = "the save service did not answer in time" };
+                    }
+
+                    if (serverLatest != null)
+                    {
+                        // The game's own save was accepted while this request was out: the
+                        // service's newest is that save, and this answer is older. Keep it.
+                        Print("The service's answer arrived after this launch's own save was accepted; the own save stays the newest.");
+                        break;
                     }
 
                     if (result.outcome == GameSaveManager.Outcome.Accepted && !result.HasReadable)
@@ -1483,6 +1523,19 @@ namespace MHS
         // the service's time is its own clock (a save without mhs_meta) a clock
         // skew allowance applies, so a device a minute behind does not throw its
         // own newer save away.
+        // Two answers are the same when they carry the same save: by its metadata
+        // (session and sequence) when both have it, else by their time. The sentinel
+        // NotAdopted matches nothing that holds a save.
+        private static bool SameAnswer(ServerLatest a, ServerLatest b)
+        {
+            if (a == null || b == null) return false;
+            if (ReferenceEquals(a, b)) return true;
+            if (a.hasSave != b.hasSave) return false;
+            if (!a.hasSave) return true;
+            if (a.meta != null && b.meta != null) return a.meta.session_id == b.meta.session_id && a.meta.seq == b.meta.seq;
+            return a.time == b.time;
+        }
+
         private static bool ServerNewerThan(ServerLatest server, string deviceTime)
         {
             if (server == null || !server.hasSave) return false;
