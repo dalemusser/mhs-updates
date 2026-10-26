@@ -320,7 +320,15 @@ prove their names (V10). A third review of the 1.3 delta found one residual in V
 drop compared a save of this launch against a server-clock time when the service's newest came from
 an old build, so a device clock minutes slow could drop a real checkpoint during the rollout. A save
 of this launch is now dropped only against a save that carries a device-clock time; a recovered save
-keeps the broader rule (T38). The fade helper's other users are named in `03` (V11); a record made
+keeps the broader rule (T38). The same review then showed that even device-clock times are two
+devices' clocks (W1, `04-review-102526.md` §8): a device whose clock ran ahead would have stopped the
+next device's checkpoints silently. The rule for a save of this launch is now identity, not time: the
+game remembers the service answer it adopted as its base, and drops such a save only when the
+service's newest is a different answer; when a newer service save is applied in place, the unsent
+record made before it is dropped there. Every drop shows a toast. The review's other items (W2–W11:
+the no-settings flag over a known answer and with a partial setup, the silent another-unit session,
+the send loop's order, the in-place apply on the server's clock, two status writers during the first
+fetch, an over-eviction, the Addressables path, three test weaknesses) are fixed too (T39–T42). The fade helper's other users are named in `03` (V11); a record made
 before the player id is known is documented as not counted by the reconcile (V12).
 
 Noted, not changed: the transition gates reset under frame gaps over one second in a hidden tab
@@ -374,8 +382,8 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 37 tests, all passing on
-2026-10-26 in Unity 6000.0.74f1 (about two minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
+or hanging; `tools/README.md` has the two temporary project settings): 41 tests, all passing on
+2026-10-26 in Unity 6000.0.74f1 (about two and a half minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an
 unsent save dropped when the service already holds newer progress; a refused key retried, not
