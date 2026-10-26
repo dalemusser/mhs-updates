@@ -134,11 +134,11 @@ namespace MHS
         // since. (A real checkpoint inside the window costs at most that much play,
         // and only when the service holds newer progress.)
         private const float ReplayWindowSeconds = 5f;
-        // The reconcile waits for a resume's scene load and apply without a clock
-        // while the transition scene is up (a load can take minutes on a filtered
-        // network); outside it, an apply that has not come after this long is not
-        // coming.
-        private const float ResumeApplyMaxWaitSeconds = 30f;
+        // The re-fire comes from the apply itself (the checkpoint saver invokes the
+        // checkpoint events as it applies, and the waypoints at the end of the
+        // frame), so it also counts by frames: in a hidden tab the next frame can
+        // be minutes away.
+        private const int ReplayWindowFrames = 2;
         // A save of this launch made while START is still deciding waits for the
         // service's first answer, but not for ever: a load-only outage must not keep
         // progress on the device all session. Once expired, this launch's saves go
@@ -146,7 +146,12 @@ namespace MHS
         public static float heldSaveMaxSeconds = 300f;
 
         // One id per launch of the game, and a counter for the saves it makes.
-        private static readonly string launchId = Guid.NewGuid().ToString("N");
+        private static string launchId = Guid.NewGuid().ToString("N");
+
+        // A new id per play session in the Editor as well (statics survive a play
+        // session when domain reloading is off).
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void NewLaunchId() { launchId = Guid.NewGuid().ToString("N"); }
         private static long sequence = 0;
 
         // The record kept on the device: the save and what is known about it.
@@ -166,6 +171,7 @@ namespace MHS
             public bool superseded;     // dropped because the service held progress this launch did not start from; never a resume candidate
             public string save_json;    // JsonUtility form of the SavedGameData, with mhs_meta inside
             [NonSerialized] public float recordedAtUnscaled; // when this launch recorded it (in-memory only)
+            [NonSerialized] public int recordedFrame;
 
             public bool Unsent => !sent && !dropped;
         }
@@ -215,6 +221,8 @@ namespace MHS
         private float heldSince = -1f;
         private bool heldExpired;               // the hold ran out this launch: saves go out without the check
         private float lastApplyAtUnscaled = -1000f; // when a save was last applied in place or after a scene load
+        private int lastApplyFrame = -1000;
+        private bool repostRunning;             // the refused answer is being posted again over a save accepted after the refusal
         private bool applyPending;              // a resume's scene load is pending and its data not yet applied
         private bool followUpSaveWanted;        // a superseded save was accepted: save the current state once the apply has landed
         // START's decision that the service's answer is further along elsewhere and
@@ -358,6 +366,7 @@ namespace MHS
                 // No apply will follow in this scene.
                 applyPending = false;
                 followUpSaveWanted = false;
+                SceneManager.sceneLoaded -= ApplyDataAfterSceneLoaded;
             }
         }
 
@@ -442,6 +451,7 @@ namespace MHS
                 checkpoint = meta.checkpoint,
                 save_json = GameSaveManager.WithMeta(json, meta),
                 recordedAtUnscaled = Time.unscaledTime,
+                recordedFrame = Time.frameCount,
             };
 
             if (newestSave != null && newestSave.Unsent)
@@ -456,6 +466,7 @@ namespace MHS
 
             Print($"Save recorded: scene {record.scene}, checkpoint {record.checkpoint}, {record.save_json.Length} chars, seq {record.seq}.");
             bool willBeHeld = serverLatest == null && startRunning && !heldExpired; // the fetch's line shows meanwhile
+            if (willBeHeld) holdingSave = true;
             if (statusHideRoutine == null && !willBeHeld) ShowStatus("Saving Game..."); // a toast finishes first
             EnsureSendLoop();
         }
@@ -635,7 +646,7 @@ namespace MHS
                         saveAttempt = 0;
                         delay = SaveRetryInitial;
                         Print("Save confirmed by the server: " + Truncate(result.body, 160));
-                        FinishItem(item, "Game Saved!");
+                        FinishItem(item, ReferenceEquals(baselineServer, NotAdopted) ? null : "Game Saved!");
                         continue;
                     }
 
@@ -701,6 +712,16 @@ namespace MHS
         // After the service accepted a save, it is the newest the service holds.
         private void RememberAsServerNewest(LocalSaveRecord item)
         {
+            if (ReferenceEquals(baselineServer, NotAdopted))
+            {
+                // Accepted after START refused the service's further progress (the
+                // request was in flight at the time): the service's newest is now this
+                // session's stale state. The refusal stands, and the further progress
+                // is posted again so that it is the newest once more.
+                Debug.LogWarning("DatabaseSaver: a save that was in flight when START refused the service's further progress was accepted; the further progress is posted again, and this session stays unsaved.");
+                if (!repostRunning && serverLatest != null && serverLatest.hasSave && isActiveAndEnabled) StartCoroutine(RepostRefusedAnswer(serverLatest));
+                return;
+            }
             var data = ParseSave(item.save_json);
             if (data == null) return;
             serverLatest = new ServerLatest
@@ -712,7 +733,55 @@ namespace MHS
                 timeFromDevice = true,
             };
             serverLatestAt = Time.unscaledTime;
-            if (!ReferenceEquals(baselineServer, NotAdopted)) baselineServer = serverLatest; // a refusal stands
+            baselineServer = serverLatest;
+        }
+
+        // Posts the service's further progress again, over a save of this session
+        // that reached the service after START refused that progress. Retried
+        // until the service accepts it (no line for the player: the session was
+        // already told it is not saved); a rejection for good is a defect and loud.
+        private IEnumerator RepostRefusedAnswer(ServerLatest refused)
+        {
+            repostRunning = true;
+            try
+            {
+                string json = null;
+                try { json = GameSaveManager.WithMeta(JsonUtility.ToJson(refused.data), refused.meta); }
+                catch (Exception e) { Debug.LogError($"DatabaseSaver: the service's further progress could not be serialized to post it again ({e.Message}); its newest stays this session's stale save."); }
+                if (string.IsNullOrEmpty(json)) yield break;
+                float delay = SaveRetryInitial;
+                int attempt = 0;
+                while (true)
+                {
+                    string uid = ResolveUserId();
+                    if (uid == null || saveManager == null || saveManager.SaveConfig == null)
+                    {
+                        yield return new WaitForSecondsRealtime(IdentityPollInterval);
+                        continue;
+                    }
+                    attempt++;
+                    GameSaveManager.RequestResult result = null;
+                    saveManager.SaveJson(uid, GameId, json, r => result = r);
+                    float deadline = Time.unscaledTime + GameSaveManager.requestTimeoutSeconds + RequestWaitMarginSeconds;
+                    while (result == null && Time.unscaledTime < deadline) yield return null;
+                    if (result != null && result.Accepted)
+                    {
+                        Debug.LogWarning($"DatabaseSaver: the further progress the service held ({refused.data.sceneName}, {refused.time}) is its newest again.");
+                        serverLatestAt = Time.unscaledTime;
+                        yield break;
+                    }
+                    if (result != null && !result.retryable)
+                    {
+                        Debug.LogError($"DatabaseSaver: the service rejected its own save posted again ({result.statusCode} {result.error}); its newest stays this session's stale save.");
+                        yield break;
+                    }
+                    float wait = result != null && result.retryAfterSeconds > 0 ? result.retryAfterSeconds : delay;
+                    delay = Mathf.Min(delay * 2f, SaveRetryMax);
+                    Debug.LogWarning($"DatabaseSaver: the further progress could not be posted again (attempt {attempt}); retrying in {wait:F0} s.");
+                    yield return new WaitForSecondsRealtime(wait);
+                }
+            }
+            finally { repostRunning = false; }
         }
 
         // An unsent record made before a newer service save is applied in place: the
@@ -786,6 +855,15 @@ namespace MHS
             return Int32.TryParse(sceneName[5].ToString(), out int n) ? n : -1;
         }
 
+        // Whether a save's scene is further on than where this launch is: a later
+        // unit by number; with a number missing, any other scene.
+        private static bool FurtherAlong(string sceneName, string here)
+        {
+            int n = SceneNumber(sceneName), h = SceneNumber(here);
+            if (n >= 0 && h >= 0) return n > h;
+            return sceneName != here;
+        }
+
         // Main menu: fetch the newest save as soon as the player is known and
         // apply its dialogue state (quest log) while the menu is showing. START
         // GAME reuses the answer, so a launch makes one load request.
@@ -856,6 +934,8 @@ namespace MHS
         {
             startRunning = true;
             followUpSaveWanted = false;
+            heldExpired = false;
+            heldSince = -1f;
             try
             {
                 Print("Loading Game From Database...");
@@ -933,7 +1013,7 @@ namespace MHS
                     {
                         // The service's newest is this launch's own save (sent after the hold
                         // ran out): nothing to reconcile.
-                        if (!ReferenceEquals(baselineServer, NotAdopted)) baselineServer = serverLatest;
+                        baselineServer = serverLatest;
                         HideStatusUnlessToast();
                         yield break;
                     }
@@ -948,42 +1028,51 @@ namespace MHS
                         && (serverLatest.timeFromDevice || !progressThisLaunch);
                     if (serverNewer && chosen == serverLatest.data)
                     {
-                        // Let the scene load that the local resume started finish, and its
-                        // data be applied, first; a load can take minutes on a filtered network.
-                        float outsideTransition = 0f;
-                        while (applyPending || SceneManager.GetActiveScene().name == "Transition")
+                        // Where this launch is, or is going: the scene a pending resume is
+                        // loading (it applies saveData once that scene is up), else the one
+                        // on screen. The transition scene itself is never "here".
+                        while (!applyPending && SceneManager.GetActiveScene().name == "Transition") yield return null;
+                        bool loadPending = applyPending;
+                        string here = loadPending ? saveData.sceneName : SceneManager.GetActiveScene().name;
+                        if (FurtherAlong(chosen.sceneName, here))
                         {
-                            if (SceneManager.GetActiveScene().name == "Transition") outsideTransition = 0f;
-                            else if ((outsideTransition += Time.unscaledDeltaTime) > ResumeApplyMaxWaitSeconds)
-                            {
-                                Debug.LogWarning("DatabaseSaver: the resume's data was not applied; going on without waiting for it.");
-                                applyPending = false;
-                                break;
-                            }
-                            yield return null;
+                            // A later unit: pulling the player out of the unit they are in
+                            // is worse than playing on, but nothing this session saves may
+                            // overwrite the further progress; the send loop drops its
+                            // checkpoints (each with a toast), and the next launch resolves
+                            // it from the service as usual.
+                            Debug.LogWarning($"DatabaseSaver: the save service holds newer progress further on ({chosen.sceneName}); the player stays in {here}, this session's saves are not sent, and the next launch uses the service's save.");
+                            baselineServer = NotAdopted;
+                            ShowToast("The save service has newer progress in another unit.\nThis session is not saved.");
                         }
-                        if (chosen.sceneName == SceneManager.GetActiveScene().name)
+                        else if (chosen.sceneName == here)
                         {
-                            // Same scene: the newer state replaces what is on screen; an
-                            // unsent record made before this moment is superseded by it.
+                            // Same scene: the newer state replaces what is on screen, or
+                            // what the pending load is about to put there; an unsent record
+                            // made before this moment is superseded by it.
                             Debug.LogWarning("DatabaseSaver: the save service holds newer progress than this device's copy; loading it.");
-                            ShowStatus("Newer progress found on the save service.\nLoading it...");
                             DropUnsentAsSuperseded();
                             baselineServer = serverLatest; // before the apply: a checkpoint it re-fires is progress on the new base
-                            ResumeWith(chosen);
-                            ShowToast("Progress loaded");
+                            if (loadPending)
+                            {
+                                saveData = chosen; // the resume's scene load applies it when the scene is up
+                                ShowToast("Newer progress found on the save service.\nLoading it...");
+                            }
+                            else
+                            {
+                                ShowStatus("Newer progress found on the save service.\nLoading it...");
+                                ResumeWith(chosen);
+                                ShowToast("Progress loaded");
+                            }
                         }
                         else
                         {
-                            // Another scene (another unit's): pulling the player out of the
-                            // scene they are in is worse than playing on, but nothing this
-                            // session saves may overwrite the further progress; the send
-                            // loop drops its checkpoints (each with a toast), and the next
-                            // launch resolves it from the service as usual.
-                            Debug.LogWarning($"DatabaseSaver: the save service holds newer progress in another scene ({chosen.sceneName}); the player stays in {SceneManager.GetActiveScene().name}, this session's saves are not sent, and the next launch uses the service's save.");
-                            saveData = chosen;
-                            baselineServer = NotAdopted;
-                            ShowToast("The save service has newer progress in another unit.\nThis session is not saved.");
+                            // An earlier unit (played again elsewhere), or another scene of
+                            // this one: not further on than where the player is. They stay,
+                            // and this session's saves go out from here.
+                            Debug.LogWarning($"DatabaseSaver: the save service's newer save is for {chosen.sceneName}, not further on than {here}; keeping this position.");
+                            baselineServer = serverLatest;
+                            HideStatusUnlessToast();
                         }
                     }
                     else
@@ -1086,11 +1175,14 @@ namespace MHS
         private void MarkApply(SavedGameData data)
         {
             lastApplyAtUnscaled = Time.unscaledTime;
+            lastApplyFrame = Time.frameCount;
         }
 
         private bool IsReplay(LocalSaveRecord record)
         {
             if (record == null || record.recordedAtUnscaled <= 0f) return false;
+            int framesSinceApply = record.recordedFrame - lastApplyFrame;
+            if (framesSinceApply >= 0 && framesSinceApply <= ReplayWindowFrames) return true; // however long those frames took
             float sinceApply = record.recordedAtUnscaled - lastApplyAtUnscaled;
             return sinceApply >= 0f && sinceApply <= ReplayWindowSeconds;
         }
