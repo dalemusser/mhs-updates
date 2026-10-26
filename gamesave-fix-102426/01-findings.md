@@ -28,12 +28,13 @@ Saving had the logger's defect family, and production shows the consequences:
   (two raisers, byte-identical bodies), and old saves from before the settings decoupling of May
   are up to 8.6 MB each, which is why the save collection is 4.4 GB for 5,592 documents.
 
-The fix (§5, `03-for-the-game-dev.md`) replaces the transport and the policy in two files and
-removes the key fallback from a third. It retries saves and loads for ever with a visible status,
+The fix (§5, `03-for-the-game-dev.md`) replaces the transport and the policy in two files,
+removes the key fallback from a third, and corrects the unit-transition gate in a fourth, the
+logging fix's `GameLogger.cs` (its rule never fired against the loader; §4, review finding 1). It retries saves and loads for ever with a visible status,
 keeps the newest save on the device and sends it at the next launch if needed, never starts a
 unit over on a failed load, waits for identity and configuration, times requests out, caps the
 unit transition wait, and prints no secrets. Nothing changes in the save service in this round;
-§7 lists what it could do later. Twenty PlayMode tests against a fake save service cover each
+§7 lists what it could do later. Twenty-one PlayMode tests against a fake save service cover each
 rule (§6).
 
 ## 2. How saving works (the 2026-09-28 code)
@@ -241,7 +242,9 @@ analysis; all nine findings applied):**
    not be reached. The rule is now a one-second time gap. **The v1.3 logger's gate has the same
    rule and the same flaw** (`GameLogger.cs`, `CallToTransitionToNextUnit`): with the log host
    unreachable and entries queued, a unit transition is held until the host answers. The one-line
-   fix is delivered as an optional fourth drop-in (`Game-Code/Systems/Logging/GameLogger.cs`).
+   fix is the fourth drop-in of this bundle (`Game-Code/Systems/Logging/GameLogger.cs`), applied
+   with the other three: the loader waits for every check, so with the logger's gate left as it
+   is the saver's five-second cap changes nothing at the transition. Test T21 covers it.
 2. *A 2xx save answer with a non-service body counted as accepted.* A captive portal or a filter
    answering the POST with a block page (after a redirect, a 200) would have marked the device copy
    as sent, and the next launch would have started a new game on the service's `[]`. A save is
@@ -285,6 +288,11 @@ and public member the prefab and other scripts use is unchanged.
 skipped and reported, as before for an empty id) and both requests have the 30 s timeout. Settings
 are not progress; a failed settings request is not retried.
 
+**`GameLogger.cs` (the logging fix v1.3 file, one line).** The unit-transition gate's "new
+request" rule is a one-second time gap instead of a frame count, so its five-second cap fires
+against the loader's two-frame poll. Part of the fix, not an option: without it the unit
+transition still waits for ever while the log host is unreachable, whatever the saver does.
+
 **Metadata the game now writes** into `save_data` as `mhs_meta` (`seq`, `saved_at`, `session_id`,
 `version`, `scene`, `checkpoint`): the service stores it as it is, old builds and the
 `SavedGameData` reader ignore it, the device uses it to compare its copy with the service's, and
@@ -294,8 +302,8 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 20 tests, all passing on
-2026-10-24 in Unity 6000.0.74f1 (about 50 s). They cover: the payload helpers; save retried with a
+or hanging; `tools/README.md` has the two temporary project settings): 21 tests, all passing on
+2026-10-24 (T21 on 2026-10-25) in Unity 6000.0.74f1 (about 70 s). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an
 unsent save dropped when the service already holds newer progress; a refused key retried, not
@@ -305,7 +313,8 @@ failed load that never starts over and resumes when the service answers; `[]` st
 while an HTML body counts as a failure; the device copy used while the service is down and left
 alone when the service confirms the same save; the service's newer save winning over the device
 copy; one load request per launch shared by the menu and START GAME; an identical repeat of a
-checkpoint not sent again.
+checkpoint not sent again; the logger's transition gate opening after about five seconds with an
+entry queued and no log endpoint.
 
 **Dev site, Unit 1 builds of the fixed files** (`20261024-savefix1-SaveFixTest`, unit1 v2.9.5,
 before the review changes; `20261024-savefix2-SaveFixTest`, unit1 v2.9.6, the delivered files;
@@ -317,7 +326,7 @@ service's newest before anything is sent; a blocked save host at START GAME keep
 the main menu with the countdown (attempts at 3, 6, 12, 24, 30 s) and never starts the unit over,
 and resumes at the saved quest when the host returns; with a copy on the device the game resumes
 from it after the third failed attempt and keeps asking; an HTML page on the load is a retried
-failure, not "no saves". The refused key and the transition gate rest on the editor tests.
+failure, not "no saves". The refused key and the two transition gates rest on the editor tests.
 
 ## 7. Proposals for the save service (not in this round; decision 4)
 
@@ -352,10 +361,6 @@ failure, not "no saves". The refused key and the transition gate rest on the edi
 - **Two saves per checkpoint** (§3.4): two raisers of `OnSaveGame` for the same checkpoint. The
   fix de-duplicates identical consecutive saves within a launch, so this no longer doubles the
   traffic or eats two of the five retained saves, but the second raise is still wasted work.
-- **The logger's transition gate** (`GameLogger.cs` v1.3, `CallToTransitionToNextUnit`): the
-  frame-count rule resets on every two-frame poll of `TransitionSceneLoader`, so with the log host
-  unreachable the unit transition waits for ever instead of five seconds. One line to change (a
-  one-second time gap); the patched file is in `Game-Code/Systems/Logging/` as an optional drop-in.
 - **Dead code with the old key:** `Systems/Logging/LogManager.cs` (the logger before `GameLogger`,
   with the old key as its `JWTToken` constant and the legacy `/logs` URL) and `Save Load System/SaveLoadManager.cs`
   (entirely commented out) are still compiled into every build. Nothing uses them; deleting both

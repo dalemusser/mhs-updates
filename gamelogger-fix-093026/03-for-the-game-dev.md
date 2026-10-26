@@ -1,5 +1,7 @@
 # Logging fix: what to do in the game code
 
+**Update 2026-10-25:** the `GameLogger.cs` in `../gamesave-fix-102426/Game-Code/Systems/Logging/` supersedes the one in this folder. Its unit-transition gate's "new request" rule is a one-second time gap instead of a frame count; the v1.3 rule reset on every two-frame poll of `TransitionSceneLoader`, so with the log host unreachable the unit transition waited for ever instead of five seconds. Apply that file, not this one; everything else in this folder stands.
+
 **Version:** 1.3 (2026-10-01). Version 1.0 was the fix itself, 1.1 added the changes from two independent reviews, 1.2 added fields the log service can use later, 1.3 added the findings of a second review. All are in the same three files; apply the files as they are.
 **Short version:** replace three C# files, build, upload through MHS Builds. No prefab, asset, scene or host-page changes. The detailed write-up with the evidence and test results is `01-changes.md`; this page is only what you need to apply it: the files, the build and hand-over steps, one CI fix, and then the background on what each file fixes.
 
@@ -11,7 +13,7 @@ Copy each file from `Game-Code/` over the file of the same name in the project. 
 
 | From `Game-Code/` | To `Assets/Scripts/` |
 |---|---|
-| `Systems/Logging/GameLogger.cs` | `Systems/Logging/GameLogger.cs` |
+| `Systems/Logging/GameLogger.cs` (**take the copy in `../gamesave-fix-102426/Game-Code/Systems/Logging/`**, see the note at the top) | `Systems/Logging/GameLogger.cs` |
 | `Systems/Logging/LoggingData.cs` | `Systems/Logging/LoggingData.cs` |
 | `Systems/Save Load System/SettingsSaveManager.cs` | `Systems/Save Load System/SettingsSaveManager.cs` |
 

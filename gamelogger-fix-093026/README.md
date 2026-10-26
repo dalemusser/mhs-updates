@@ -1,5 +1,7 @@
 # gamelogger-fix-093026 — the game's logging fixed (version 1.3, 2026-10-01)
 
+**Update 2026-10-25:** the `GameLogger.cs` in `../gamesave-fix-102426/Game-Code/Systems/Logging/` supersedes the one in this folder. Its unit-transition gate's "new request" rule is a one-second time gap instead of a frame count; the v1.3 rule reset on every two-frame poll of `TransitionSceneLoader`, so with the log host unreachable the unit transition waited for ever instead of five seconds. Apply that file, not this one; everything else in this folder stands.
+
 **Start with `03-for-the-game-dev.md`**: which three files to replace, how to build and hand the build back, one CI fix, and the background on what each file fixes.
 
 | File | Purpose |

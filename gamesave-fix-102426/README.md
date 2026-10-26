@@ -1,7 +1,7 @@
 # The game's saving — review and fix
 
-**Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5) and `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, the delivered files), not active for students.
-**Start with `03-for-the-game-dev.md`**: which three files to replace, how to build and hand the
+**Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0; 1.1 of 2026-10-25 makes the `GameLogger.cs` change a required file of the bundle and adds its test). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5) and `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, the delivered files), not active for students.
+**Start with `03-for-the-game-dev.md`**: which four files to replace, how to build and hand the
 build back, what students will see, and the background on what each change does. `01-findings.md`
 holds the production evidence and each defect's verdict; `00-plan.md` is the brief the work
 followed, with Dale's decisions in §9.
@@ -35,8 +35,8 @@ Working directory for the session: the workspace that holds `mhs-updates`, `stra
 
 | File | Purpose |
 |---|---|
-| `03-for-the-game-dev.md` | The short page for the developer applying the fix: the three files, build and hand-over, the checks on a build, what students see, background per file, verification record. |
-| `Game-Code/` | The three changed files, mirroring `Assets/Scripts/`: `Systems/Save Load System/GameSaveManager.cs`, `CustomSavers/DatabaseSaver.cs`, `SettingsSaveManager.cs`. |
+| `03-for-the-game-dev.md` | The short page for the developer applying the fix: the four files, build and hand-over, the checks on a build, what students see, background per file, verification record. |
+| `Game-Code/` | The four changed files, mirroring `Assets/Scripts/`: `Systems/Save Load System/GameSaveManager.cs`, `CustomSavers/DatabaseSaver.cs`, `SettingsSaveManager.cs`, and `Systems/Logging/GameLogger.cs` (the logging fix's file with its unit-transition gate corrected; it supersedes the copy in `../gamelogger-fix-093026/`). |
 | `01-findings.md` | The evidence (volumes, the service's ledger, what the saves look like, duplicate saves, progress going backwards, failed saves, the old key) and the twelve defects of the brief confirmed, cleared or documented; proposals for the service; notes for the game team. |
 | `00-plan.md` | The brief: what was known, the code map, the defects to check, evidence to gather, reproduction, the rules, delivery, and the decisions (§9). |
 | `tools/` | The PlayMode tests with the fake save service, how to run them, and the browser recipe for the checks on a build (`tools/README.md`). |
@@ -54,15 +54,18 @@ a student's Unit 4 checkpoint 3 became checkpoint 0 after an evening relaunch at
 transition waited on the save flag with no cap, the bearer value went to the browser console on
 every launch, the response parsing was unguarded, and the old API key was a built-in fallback.
 
-The fix replaces the transport (`GameSaveManager.cs`) and the policy (`DatabaseSaver.cs`) and
-removes the key fallback from `SettingsSaveManager.cs`: saves and loads are retried for ever with
+The fix replaces the transport (`GameSaveManager.cs`) and the policy (`DatabaseSaver.cs`),
+removes the key fallback from `SettingsSaveManager.cs`, and corrects the unit-transition gate in
+the logging fix's `GameLogger.cs` (its v1.3 rule never fired against the loader's two-frame poll,
+so with the log host unreachable the transition waited for ever; the saver's own cap cannot help
+there, which is why that file is part of this fix): saves and loads are retried for ever with
 backoff and a status line (reason, countdown, attempt) in the existing toast; the newest save is
 kept on the device and sent at the next launch when it could not go out; a failed load never
 starts a unit over (only the service's explicit "no saves" does), and while the service is
 unreachable the game plays on from the device copy and switches to the service's save if that
 arrives newer; identity and configuration are waited for; requests time out after 30 s; the unit
 transition waits at most five seconds; the same checkpoint raised twice sends one request; nothing
-secret is printed. The save service is unchanged (proposals in `01-findings.md` §7). Twenty
+secret is printed. The save service is unchanged (proposals in `01-findings.md` §7). Twenty-one
 PlayMode tests against a fake save service cover the rules; a Unit 1 build of the files was run
 on the dev site (see the verification record in `03-for-the-game-dev.md`).
 

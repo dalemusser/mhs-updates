@@ -1,7 +1,8 @@
 #if UNITY_EDITOR
 // PlayMode tests for the game's saving (mhs-updates/gamesave-fix-102426): the real
 // GameSaveManager and DatabaseSaver against a fake save service on localhost that can be
-// up, down (503), refusing (401), rejecting (400), answering HTML, or hanging.
+// up, down (503), refusing (401), rejecting (400), answering HTML, or hanging; and the
+// GameLogger's unit-transition gate (T21), with no log endpoint so nothing is sent.
 //
 // Setup and cleanup are inline (not [UnitySetUp]/[UnityTearDown]): in this project those made the
 // editor's test runner overflow its stack (see unit4-gardenbox-crash-102326/tools/README.md).
@@ -786,6 +787,56 @@ namespace MHS.SaveFixTests
                 Assert.AreEqual("server-1", _rig.testSaver.lastApplied);
             }
             finally { Cleanup(); }
+        }
+        // ---- 5. the logger's transition gate (the fourth file, GameLogger.cs) ----
+
+        [UnityTest]
+        public IEnumerator T21_LoggerTransitionGateOpensAfterTheCap_WithTheLogHostUnreachable()
+        {
+            // The v1.3 rule took a gap of more than one FRAME as a new transition request, and the
+            // real loader polls a not-ready check every second frame, so the five-second cap never
+            // fired: with the log host unreachable and an entry queued the unit transition waited
+            // for ever. The test scene has no MHSBridge, so the logger has no endpoint, holds its
+            // queue, and sends nothing anywhere; the cache key is restored afterwards.
+            Assert.IsNull(MHSBridge.Instance, "no bridge in the test scene, so the logger cannot send");
+            const string cacheKey = "game_logs_cache.json";
+            string savedCache = PlayerPrefs.HasKey(cacheKey) ? PlayerPrefs.GetString(cacheKey) : null;
+            PlayerPrefs.DeleteKey(cacheKey);
+            PlayerPrefs.Save();
+            GameLogger logger = GameLogger.Instance; // creates one (no logger exists in the test scene)
+            try
+            {
+                yield return null; // Awake/Start
+                logger.SetUserId(Uid);
+                logger.LogEvent("savefix_test", new Dictionary<string, object> { { "k", "v" } });
+                yield return null;
+                Assert.IsTrue(GameLogger.IsSendingLogs, "the send loop is up and holding the entry");
+                float start = Time.realtimeSinceStartup;
+                logger.CallToTransitionToNextUnit();
+                Assert.IsFalse(logger.ReadyToTransition, "not ready while the entry is unsent");
+                float readyAt = -1;
+                while (Time.realtimeSinceStartup - start < 8f)
+                {
+                    logger.CallToTransitionToNextUnit();
+                    if (logger.ReadyToTransition) { readyAt = Time.realtimeSinceStartup - start; break; }
+                    yield return null;
+                    yield return null; // the real loader polls a not-ready check every second frame
+                }
+                Assert.IsTrue(readyAt >= 4.5f && readyAt <= 6.5f, "ready after about five seconds, was " + readyAt);
+                Assert.IsTrue(GameLogger.IsSendingLogs, "the entry is still queued for the next unit's build");
+            }
+            finally
+            {
+                // Leave nothing of the test behind: a later Editor play session would send a cached entry.
+                var queueLock = typeof(GameLogger).GetField("queueLock", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+                var queue = (Queue<Dictionary<string, object>>)typeof(GameLogger).GetField("logQueue", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(logger);
+                lock (queueLock) queue.Clear();
+                UnityEngine.Object.DestroyImmediate(logger.gameObject);
+                PlayerPrefs.DeleteKey(cacheKey);
+                if (savedCache != null) PlayerPrefs.SetString(cacheKey, savedCache);
+                PlayerPrefs.Save();
+                typeof(GameLogger).GetField("userId", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, null);
+            }
         }
     }
 }

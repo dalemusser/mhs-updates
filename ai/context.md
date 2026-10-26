@@ -58,10 +58,11 @@ mhs-updates/
 │   └── Game-Code/
 │       └── Systems/
 │           └── Logging/GameLogger.cs            # Drop-in (bounded cache, no wedging, batch sends)
-├── gamesave-fix-102426/                      # Dated package 8: the game's saving reviewed like logging and fixed (2026-10-24, v1.0)
+├── gamesave-fix-102426/                      # Dated package 8: the game's saving reviewed like logging and fixed (2026-10-24; v1.1 2026-10-25)
 │   ├── README.md                                # Folder overview
-│   ├── 03-for-the-game-dev.md                   # Start here: three files, build + hand-over, the checks on a build, what students see, background
+│   ├── 03-for-the-game-dev.md                   # Start here: four files, build + hand-over, the checks on a build, what students see, background
 │   ├── Game-Code/Systems/Save Load System/      # GameSaveManager.cs, CustomSavers/DatabaseSaver.cs, SettingsSaveManager.cs (drop-ins)
+│   ├── Game-Code/Systems/Logging/GameLogger.cs  # The logging fix's file with its unit-transition gate corrected (required; supersedes gamelogger-fix-093026's copy)
 │   ├── 01-findings.md                           # Production evidence and each defect's verdict; proposals for the save service
 │   ├── 00-plan.md                               # The brief the work followed, with the decisions (§9)
 │   ├── tools/                                   # PlayMode tests + fake save service, how to run, browser recipe

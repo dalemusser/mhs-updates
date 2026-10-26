@@ -1,18 +1,19 @@
 # Saving fix: what to do in the game code
 
-**Version:** 1.0 (2026-10-24; includes the changes from an independent review of the same day).
-**Short version:** replace three C# files (a fourth is optional), build, upload through MHS
+**Version:** 1.1 (2026-10-25). Version 1.0 (2026-10-24) was the fix with the changes from an independent review of the same day; 1.1 makes the `GameLogger.cs` change a required part of the bundle (1.0 had marked it optional) and adds its test. The delivered files are the same.
+**Short version:** replace four C# files, build, upload through MHS
 Builds. No prefab, asset, scene or host-page changes, and nothing changes in the save service. The evidence and each
 defect's verdict are in `01-findings.md`; this page is only what you need to apply it: the files,
 the build and hand-over steps, what students will see, and then the background on what each file
 fixes.
 
-## The three files
+## The four files
 
 Copy each file from `Game-Code/` over the file of the same name in the project. They were written
 against the project as of 2026-09-28 (changelist 12449, Unity 6000.0.74f1) with the logging fix
-v1.3 applied (`SettingsSaveManager.cs` is that bundle's file plus this change). If you have changed
-any of these files since, diff before copying. All three are delivered with LF line endings; if
+v1.3 applied (`SettingsSaveManager.cs` and `GameLogger.cs` are that bundle's files plus this
+bundle's change to each). If you have changed any of these files since, diff before copying. All
+four are delivered with LF line endings; if
 your copy of `SettingsSaveManager.cs` is still the CRLF original, diff ignoring line endings.
 
 | From `Game-Code/` | To `Assets/Scripts/` | What it is now |
@@ -20,7 +21,7 @@ your copy of `SettingsSaveManager.cs` is still the CRLF original, diff ignoring 
 | `Systems/Save Load System/GameSaveManager.cs` | `Systems/Save Load System/GameSaveManager.cs` | The transport: one request per call, classified answer, timeout, no built-in host or key, nothing secret in the console. |
 | `Systems/Save Load System/CustomSavers/DatabaseSaver.cs` | `Systems/Save Load System/CustomSavers/DatabaseSaver.cs` | The policy: retry for ever with a visible status, the newest save kept on the device, a failed load never starts over, capped transition wait. |
 | `Systems/Save Load System/SettingsSaveManager.cs` | `Systems/Save Load System/SettingsSaveManager.cs` | Only the built-in host and key are removed and a 30 s timeout added. |
-| *optional:* `Systems/Logging/GameLogger.cs` | `Systems/Logging/GameLogger.cs` | The logging fix v1.3 file with one change: the unit-transition gate's "new request" rule is a one-second time gap instead of a frame count. The frame rule reset on every two-frame poll of `TransitionSceneLoader`, so with the log host unreachable the transition waited for ever instead of five seconds. Nothing else differs from v1.3; diff to confirm. |
+| `Systems/Logging/GameLogger.cs` | `Systems/Logging/GameLogger.cs` | The logging fix v1.3 file with one change: the unit-transition gate's "new request" rule is a one-second time gap instead of a frame count. The frame rule reset on every two-frame poll of `TransitionSceneLoader`, so with the log host unreachable the transition waited for ever instead of five seconds. **This file is part of the fix, not an extra:** the loader proceeds only when every check is ready, so without it the logger still holds the unit transition for ever when the log host cannot be reached, and the saver's five-second cap changes nothing there. Nothing else differs from v1.3; diff to confirm. |
 
 Nothing that calls these classes needs to change:
 
@@ -36,6 +37,7 @@ Nothing that calls these classes needs to change:
   settings variant of `LoadCoroutine` is gone. New: `SaveJson`, `LoadLatest`, `SaveConfig`,
   `LoadConfig`, the result types, and static helpers. Two public statics exist for tests
   (`requestTimeoutSeconds`, `saveConfigOverride`/`loadConfigOverride`); the game leaves them alone.
+- `GameLogger`: the public API is unchanged; one line differs from v1.3.
 
 ## Build and hand-over
 
@@ -69,8 +71,10 @@ browser's request interception:
    game's access key* and keeps retrying; nothing is lost.
 5. **An HTML page instead of JSON** (answer the load with 200 and `<html>`): counted as a failure
    and retried; not treated as "no saves".
-6. **Unit transition with the save host blocked:** the transition proceeds within about five
-   seconds; the console says the save is kept for the next unit's build; the next unit sends it.
+6. **Unit transition with the save host and the log host both blocked:** the transition proceeds
+   within about five seconds; the console says the save and the log entries are kept for the next
+   unit's build; the next unit sends them. A build without this bundle's `GameLogger.cs` fails
+   this check: it sits at the transition until the log host answers.
 7. **The browser console carries no `Bearer` value** at any point.
 
 ## What changes for students
@@ -136,15 +140,20 @@ browser's request interception:
 | Built-in host and key as the fallback when the host page gives no settings config. | Removed; without a config the request is skipped and the caller told `false`, like the empty-id guard. |
 | No timeout. | 30 s on both requests; the `Authorization` header is set only when there is a value. |
 
-### `GameLogger.cs` (optional)
+### `GameLogger.cs`
 
 | Issue | What the new file does |
 |---|---|
 | The transition gate's five-second cap never fired: `TransitionSceneLoader` polls a not-ready check every second frame, and the gate took a gap of more than one frame as a new request, resetting its clock on every poll. With the log host unreachable the unit transition waited until the host answered. | A new request is a gap of more than one second between calls. Everything else is the v1.3 file. |
 
+This is why the file is one of the four and not an option: the loader waits for every check, and
+the logger's check never became ready while the log host was unreachable, so the saver's own cap
+alone would leave the unit transition hanging. Test T21 in `tools/SaveFixTests.cs` drives the
+gate the way the loader does and expects it open after about five seconds.
+
 ## Verification record
 
 | Where | Before the fix | After the fix |
 |---|---|---|
-| Editor: the PlayMode tests in `tools/SaveFixTests.cs` (Unity 6000.0.74f1, batch mode, 2026-10-24) | — (the tests describe the new rules; on the old files they do not compile against the new API) | 20 tests pass in about 60 s: payload helpers; save retried with a countdown until accepted and no auth value in any log line; a newer save replaces an unsent one (one request once the service is back); an unsent save survives a relaunch and is sent then; an unsent save is dropped when the service already holds newer progress; a refused key is retried; a rejected payload is not; a timeout is retried; the save waits for a valid id; the transition gate opens after about five seconds with the save kept; a failed load never starts over and resumes when the service answers; `[]` starts a new game while an HTML body is a failure; the device copy is used while the service is down and left alone when it confirms; the service's newer save wins; one load request per launch; an identical repeat of a checkpoint is not sent again. |
-| WebGL builds of Unit 1 on the dev site (release profile `Release Unit 1`, Unity 6000.0.74f1, batch mode; collections `20261024-savefix1-SaveFixTest` = unit1 v2.9.5, version string `20261024-savefix1`, before the review changes, and `20261024-savefix2-SaveFixTest` = unit1 v2.9.6, `20261024-savefix2`, the delivered files; neither active for students), 2026-10-24, with the dev test member, headless Chromium, the save host blocked or answered through request interception | On the schools' code a blocked save host at START GAME started the unit over (the production case in `01-findings.md` §3.5) and a failed save was a toast. | Both builds launch, render and play (the built data carries the new members and none of the old key strings; the console carries no `Bearer` value). **One load per launch** (the menu and START GAME share it; two before). **Normal play to the first checkpoint** ("Gear Up"): one save request, 201, and the service's document carries `mhs_meta` (seq 1, the build's version string, scene, checkpoint 0). **Save host blocked at a checkpoint** (savefix2): the toast shows *Not saved yet: no connection to the save service. Retrying in 34 s (attempt 5)*, the attempts come at 5, 10, 20, 40 s, play continues. **Page reloaded with that save still unsent**: the next launch finds it (*an unsent save from an earlier launch was found on this device*), checks the service, and, because another profile had meanwhile stored a newer save for the same member, drops it (*the save service already holds newer progress … the unsent save is dropped*), as designed; the resend of a pending save when the service holds nothing newer is the editor test T04. **Save host blocked before launch, no copy on the device** (a fresh profile): START GAME shows *Can't load your progress yet: no connection to the save service. Retrying in N s (attempt K)* with attempts at 3, 6, 12, 24, 30 s and stays at the main menu (the unit does not start over); unblocked, the next attempt gets the save and the game resumes at "Gear Up — Proceed to the door", not at the intro. **Same, with the device copy** (the profile that made the save): after the third failed attempt the game resumes from the copy (*Using the progress saved on this device. Still checking the save service…*), the service keeps being asked, and when unblocked its answer (the same save) changes nothing. **An HTML page instead of JSON on the load**: *load not answered (200 the response is not a list of saves; … unreadable)*, retried on the same schedule, not taken as "no saves"; the real answer then resumes the game. **The refused key (401) and the transition gate** were not reached on the site (a 401 needs a save to go out; the gate needs the end of the unit) and rest on the editor tests T06 and T10. Two things seen: the browser reports two refused connection attempts per request while the host is blocked (the same request, once more from the WebGL plumbing; harmless), and the two-line status text overflows the Alert Panel's width on the `SaveSystem` prefab (see "What changes for students"). The test member's saved state was deleted and its collection put back afterwards. |
+| Editor: the PlayMode tests in `tools/SaveFixTests.cs` (Unity 6000.0.74f1, batch mode, 2026-10-24; T21 added 2026-10-25) | — (the tests describe the new rules; on the old files they do not compile against the new API) | 21 tests pass in about 70 s: payload helpers; save retried with a countdown until accepted and no auth value in any log line; a newer save replaces an unsent one (one request once the service is back); an unsent save survives a relaunch and is sent then; an unsent save is dropped when the service already holds newer progress; a refused key is retried; a rejected payload is not; a timeout is retried; the save waits for a valid id; the transition gate opens after about five seconds with the save kept; a failed load never starts over and resumes when the service answers; `[]` starts a new game while an HTML body is a failure; the device copy is used while the service is down and left alone when it confirms; the service's newer save wins; one load request per launch; an identical repeat of a checkpoint is not sent again; the logger's transition gate opens after about five seconds with an entry queued and no log endpoint (the v1.3 rule never opened it). |
+| WebGL builds of Unit 1 on the dev site (release profile `Release Unit 1`, Unity 6000.0.74f1, batch mode; collections `20261024-savefix1-SaveFixTest` = unit1 v2.9.5, version string `20261024-savefix1`, before the review changes, and `20261024-savefix2-SaveFixTest` = unit1 v2.9.6, `20261024-savefix2`, the delivered files; neither active for students), 2026-10-24, with the dev test member, headless Chromium, the save host blocked or answered through request interception | On the schools' code a blocked save host at START GAME started the unit over (the production case in `01-findings.md` §3.5) and a failed save was a toast. | Both builds launch, render and play (the built data carries the new members and none of the old key strings; the console carries no `Bearer` value). **One load per launch** (the menu and START GAME share it; two before). **Normal play to the first checkpoint** ("Gear Up"): one save request, 201, and the service's document carries `mhs_meta` (seq 1, the build's version string, scene, checkpoint 0). **Save host blocked at a checkpoint** (savefix2): the toast shows *Not saved yet: no connection to the save service. Retrying in 34 s (attempt 5)*, the attempts come at 5, 10, 20, 40 s, play continues. **Page reloaded with that save still unsent**: the next launch finds it (*an unsent save from an earlier launch was found on this device*), checks the service, and, because another profile had meanwhile stored a newer save for the same member, drops it (*the save service already holds newer progress … the unsent save is dropped*), as designed; the resend of a pending save when the service holds nothing newer is the editor test T04. **Save host blocked before launch, no copy on the device** (a fresh profile): START GAME shows *Can't load your progress yet: no connection to the save service. Retrying in N s (attempt K)* with attempts at 3, 6, 12, 24, 30 s and stays at the main menu (the unit does not start over); unblocked, the next attempt gets the save and the game resumes at "Gear Up — Proceed to the door", not at the intro. **Same, with the device copy** (the profile that made the save): after the third failed attempt the game resumes from the copy (*Using the progress saved on this device. Still checking the save service…*), the service keeps being asked, and when unblocked its answer (the same save) changes nothing. **An HTML page instead of JSON on the load**: *load not answered (200 the response is not a list of saves; … unreadable)*, retried on the same schedule, not taken as "no saves"; the real answer then resumes the game. **The refused key (401) and the transition gate** were not reached on the site (a 401 needs a save to go out; the gate needs the end of the unit) and rest on the editor tests T06, T10 and T21. Two things seen: the browser reports two refused connection attempts per request while the host is blocked (the same request, once more from the WebGL plumbing; harmless), and the two-line status text overflows the Alert Panel's width on the `SaveSystem` prefab (see "What changes for students"). The test member's saved state was deleted and its collection put back afterwards. |

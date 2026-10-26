@@ -2,7 +2,7 @@
 
 | File | Purpose |
 |---|---|
-| `SaveFixTests.cs` | PlayMode tests that run the real `GameSaveManager` and `DatabaseSaver` against a fake save service on localhost (`FakeSaveService` in the same file: up, down with 503, refusing with 401, rejecting with 400, answering an HTML page, hanging). Twenty tests, one per rule of the fix; see `../01-findings.md` §6 and `../03-for-the-game-dev.md`, Verification record. |
+| `SaveFixTests.cs` | PlayMode tests that run the real `GameSaveManager` and `DatabaseSaver` against a fake save service on localhost (`FakeSaveService` in the same file: up, down with 503, refusing with 401, rejecting with 400, answering an HTML page, hanging). Twenty-one tests, one per rule of the fix (T21 is the `GameLogger`'s unit-transition gate, driven the way `TransitionSceneLoader` polls it, with no log endpoint so nothing is sent); see `../01-findings.md` §6 and `../03-for-the-game-dev.md`, Verification record. |
 | `../queries/` | The read-only mongosh scripts and the journal summariser that produced `../data/` (recipe in `../../gamelogger-fix-093026/tools/queries/README.md`). |
 
 ## Running the tests
@@ -28,7 +28,7 @@ Neither belongs in a release build; remove both afterwards.
          -testFilter MHS.SaveFixTests -testResults results.xml -logFile unity.log
    ```
 
-   The suite takes about a minute on a warm Library (most of it the real backoff waits: the
+   The suite takes a little over a minute on a warm Library (most of it the real backoff waits: the
    first retry comes after five seconds, the first load retry after three).
 
 How the tests stand in for the game: each test builds a "launch" (`Rig`): a `GameSaveManager` and

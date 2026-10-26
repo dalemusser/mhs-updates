@@ -72,8 +72,12 @@ and the next checkpoint wrote the fresh start over the real progress on the
 server, seen in production), waited on the save flag with no cap at the unit
 transition, printed the bearer value to the browser console on every launch,
 parsed responses unguarded, and carried the old API key as a built-in
-fallback. Three files change (`Game-Code/Systems/Save Load System/GameSaveManager.cs`,
-`CustomSavers/DatabaseSaver.cs`, `SettingsSaveManager.cs`): saves and loads
+fallback. Four files change (`Game-Code/Systems/Save Load System/GameSaveManager.cs`,
+`CustomSavers/DatabaseSaver.cs`, `SettingsSaveManager.cs`, and
+`Game-Code/Systems/Logging/GameLogger.cs`, the logging fix's file with its
+unit-transition gate corrected: the v1.3 rule never fired against the
+loader, so with the log host unreachable the transition waited for ever):
+saves and loads
 are retried for ever with backoff and a status line (reason, countdown,
 attempt); the newest save is kept on the device and sent at the next launch
 when it could not go out; only the service's explicit "no saves" starts a
@@ -81,9 +85,11 @@ new game, and while the service is unreachable the game plays on from the
 device copy; identity and configuration are waited for; requests time out;
 the transition waits at most five seconds; the same checkpoint raised twice
 sends one request; nothing secret is printed. The save service is unchanged.
+Delivered as version 1.1 (1.0 was the fix; 1.1 made the `GameLogger.cs`
+change a required file of the bundle and added its test).
 Start with `03-for-the-game-dev.md`; `01-findings.md` has the production
 evidence (volumes, ledger, save sizes, duplicate saves, progress going
-backwards, the old key) and each defect's verdict, `tools/` the twenty
+backwards, the old key) and each defect's verdict, `tools/` the twenty-one
 PlayMode tests with their fake save service and the browser recipe,
 `queries/` and `data/` the read-only queries and their redacted outputs.
 
@@ -128,7 +134,11 @@ body for a player without saved settings). Delivered as version 1.3:
 1.0 was the fix, 1.1 added the changes from two independent reviews,
 1.2 added per-entry ids, a recovered flag, a sent-at time and 429
 handling so the log service can de-duplicate and date entries later
-without another game build, 1.3 added the findings of a second review. Start with the folder's `README.md`; `03-for-the-game-dev.md` is the short page for the developer
+without another game build, 1.3 added the findings of a second review.
+**Superseded in one file (2026-10-25):** the `GameLogger.cs` in
+`gamesave-fix-102426/` replaces this bundle's; its unit-transition gate rule
+never fired against the loader, so a build with the v1.3 file waits for ever
+at a unit transition while the log host is unreachable. Start with the folder's `README.md`; `03-for-the-game-dev.md` is the short page for the developer
 applying the fix (which files, what each one fixes, how to hand the build
 back); `00-plan.md` is the brief the work followed,
 `01-changes.md` the change-by-change description and the verification
