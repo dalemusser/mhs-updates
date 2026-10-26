@@ -386,6 +386,14 @@ and resumes at the saved quest when the host returns; with a copy on the device 
 from it after the third failed attempt and keeps asking; an HTML page on the load is a retried
 failure, not "no saves". The refused key and the two transition gates rest on the editor tests.
 
+**Dev site, Unit 1 build of version 1.2** (`20261025-savefix3-SaveFixTest`, unit1 v2.9.7, not active),
+2026-10-25: the record is the last row of the verification table in `03-for-the-game-dev.md`. In short:
+START after 70 s at the menu makes a second load request (R2); the service's `[]` starts a new game
+(the Transition scene, then Unit 1 from the beginning); a real checkpoint save; a relaunch with the
+host blocked resumes from the device copy at "Gear Up" with the *Still checking the save service...
+N s (attempt K)* line, the re-fired checkpoint's countdown owns the line, and once the host is back
+the newer save goes out and nothing is rewound (R3, R6).
+
 ## 7. Proposals for the save service (not in this round; decision 4)
 
 1. **Order by the client's time when it is there.** The game now sends `save_data.mhs_meta.saved_at`

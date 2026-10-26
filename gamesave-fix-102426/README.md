@@ -1,6 +1,6 @@
 # The game's saving — review and fix
 
-**Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0; 1.1 of 2026-10-25 made the `GameLogger.cs` change a required file of the bundle; 1.2 of 2026-10-25 applies the findings of a second review, `04-review-102526.md`, and takes the developer key out of the game's source). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5) and `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, the delivered files), not active for students.
+**Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0; 1.1 of 2026-10-25 made the `GameLogger.cs` change a required file of the bundle; 1.2 of 2026-10-25 applies the findings of a second review, `04-review-102526.md`, and takes the developer key out of the game's source). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5), `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, version 1.0) and `20261025-savefix3-SaveFixTest` (unit1 v2.9.7, version 1.2, the delivered files), not active for students.
 **Start with `03-for-the-game-dev.md`**: which files to replace, the developer config file, how to build and hand the
 build back, what students will see, and the background on what each change does. `01-findings.md`
 holds the production evidence and each defect's verdict; `00-plan.md` is the brief the work
