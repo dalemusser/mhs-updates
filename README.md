@@ -99,7 +99,7 @@ unsent save is never sent over newer progress the service is known to hold,
 and smaller items).
 Start with `03-for-the-game-dev.md`; `01-findings.md` has the production
 evidence (volumes, ledger, save sizes, duplicate saves, progress going
-backwards, the old key) and each defect's verdict, `tools/` the forty-five
+backwards, the old key) and each defect's verdict, `tools/` the forty-eight
 PlayMode tests with their fake save service and the browser recipe,
 `queries/` and `data/` the read-only queries and their redacted outputs.
 

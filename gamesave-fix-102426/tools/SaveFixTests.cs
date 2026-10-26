@@ -3,7 +3,7 @@
 // GameSaveManager and DatabaseSaver against a fake save service on localhost that can be
 // up, down (503), refusing (401), rejecting (400), answering HTML, or hanging; and the
 // GameLogger's unit-transition gate (T21), with no log endpoint so nothing is sent; and the
-// findings of the second review of 2026-10-25 (T22-T30) and of the reviews of versions 1.2 (T31-T38) and 1.3 (T39-T42), and the focused review of the base logic (T43-T46).
+// findings of the second review of 2026-10-25 (T22-T30) and of the reviews of versions 1.2 (T31-T38) and 1.3 (T39-T42), and the focused reviews of the base logic (T43-T49).
 //
 // Setup and cleanup are inline (not [UnitySetUp]/[UnityTearDown]): in this project those made the
 // editor's test runner overflow its stack (see unit4-gardenbox-crash-102326/tools/README.md).
@@ -914,9 +914,10 @@ namespace MHS.SaveFixTests
                 yield return Launch();
                 _rig.loadEvent.Raise(0);
                 yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the device copy");
-                // Played on: a checkpoint recorded (unsent) after the resume.
+                // Played on: a checkpoint recorded (unsent) after the resume, beyond the window in
+                // which a checkpoint counts as the apply's own re-fire.
                 DateTime between = DateTime.UtcNow;
-                yield return Wait(0.2f);
+                yield return Wait(5.5f);
                 _rig.testSaver.value = "local-2";
                 _rig.saveEvent.Raise(0);
                 yield return WaitUntil(() => _rig.saver.HasUnsentSave, 5, "the new save to be recorded");
@@ -1517,7 +1518,7 @@ namespace MHS.SaveFixTests
                 typeof(DatabaseSaver).GetMethod("ApplyGameProgressFromDatabase", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(_rig.saver, null);
                 yield return WaitUntil(() => _rig.saver.ServerAnswered, 10, "the menu's fetch");
                 DatabaseSaver.serverAnswerMaxAgeSeconds = 1f;
-                yield return Wait(1.5f);
+                yield return Wait(5.5f); // past the age limit, and past the replay window of the menu's apply
                 _svc.mode = "hang"; _svc.hangMs = 2000; // the refetch stays in flight for 2 s
                 _rig.loadEvent.Raise(0);
                 yield return Wait(0.3f);
@@ -1577,6 +1578,108 @@ namespace MHS.SaveFixTests
                 Assert.AreEqual(0, _rig.saver.NewGamesStarted, "a partial setup never starts a new game");
                 Assert.IsTrue(_rig.saver.StartRunning);
                 StringAssert.Contains("incomplete", _rig.saver.StatusText);
+            }
+            finally { Cleanup(); }
+        }
+        // ---- 10. the review of the base logic's second pass (2026-10-26) ----
+
+        [UnityTest]
+        public IEnumerator T47_ARecordDroppedAsSupersededIsNeverResumedAgain()
+        {
+            yield return Setup();
+            try
+            {
+                // Make a superseded record: resume from a copy, play on, the service turns out further along.
+                _rig.testSaver.value = "copy";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the copy accepted");
+                _svc.mode = "down";
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the device copy");
+                _rig.testSaver.value = "played-on";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.HasUnsentSave, 5, "the new save recorded");
+                _svc.stored.Clear();
+                _svc.stored.Add(ServerSave("further", DateTime.UtcNow.AddMinutes(5)));
+                _svc.mode = "savesdown";
+                yield return WaitUntil(() => _rig.testSaver.applied == 2 && !_rig.saver.StartRunning, 15, "the further save applied in place");
+                _svc.mode = "ok";
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the superseded save decided");
+                var rec = JsonUtility.FromJson<DatabaseSaver.LocalSaveRecord>(PlayerPrefs.GetString("mhs_last_save"));
+                Assert.IsTrue(rec.dropped && rec.superseded);
+
+                // The next launch: with the service answering, its save; with it down, no copy to resume from.
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1 && !_rig.saver.StartRunning, 15, "start");
+                Assert.AreEqual("further", _rig.testSaver.lastApplied, "the superseded record did not come back");
+                _svc.mode = "down";
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.FetchFailures >= 2, 15, "two failed attempts");
+                Assert.AreEqual(0, _rig.testSaver.applied, "no device copy to resume from");
+                StringAssert.Contains("Can't load your progress yet", _rig.saver.StatusText);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T48_ACheckpointHeldDuringTheResumeShowsTheDeviceCopyCountdown()
+        {
+            yield return Setup();
+            try
+            {
+                _rig.testSaver.value = "copy";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the copy accepted");
+                _svc.mode = "down";
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the device copy");
+                _rig.testSaver.value = "played-on";
+                _rig.saveEvent.Raise(0);
+                yield return Wait(2f);
+                Assert.AreEqual(0, _rig.saver.SaveAttempt, "held while START decides");
+                StringAssert.Contains("Still checking the save service", _rig.saver.StatusText);
+                StringAssert.Contains("attempt", _rig.saver.StatusText);
+                _svc.mode = "ok";
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave && !_rig.saver.StartRunning, 15, "the checkpoint decided once the service answers");
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T49_TheCheckpointAnApplyReFiresIsAReplay_NotProgressOverNewerSavesElsewhere()
+        {
+            yield return Setup();
+            try
+            {
+                // An unsent save R from an earlier launch (the service was down)...
+                _svc.mode = "down";
+                _rig.testSaver.value = "R";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.SaveAttempt >= 1 && _rig.saver.StatusText.Contains("Retrying in"), 10, "first attempt to be answered");
+                DateTime afterR = DateTime.UtcNow.AddMilliseconds(200);
+                yield return Wait(0.5f);
+                // ...the student then played further on another device (B, newer than R)...
+                string b = ServerSave("B", afterR);
+                // ...and this device launches with the service still unreachable: resume from R, which re-fires the checkpoint.
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1 && _rig.testSaver.lastApplied == "R", 15, "resume from R");
+                _rig.saveEvent.Raise(0); // the re-fire: the same state, a fresh clock
+                yield return Wait(0.3f);
+                // The service answers with B: newer than R, older by the clock than the re-fired record.
+                _svc.stored.Add(b);
+                _svc.mode = "savesdown";
+                yield return WaitUntil(() => _rig.testSaver.applied == 2 && !_rig.saver.StartRunning, 15, "B applied in place over the replayed R");
+                Assert.AreEqual("B", _rig.testSaver.lastApplied);
+                _svc.mode = "ok";
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the replayed record decided");
+                Assert.AreEqual(1, _svc.stored.Count, "nothing of R's state was sent over B");
+                var rec = JsonUtility.FromJson<DatabaseSaver.LocalSaveRecord>(PlayerPrefs.GetString("mhs_last_save"));
+                Assert.IsTrue(rec.dropped && rec.superseded);
             }
             finally { Cleanup(); }
         }

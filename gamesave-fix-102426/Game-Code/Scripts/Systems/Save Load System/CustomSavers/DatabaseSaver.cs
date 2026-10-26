@@ -129,6 +129,16 @@ namespace MHS
         public static float noServiceConfigStartSeconds = 5f;
         // How many saves to ask for when the newest one cannot be read as a save.
         private const int LoadLimitWhenNewestUnreadable = 5;
+        // A checkpoint recorded this soon after a save was applied, at the same
+        // checkpoint number, is the apply re-firing the checkpoint: a replay of the
+        // resumed state, not progress made since.
+        private const float ReplayWindowSeconds = 5f;
+        // A save made while START is still deciding waits for the service's first
+        // answer, but not for ever: a load-only outage must not keep progress on the
+        // device all session.
+        private const float HeldSaveMaxSeconds = 300f;
+        // The reconcile waits for a resume's scene load at most this long.
+        private const float ResumeLoadMaxWaitSeconds = 60f;
 
         // One id per launch of the game, and a counter for the saves it makes.
         private static readonly string launchId = Guid.NewGuid().ToString("N");
@@ -147,8 +157,10 @@ namespace MHS
             public string scene;
             public int checkpoint = -1;
             public bool sent;           // the service accepted it
-            public bool dropped;        // the service rejected it for good; kept as a copy, never resent
+            public bool dropped;        // never resent: rejected for good, or superseded (below)
+            public bool superseded;     // dropped because the service held progress this launch did not start from; never a resume candidate
             public string save_json;    // JsonUtility form of the SavedGameData, with mhs_meta inside
+            [NonSerialized] public float recordedAtUnscaled; // when this launch recorded it (in-memory only)
 
             public bool Unsent => !sent && !dropped;
         }
@@ -194,6 +206,11 @@ namespace MHS
         private float noConfigSince = -1f;
         private string resumedBaseTime;         // the time of the state START resumed from while the service was unreachable
         private ServerLatest baselineServer;    // the service answer this launch adopted as its base (resumed from, applied, or its own accepted save)
+        private bool holdingSave;               // a save of this launch waits for the service's first answer (the fetch's line shows)
+        private float heldSince = -1f;
+        private float lastApplyAtUnscaled = -1000f; // when a save was last applied in place or after a scene load
+        private int lastAppliedCheckpoint = -1;
+        private bool followUpSaveWanted;        // a superseded save was accepted: save the current state once the apply has landed
         // START's decision that the service's answer is further along elsewhere and
         // must not be adopted: saves of this session are dropped against it.
         private static readonly ServerLatest NotAdopted = new ServerLatest();
@@ -412,6 +429,7 @@ namespace MHS
                 scene = meta.scene,
                 checkpoint = meta.checkpoint,
                 save_json = GameSaveManager.WithMeta(json, meta),
+                recordedAtUnscaled = Time.unscaledTime,
             };
 
             if (newestSave != null && newestSave.Unsent)
@@ -425,7 +443,7 @@ namespace MHS
             PersistLocal(record);
 
             Print($"Save recorded: scene {record.scene}, checkpoint {record.checkpoint}, {record.save_json.Length} chars, seq {record.seq}.");
-            ShowStatus("Saving Game...");
+            if (statusHideRoutine == null) ShowStatus("Saving Game..."); // a toast finishes first
             EnsureSendLoop();
         }
 
@@ -495,7 +513,8 @@ namespace MHS
                         PersistLocal(item);
                     }
 
-                    if (serverLatest == null && (newestRecovered || startRunning))
+                    if (serverLatest == null && (newestRecovered || startRunning)
+                        && (heldSince < 0 || Time.unscaledTime - heldSince < HeldSaveMaxSeconds))
                     {
                         // No answer from the service yet this launch, and a reason to wait
                         // for the first one before this save goes out: it is a save left
@@ -503,12 +522,17 @@ namespace MHS
                         // resumed from the device copy and a checkpoint fired since). Sent
                         // now it could overwrite progress the service holds from elsewhere.
                         // The device keeps it meanwhile; the fetch's lines own the display.
+                        if (heldSince < 0) heldSince = Time.unscaledTime;
                         EnsureFetch(false);
                         recoveredWaiting = newestRecovered;
+                        holdingSave = !newestRecovered;
                         if (recoveredWaiting && fetchFailures == 0 && string.IsNullOrEmpty(StatusText) && FetchLineOwner() == FetchLineKind.Recovered) SetStatus(FetchLineWaiting(null));
                         yield return new WaitForSecondsRealtime(IdentityPollInterval);
                         continue;
                     }
+                    if (heldSince >= 0 && serverLatest == null) Debug.LogWarning($"DatabaseSaver: the service has not answered for {HeldSaveMaxSeconds / 60f:F0} minutes; the save goes out without the check.");
+                    heldSince = -1f;
+                    holdingSave = false;
                     recoveredWaiting = false;
                     if (serverLatest != null && startRunning && !SameAnswer(serverLatest, baselineServer))
                     {
@@ -543,6 +567,7 @@ namespace MHS
                         // never sent; the player is told.
                         Debug.LogWarning($"DatabaseSaver: the save service already holds newer progress ({serverLatest.time}) than the unsent save from {item.saved_at}; the unsent save is dropped.");
                         item.dropped = true;
+                        item.superseded = true;
                         PersistAfterRequest(item);
                         RemovePendingKey(uid);
                         FinishItem(item, "Not saved: the save service has newer progress.");
@@ -550,8 +575,7 @@ namespace MHS
                     }
 
                     saveAttempt++;
-                    if (saveAttempt == 1) SetStatus("Saving Game...");
-                    else SetStatus($"Saving Game... (attempt {saveAttempt})");
+                    if (statusHideRoutine == null) SetStatus(saveAttempt == 1 ? "Saving Game..." : $"Saving Game... (attempt {saveAttempt})");
 
                     GameSaveManager.RequestResult result = null;
                     saveManager.SaveJson(uid, GameId, item.save_json, r => result = r);
@@ -571,12 +595,12 @@ namespace MHS
                             // Superseded while its request was in flight (a newer service
                             // save was applied meanwhile): the service now holds a state the
                             // screen has left. The current state is saved over it.
-                            Debug.LogWarning("DatabaseSaver: a save superseded while in flight was accepted; saving the current state over it.");
+                            Debug.LogWarning("DatabaseSaver: a save superseded while in flight was accepted; the current state is saved over it once the applied state is in place.");
                             PersistAfterRequest(item);
                             RemovePendingKey(uid);
                             saveAttempt = 0;
                             delay = SaveRetryInitial;
-                            SaveGameToDatabase();
+                            RequestFollowUpSave();
                             continue;
                         }
                         PersistAfterRequest(item);
@@ -672,9 +696,29 @@ namespace MHS
             if (item == null || !item.Unsent) return;
             Debug.LogWarning($"DatabaseSaver: the unsent save from {item.saved_at} is superseded by the newer progress being loaded from the service; it is dropped.");
             item.dropped = true;
+            item.superseded = true;
             PersistLocal(item);
             RemovePendingKey(ResolveUserId());
             saveGameInProgress.Value = false;
+        }
+
+        // The current state is saved over a superseded save the service accepted
+        // anyway: now when the applied state is on screen, after the apply when a
+        // scene load is pending, never from the menu or the transition scene.
+        private void RequestFollowUpSave()
+        {
+            if (resumeInProgress)
+            {
+                followUpSaveWanted = true; // WaitToApplyData saves once the scene is up and the data applied
+                return;
+            }
+            string scene = SceneManager.GetActiveScene().name;
+            if (scene == SceneNameReference.MainMenu || scene == "Transition")
+            {
+                Debug.LogWarning("DatabaseSaver: no gameplay scene to save from; the next checkpoint will overwrite the superseded save.");
+                return;
+            }
+            SaveGameToDatabase();
         }
 
         // =====================================================================
@@ -806,7 +850,7 @@ namespace MHS
                 while (serverLatest == null && !noServiceConfig)
                 {
                     string uid = ResolveUserId();
-                    if (uid != null && local == null) local = LocalCopyFor(uid);
+                    if (uid != null && local == null) local = Resumable(LocalCopyFor(uid));
                     if (!usedLocal && fetchFailures > 0 && (local != null || (aged != null && aged.hasSave)))
                     {
                         // The service is not answering. Play on from what this device knows
@@ -848,22 +892,28 @@ namespace MHS
                 // The service has answered. Decide against this device's newest
                 // progress as of now: the state the game resumed from (if it did) and
                 // anything recorded since, not the copy read at the start.
-                var latestHere = LocalCopyFor(ResolveUserId());
+                var latestHere = Resumable(LocalCopyFor(ResolveUserId()));
+                // The checkpoint an apply re-fires replays the resumed state: the state to
+                // weigh against the service's answer is the one it replays.
+                if (latestHere != null && ReferenceEquals(latestHere, newestSave) && IsReplay(newestSave)) latestHere = Resumable(localCopy);
                 var chosen = ChooseResume(latestHere, serverLatest);
 
                 if (usedLocal)
                 {
-                    string baseTime = latestHere != null ? latestHere.saved_at : null;
-                    if (resumedBaseTime != null && (baseTime == null || IsNewer(resumedBaseTime, baseTime, 0f))) baseTime = resumedBaseTime;
-                    // Progress made in this launch is never rewound on the server's clock
-                    // alone (an old build's save without metadata).
-                    bool progressThisLaunch = newestSave != null && !newestRecovered;
+                    // Progress made since the resume counts; the checkpoint an apply re-fires
+                    // (a replay of the resumed state) does not. Progress made in this launch
+                    // is never rewound on the server's clock alone (an old build's save
+                    // without metadata).
+                    bool progressThisLaunch = newestSave != null && !newestRecovered && !IsReplay(newestSave);
+                    string baseTime = resumedBaseTime;
+                    if (latestHere != null && (progressThisLaunch || baseTime == null) && (baseTime == null || IsNewer(latestHere.saved_at, baseTime, 0f))) baseTime = latestHere.saved_at;
                     bool serverNewer = serverLatest.hasSave && (baseTime == null || ServerNewerThan(serverLatest, baseTime))
                         && (serverLatest.timeFromDevice || !progressThisLaunch);
                     if (serverNewer && chosen == serverLatest.data)
                     {
                         // Let the scene load that the local resume started finish first.
-                        while (resumeInProgress || SceneManager.GetActiveScene().name == "Transition") yield return null;
+                        float loadWaitEnd = Time.unscaledTime + ResumeLoadMaxWaitSeconds;
+                        while ((resumeInProgress || SceneManager.GetActiveScene().name == "Transition") && Time.unscaledTime < loadWaitEnd) yield return null;
                         if (chosen.sceneName == SceneManager.GetActiveScene().name)
                         {
                             // Same scene: the newer state replaces what is on screen; an
@@ -971,14 +1021,38 @@ namespace MHS
             }
             else
             {
+                MarkApply(saveData);
                 SaveSystem.ApplySavedGameData(saveData);
             }
+        }
+
+        // A save was applied: a checkpoint recorded right after it, at its checkpoint
+        // number, is the apply re-firing the checkpoint, not progress.
+        private void MarkApply(SavedGameData data)
+        {
+            lastApplyAtUnscaled = Time.unscaledTime;
+            lastAppliedCheckpoint = ReadCheckpoint(data);
+        }
+
+        private bool IsReplay(LocalSaveRecord record)
+        {
+            return record != null && record.recordedAtUnscaled > 0f
+                && record.recordedAtUnscaled - lastApplyAtUnscaled <= ReplayWindowSeconds
+                && record.checkpoint == lastAppliedCheckpoint;
+        }
+
+        // A record dropped as superseded is never a resume candidate: the service
+        // held further progress when it was dropped.
+        private static LocalSaveRecord Resumable(LocalSaveRecord record)
+        {
+            return record != null && record.superseded ? null : record;
         }
 
         // Which save to resume from, given this device's copy and the service's
         // answer. Null means "no save anywhere": start a new game.
         private SavedGameData ChooseResume(LocalSaveRecord local, ServerLatest server)
         {
+            local = Resumable(local);
             if (server == null)
             {
                 return local != null ? ParseSave(local.save_json) : null;
@@ -1096,6 +1170,7 @@ namespace MHS
                         // The game's own save was accepted while this request was out: the
                         // service's newest is that save, and this answer is older. Keep it.
                         Print("The service's answer arrived after this launch's own save was accepted; the own save stays the newest.");
+                        fetchFailures = 0;
                         break;
                     }
 
@@ -1183,6 +1258,11 @@ namespace MHS
             if (pending != null && pending.user_id == uid)
             {
                 if (mine == null || IsNewer(pending.saved_at, mine.saved_at, 0f) || (!mine.Unsent && pending.Unsent)) mine = pending;
+            }
+            if (mine != null && mine.superseded)
+            {
+                Print($"Device record for this player ({mine.scene}, {mine.saved_at}) was superseded by the service's progress; not a copy to resume from.");
+                mine = null;
             }
             localCopy = mine;
             if (mine == null) return;
@@ -1407,8 +1487,14 @@ namespace MHS
             yield return new WaitForEndOfFrame();
             SceneManager.sceneLoaded -= ApplyDataAfterSceneLoaded;
             resumeInProgress = false;
+            MarkApply(saveData);
             SaveSystem.ApplySavedGameData(saveData);
             Print("Data Applied!");
+            if (followUpSaveWanted)
+            {
+                followUpSaveWanted = false;
+                RequestFollowUpSave();
+            }
         }
 
         public void ResetFlag()
@@ -1530,6 +1616,7 @@ namespace MHS
         {
             if (a == null || b == null) return false;
             if (ReferenceEquals(a, b)) return true;
+            if (ReferenceEquals(a, NotAdopted) || ReferenceEquals(b, NotAdopted)) return false;
             if (a.hasSave != b.hasSave) return false;
             if (!a.hasSave) return true;
             if (a.meta != null && b.meta != null) return a.meta.session_id == b.meta.session_id && a.meta.seq == b.meta.seq;
@@ -1611,7 +1698,7 @@ namespace MHS
         {
             if (fetchVisible && startRunning && !resumedLocally) return FetchLineKind.Start;
             if (statusHideRoutine != null) return FetchLineKind.None;
-            if (newestSave != null && newestSave.Unsent && !newestRecovered) return FetchLineKind.None;
+            if (newestSave != null && newestSave.Unsent && !newestRecovered && !holdingSave) return FetchLineKind.None;
             if (resumedLocally && startRunning) return FetchLineKind.DeviceCopy;
             if (recoveredWaiting) return FetchLineKind.Recovered;
             return FetchLineKind.None;
