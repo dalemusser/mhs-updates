@@ -30,7 +30,11 @@ Saving had the logger's defect family, and production shows the consequences:
 
 The fix (§5, `03-for-the-game-dev.md`) replaces the transport and the policy in two files,
 removes the key fallback from a third, and corrects the unit-transition gate in a fourth, the
-logging fix's `GameLogger.cs` (its rule never fired against the loader; §4, review finding 1). It retries saves and loads for ever with a visible status,
+logging fix's `GameLogger.cs` (its rule never fired against the loader; §4, review finding 1).
+A second review before the hand-off (`04-review-102526.md`, §4 below) found three more ways
+progress could roll back in the outage paths the first version had added, and a page without
+save settings that waited for ever; version 1.2 fixes them, and takes the developer key out of
+the Editor defaults and the page templates (two more files and a developer config file). It retries saves and loads for ever with a visible status,
 keeps the newest save on the device and sends it at the next launch if needed, never starts a
 unit over on a failed load, waits for identity and configuration, times requests out, caps the
 unit transition wait, and prints no secrets. Nothing changes in the save service in this round;
@@ -264,6 +268,49 @@ analysis; all nine findings applied):**
    calls back is treated as failed after the timeout plus fifteen seconds; a save recorded in this
    launch is preferred over the record read from the device at launch.
 
+### 4.3 The second review (2026-10-25, before the hand-off; `04-review-102526.md` has the detail)
+
+Two passes over the delivered files, one of them an independent read with no sight of the first,
+every item confirmed in the code. What changed in 1.2:
+
+1. *R1, data loss window.* The record whose request had just finished was written to the device
+   slot, over a newer unsent record; a reload in that window lost the newer save. The slot now
+   keeps the newest record after every request (T03, T28 exercise the replacement; the window
+   itself is closed by construction).
+2. *R2, stale resume.* START GAME reused the main menu's answer however old; a tab left at the
+   menu resumed stale progress and the next checkpoint wrote it over newer progress on the
+   service. An answer older than a minute is fetched again at START (T22).
+3. *R3, rewind after a device-copy resume.* When the service came back it was compared with the
+   copy the game had started from, not with the checkpoints recorded since, and could be applied
+   in place over them. It is compared with this device's newest progress at that moment (T23).
+4. *R4, no settings at all.* A page without save-service settings waited at START for ever (the
+   old code fell back to a built-in host and started an unsaved game). After five seconds without
+   any settings START plays a new game without saving, with a line saying so; a page with settings
+   but no identity still waits (T24). Decision: Dale, 2026-10-25.
+5. *R5, unreadable newest.* A load answer whose newest document could not be read counted as "no
+   saves". The game asks for the last five and resumes from the newest readable one; none readable
+   is a retried failure, never a new game; the usual launch still asks for one (T25). Decision:
+   Dale, 2026-10-25 (over a service-side offset, which the service does not have; §7).
+6. *R6, R7, the line.* The recovered-save wait showed no reason or countdown while two loops wrote
+   the same line, and the load countdown froze during a request. One owner of the line (T26).
+7. *R8, accepted copies.* A copy the service had accepted could beat the service's newest when two
+   device clocks disagreed. The service's answer is authoritative for accepted copies (T30).
+   Decision: Dale, 2026-10-25.
+8. *R9, storage.* A failed move-aside of another player's unsent copy blocked the slot write for
+   the session; separate guards, eviction of the oldest pending copy, per-record ceiling 128 KB.
+9. *R10, pause.* The alert canvas faded on scaled time, so a status set while the game was paused
+   stayed invisible; one line in `UICanvasGroupFadeInOut.cs`.
+10. *R11, R12.* A newer save waited out the previous countdown (T28); a second saver lived for one
+    frame in every gameplay scene and could fire a stray load request (T29).
+11. *R14, tests.* The new-game decision is observable (`NewGamesStarted`); the console logger runs
+    in the tests so the no-auth check sees the `Print` lines too; the fake service honours the
+    request's limit.
+
+Noted, not changed: the transition gates reset under frame gaps over one second in a hidden tab
+(bounded, resolves on return); the device copy lives under the page's directory, so unit builds
+share it on StrataHub but not when each unit is served from its own folder; a staff reset while a
+device holds a copy and the service was unreachable at launch does not pull the player out.
+
 ## 5. What the fix does (short form; the files are described in `03-for-the-game-dev.md`)
 
 **`GameSaveManager.cs` (transport).** One request per call, 30 s timeout, URL and auth from the
@@ -293,6 +340,14 @@ request" rule is a one-second time gap instead of a frame count, so its five-sec
 against the loader's two-frame poll. Part of the fix, not an option: without it the unit
 transition still waits for ever while the log host is unreachable, whatever the saver does.
 
+**`UICanvasGroupFadeInOut.cs`.** The alert canvas fades on real time (one line), so a line set
+while the game is paused still appears.
+
+**`MHSBridge.cs` and the two page templates.** No service key in the game's source: the Editor
+and the page on localhost read `mhs-bridge-dev-config.json` (project root; next to the page),
+the same shape as the host page's config; without it, developer identity and no services. The
+WebGL bridge and any other host are unchanged.
+
 **Metadata the game now writes** into `save_data` as `mhs_meta` (`seq`, `saved_at`, `session_id`,
 `version`, `scene`, `checkpoint`): the service stores it as it is, old builds and the
 `SavedGameData` reader ignore it, the device uses it to compare its copy with the service's, and
@@ -302,8 +357,8 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 21 tests, all passing on
-2026-10-24 (T21 on 2026-10-25) in Unity 6000.0.74f1 (about 70 s). They cover: the payload helpers; save retried with a
+or hanging; `tools/README.md` has the two temporary project settings): 29 tests, all passing on
+2026-10-25 in Unity 6000.0.74f1 (about 90 s; 21 of them from 2026-10-24). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an
 unsent save dropped when the service already holds newer progress; a refused key retried, not
@@ -314,7 +369,10 @@ while an HTML body counts as a failure; the device copy used while the service i
 alone when the service confirms the same save; the service's newer save winning over the device
 copy; one load request per launch shared by the menu and START GAME; an identical repeat of a
 checkpoint not sent again; the logger's transition gate opening after about five seconds with an
-entry queued and no log endpoint.
+entry queued and no log endpoint; and, from 1.2 (§4.3), the stale menu answer refetched at START,
+no rewind after a device-copy resume, the page without save settings, the unreadable newest
+document, the recovered-save line, the newer save during a retry wait, the inert second saver, and
+the accepted copy that does not beat the service.
 
 **Dev site, Unit 1 builds of the fixed files** (`20261024-savefix1-SaveFixTest`, unit1 v2.9.5,
 before the review changes; `20261024-savefix2-SaveFixTest`, unit1 v2.9.6, the delivered files;
@@ -350,6 +408,12 @@ failure, not "no saves". The refused key and the two transition gates rest on th
 5. **The settings load's latency** (§3.8) deserves a look at the query plan; the state load on the
    same cluster is 20 times faster.
 
+6. **An offset on the load endpoint** (`skip`, next to `limit`), so a client that cannot read the
+   newest document can ask for the next one without downloading the newest again. The game's 1.2
+   gets by without it (it asks for the last five only in that case, which has not been seen in
+   production); with `skip` it could ask for one at a time. The cleanup already uses a skip
+   internally.
+
 ## 8. For the game team, outside this fix
 
 - **The checkpoint number rewinds on load** (§3.5, …8b8703): re-activating the saved quest on load
@@ -370,6 +434,14 @@ failure, not "no saves". The refused key and the two transition gates rest on th
   fresh when the student returns to it. If that matters, keep one newest save per unit on the
   service (the metadata now carries `scene` and `checkpoint`) and load the one for the launched
   unit.
+
+- **A bare `DatabaseSaver` on the pause menu's Load Button**
+  (`Prefabs/UI/Quest Checkpoint Navigator/Dev Buttons - Checkpoint Navigation.prefab`, inside
+  `BraceletPauseMenuCanvas`): no references assigned, so it threw in `OnEnable` and `Start`
+  whenever that object was enabled, old code and new alike. From 1.2 a second saver stays inert,
+  which silences it; it should still be deleted.
+- **The developer key** is no longer in `MHSBridge.cs` or the page templates (1.2); the last copy
+  in a build is the dead `LogManager.cs` above.
 
 ## 9. Open questions
 

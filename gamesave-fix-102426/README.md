@@ -1,7 +1,7 @@
 # The game's saving — review and fix
 
-**Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0; 1.1 of 2026-10-25 makes the `GameLogger.cs` change a required file of the bundle and adds its test). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5) and `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, the delivered files), not active for students.
-**Start with `03-for-the-game-dev.md`**: which four files to replace, how to build and hand the
+**Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0; 1.1 of 2026-10-25 made the `GameLogger.cs` change a required file of the bundle; 1.2 of 2026-10-25 applies the findings of a second review, `04-review-102526.md`, and takes the developer key out of the game's source). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5) and `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, the delivered files), not active for students.
+**Start with `03-for-the-game-dev.md`**: which files to replace, the developer config file, how to build and hand the
 build back, what students will see, and the background on what each change does. `01-findings.md`
 holds the production evidence and each defect's verdict; `00-plan.md` is the brief the work
 followed, with Dale's decisions in §9.
@@ -35,8 +35,10 @@ Working directory for the session: the workspace that holds `mhs-updates`, `stra
 
 | File | Purpose |
 |---|---|
-| `03-for-the-game-dev.md` | The short page for the developer applying the fix: the four files, build and hand-over, the checks on a build, what students see, background per file, verification record. |
-| `Game-Code/` | The four changed files, mirroring `Assets/Scripts/`: `Systems/Save Load System/GameSaveManager.cs`, `CustomSavers/DatabaseSaver.cs`, `SettingsSaveManager.cs`, and `Systems/Logging/GameLogger.cs` (the logging fix's file with its unit-transition gate corrected; it supersedes the copy in `../gamelogger-fix-093026/`). |
+| `03-for-the-game-dev.md` | The short page for the developer applying the fix: the files, the developer key, build and hand-over, the checks on a build, what students see, background per file, verification record. |
+| `Game-Code/` | The changed files, mirroring `Assets/`: `Scripts/Systems/Save Load System/{GameSaveManager.cs, CustomSavers/DatabaseSaver.cs, SettingsSaveManager.cs}`, `Scripts/Systems/Logging/GameLogger.cs` (supersedes the copy in `../gamelogger-fix-093026/`), `Scripts/Helpers/UI/UICanvasGroupFadeInOut.cs`, `Sandbox/Brian/MHS Bridge Testing/MHSBridge.cs`, and the two `WebGLTemplates/.../index.html`. |
+| `mhs-bridge-dev-config.example.json` | The developer config file (identity, service URLs, key) the Editor and a localhost page read from 1.2 on; placeholders only. |
+| `04-review-102526.md` | The review of the delivered files before the hand-off: fourteen findings with their resolution in 1.2, caveats for the documentation, what was checked. |
 | `01-findings.md` | The evidence (volumes, the service's ledger, what the saves look like, duplicate saves, progress going backwards, failed saves, the old key) and the twelve defects of the brief confirmed, cleared or documented; proposals for the service; notes for the game team. |
 | `00-plan.md` | The brief: what was known, the code map, the defects to check, evidence to gather, reproduction, the rules, delivery, and the decisions (§9). |
 | `tools/` | The PlayMode tests with the fake save service, how to run them, and the browser recipe for the checks on a build (`tools/README.md`). |
@@ -65,9 +67,14 @@ starts a unit over (only the service's explicit "no saves" does), and while the 
 unreachable the game plays on from the device copy and switches to the service's save if that
 arrives newer; identity and configuration are waited for; requests time out after 30 s; the unit
 transition waits at most five seconds; the same checkpoint raised twice sends one request; nothing
-secret is printed. The save service is unchanged (proposals in `01-findings.md` §7). Twenty-one
-PlayMode tests against a fake save service cover the rules; a Unit 1 build of the files was run
-on the dev site (see the verification record in `03-for-the-game-dev.md`).
+secret is printed. The save service is unchanged (proposals in `01-findings.md` §7). A second
+review before the hand-off (`04-review-102526.md`) closed three more rollback paths in the outage
+handling (a newer save lost while an older one was in flight, a stale answer resumed from a
+long-open tab, progress rewound after a device-copy resume), made a page without save settings
+play unsaved instead of waiting for ever, and took the developer key out of the Editor defaults
+and the page templates (a developer config file replaces it). Twenty-nine PlayMode tests against
+a fake save service cover the rules; Unit 1 builds of the files were run on the dev site (see the
+verification record in `03-for-the-game-dev.md`).
 
 **Reference snapshot.** The files were written against the game team's project copy of
 2026-09-28 (changelist 12449, Unity 6000.0.74f1) with the logging fix v1.3 and the garden box fix

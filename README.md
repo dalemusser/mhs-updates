@@ -72,11 +72,13 @@ and the next checkpoint wrote the fresh start over the real progress on the
 server, seen in production), waited on the save flag with no cap at the unit
 transition, printed the bearer value to the browser console on every launch,
 parsed responses unguarded, and carried the old API key as a built-in
-fallback. Four files change (`Game-Code/Systems/Save Load System/GameSaveManager.cs`,
-`CustomSavers/DatabaseSaver.cs`, `SettingsSaveManager.cs`, and
-`Game-Code/Systems/Logging/GameLogger.cs`, the logging fix's file with its
+fallback. Six scripts and two page templates change (`Game-Code/Scripts/Systems/Save Load System/GameSaveManager.cs`,
+`CustomSavers/DatabaseSaver.cs`, `SettingsSaveManager.cs`;
+`Game-Code/Scripts/Systems/Logging/GameLogger.cs`, the logging fix's file with its
 unit-transition gate corrected: the v1.3 rule never fired against the
-loader, so with the log host unreachable the transition waited for ever):
+loader, so with the log host unreachable the transition waited for ever;
+`Scripts/Helpers/UI/UICanvasGroupFadeInOut.cs`; `Sandbox/Brian/MHS Bridge Testing/MHSBridge.cs`
+and the two `WebGLTemplates/.../index.html`, which no longer carry a key):
 saves and loads
 are retried for ever with backoff and a status line (reason, countdown,
 attempt); the newest save is kept on the device and sent at the next launch
@@ -85,11 +87,15 @@ new game, and while the service is unreachable the game plays on from the
 device copy; identity and configuration are waited for; requests time out;
 the transition waits at most five seconds; the same checkpoint raised twice
 sends one request; nothing secret is printed. The save service is unchanged.
-Delivered as version 1.1 (1.0 was the fix; 1.1 made the `GameLogger.cs`
-change a required file of the bundle and added its test).
+Delivered as version 1.2 (1.0 was the fix; 1.1 made the `GameLogger.cs`
+change a required file of the bundle and added its test; 1.2 applied a
+second review's findings, `04-review-102526.md`: three more rollback paths
+in the outage handling closed, a page without save settings plays unsaved
+instead of waiting for ever, and the developer key left the Editor defaults
+and the page templates for a developer config file).
 Start with `03-for-the-game-dev.md`; `01-findings.md` has the production
 evidence (volumes, ledger, save sizes, duplicate saves, progress going
-backwards, the old key) and each defect's verdict, `tools/` the twenty-one
+backwards, the old key) and each defect's verdict, `tools/` the twenty-nine
 PlayMode tests with their fake save service and the browser recipe,
 `queries/` and `data/` the read-only queries and their redacted outputs.
 

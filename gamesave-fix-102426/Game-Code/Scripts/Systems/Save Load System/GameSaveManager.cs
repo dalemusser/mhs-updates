@@ -140,7 +140,29 @@ public class GameSaveManager : MonoBehaviour
         public SaveMeta NewestMeta => metas != null && metas.Length > 0 ? metas[0] : null;
         // JsonUtility creates an empty SavedGameData for a missing save_data, so a
         // real save is one with a scene name.
-        public bool NewestIsASave => Newest != null && Newest.save_data != null && !string.IsNullOrEmpty(Newest.save_data.sceneName);
+        public static bool IsASave(GameSave s) => s != null && s.save_data != null && !string.IsNullOrEmpty(s.save_data.sceneName);
+        public bool NewestIsASave => IsASave(Newest);
+
+        // The newest document that reads as a save, and where it sits in the list
+        // (0 normally; higher when newer documents could not be read).
+        public int ReadableIndex
+        {
+            get
+            {
+                for (int i = 0; saves != null && i < saves.Length; i++) if (IsASave(saves[i])) return i;
+                return -1;
+            }
+        }
+        public bool HasReadable => ReadableIndex >= 0;
+        public GameSave Readable => HasReadable ? saves[ReadableIndex] : null;
+        public SaveMeta ReadableMeta
+        {
+            get
+            {
+                int i = ReadableIndex;
+                return i >= 0 && metas != null && i < metas.Length ? metas[i] : null;
+            }
+        }
     }
 
     // ---- Legacy API (kept so existing callers compile; one request, no retry) ----

@@ -2,7 +2,8 @@
 // PlayMode tests for the game's saving (mhs-updates/gamesave-fix-102426): the real
 // GameSaveManager and DatabaseSaver against a fake save service on localhost that can be
 // up, down (503), refusing (401), rejecting (400), answering HTML, or hanging; and the
-// GameLogger's unit-transition gate (T21), with no log endpoint so nothing is sent.
+// GameLogger's unit-transition gate (T21), with no log endpoint so nothing is sent; and the
+// findings of the second review of 2026-10-25 (T22-T30).
 //
 // Setup and cleanup are inline (not [UnitySetUp]/[UnityTearDown]): in this project those made the
 // editor's test runner overflow its stack (see unit4-gardenbox-crash-102326/tools/README.md).
@@ -118,10 +119,13 @@ namespace MHS.SaveFixTests
                     }
                     else
                     {
+                        int limit = 1;
+                        var lm = System.Text.RegularExpressions.Regex.Match(body, "\"limit\":(\\d+)");
+                        if (lm.Success) limit = int.Parse(lm.Groups[1].Value);
                         var sb = new StringBuilder("[");
                         lock (stored)
                         {
-                            for (int k = stored.Count - 1; k >= 0; k--)
+                            for (int k = stored.Count - 1; k >= 0 && stored.Count - 1 - k < limit; k--)
                             {
                                 if (sb.Length > 1) sb.Append(',');
                                 sb.Append("{\"id\":\"000000000000000000000abc\",\"user_id\":\"x\",\"game\":\"mhs\",\"timestamp\":\"" + (loadTimestamp ?? DateTime.UtcNow.ToString("o")) + "\",\"save_data\":").Append(stored[k]).Append('}');
@@ -177,6 +181,7 @@ namespace MHS.SaveFixTests
             r.saveEvent = ScriptableObject.CreateInstance<ScriptableEventInt>();
             r.loadEvent = ScriptableObject.CreateInstance<ScriptableEventInt>();
             r.playerId.Value = uid;
+            r.debugLogs.Value = true; // Print lines go through the console logger to Debug.Log, so the no-auth check sees them
 
             r.saverGo = new GameObject("SaveFixTestSaver");
             r.testSaver = r.saverGo.AddComponent<SaveFixTestSaver>();
@@ -198,7 +203,7 @@ namespace MHS.SaveFixTests
             return r;
         }
 
-        static void Set(object target, string field, object value)
+        public static void Set(object target, string field, object value)
         {
             var f = target.GetType().GetField(field, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
             Assert.IsNotNull(f, "field " + field);
@@ -230,7 +235,11 @@ namespace MHS.SaveFixTests
             typeof(DatabaseSaver).GetProperty("saveData").SetValue(null, null);
             PlayerPrefs.DeleteKey("mhs_last_save");
             PlayerPrefs.DeleteKey("mhs_pending_save_" + Uid);
+            PlayerPrefs.DeleteKey("mhs_pending_index");
             PlayerPrefs.Save();
+            DatabaseSaver.serverAnswerMaxAgeSeconds = 60f;
+            DatabaseSaver.noServiceConfigStartSeconds = 5f;
+            EnsureConsole();
             _svc = new FakeSaveService();
             GameSaveManager.saveConfigOverride = () => new MHSBridge.ServiceConfig { url = _svc.BaseUrl + "api/state/save", auth = Auth };
             GameSaveManager.loadConfigOverride = () => new MHSBridge.ServiceConfig { url = _svc.BaseUrl + "api/state/load", auth = Auth };
@@ -261,9 +270,31 @@ namespace MHS.SaveFixTests
             _rig = null;
             _svc?.Dispose();
             _svc = null;
+            if (_console != null) UnityEngine.Object.DestroyImmediate(_console);
+            _console = null;
+            DatabaseSaver.serverAnswerMaxAgeSeconds = 60f;
+            DatabaseSaver.noServiceConfigStartSeconds = 5f;
             PlayerPrefs.DeleteKey("mhs_last_save");
             PlayerPrefs.DeleteKey("mhs_pending_save_" + Uid);
+            PlayerPrefs.DeleteKey("mhs_pending_index");
             PlayerPrefs.Save();
+        }
+
+        GameObject _console;
+        BoolVariable _consoleFlag;
+
+        // The game's console logger prints the savers' Print lines through Debug.Log
+        // when its flag is on, so the no-auth check also covers those lines.
+        void EnsureConsole()
+        {
+            if (ConsoleLogManager.Instance != null) return;
+            _consoleFlag = ScriptableObject.CreateInstance<BoolVariable>();
+            _consoleFlag.Value = true;
+            _console = new GameObject("SaveFixConsole");
+            _console.SetActive(false);
+            var clm = _console.AddComponent<ConsoleLogManager>();
+            Rig.Set(clm, "enableDebugLogs", _consoleFlag);
+            _console.SetActive(true);
         }
 
         IEnumerator WaitUntil(Func<bool> cond, float seconds, string what)
@@ -380,11 +411,10 @@ namespace MHS.SaveFixTests
                 _rig.testSaver.value = "one";
                 _rig.saveEvent.Raise(0);
                 yield return WaitUntil(() => _rig.saver.SaveAttempt >= 1 && _rig.saver.StatusText.Contains("Retrying in"), 10, "first attempt to be answered");
+                _svc.mode = "ok";
+                int before = _svc.SaveCount;
                 _rig.testSaver.value = "two";
                 _rig.saveEvent.Raise(0);
-                yield return null;
-                int before = _svc.SaveCount;
-                _svc.mode = "ok";
                 yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 15, "acceptance");
                 Assert.AreEqual(before + 1, _svc.SaveCount, "exactly one request once the service is back");
                 Assert.AreEqual(1, _svc.stored.Count);
@@ -562,10 +592,12 @@ namespace MHS.SaveFixTests
                 Assert.IsNull(DatabaseSaver.saveData, "no save applied, no new game started");
                 Assert.AreEqual(0, _rig.testSaver.applied);
                 Assert.IsTrue(_rig.saver.StartRunning);
+                Assert.AreEqual(0, _rig.saver.NewGamesStarted);
                 _svc.mode = "ok";
                 yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "the resume once the service answers");
                 Assert.AreEqual("server-1", _rig.testSaver.lastApplied);
                 Assert.IsNotNull(DatabaseSaver.saveData);
+                Assert.AreEqual(0, _rig.saver.NewGamesStarted);
                 yield return WaitUntil(() => !_rig.saver.StartRunning, 5, "start to finish");
                 Assert.AreEqual("", _rig.saver.StatusText);
             }
@@ -588,6 +620,7 @@ namespace MHS.SaveFixTests
                 Assert.IsNull(DatabaseSaver.saveData, "a new game: nothing applied");
                 Assert.AreEqual(0, _rig.testSaver.applied);
                 Assert.AreEqual("", _rig.saver.StatusText);
+                Assert.AreEqual(1, _rig.saver.NewGamesStarted, "the new game was decided (the rig has no scene loader to run it)");
             }
             finally { Cleanup(); }
         }
@@ -701,6 +734,7 @@ namespace MHS.SaveFixTests
                 yield return WaitUntil(() => _rig.saver.FetchFailures >= 1, 10, "the empty body to count as a failure");
                 Assert.IsFalse(_rig.saver.ServerAnswered);
                 Assert.IsNull(DatabaseSaver.saveData, "no new game started");
+                Assert.AreEqual(0, _rig.saver.NewGamesStarted);
                 _svc.mode = "ok";
                 yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "the resume once the service answers");
                 Assert.AreEqual("server-1", _rig.testSaver.lastApplied);
@@ -837,6 +871,226 @@ namespace MHS.SaveFixTests
                 PlayerPrefs.Save();
                 typeof(GameLogger).GetField("userId", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, null);
             }
+        }
+        // ---- 6. the second review (2026-10-25) ----
+
+        [UnityTest]
+        public IEnumerator T22_StartAsksAgainWhenTheMenusAnswerIsOld()
+        {
+            yield return Setup();
+            try
+            {
+                _svc.stored.Add(ServerSave("server-1", DateTime.UtcNow.AddMinutes(-10)));
+                typeof(DatabaseSaver).GetMethod("ApplyGameProgressFromDatabase", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(_rig.saver, null);
+                yield return WaitUntil(() => _rig.saver.ServerAnswered, 10, "the menu's fetch");
+                Assert.AreEqual(1, _svc.LoadCount);
+                // The tab sits at the menu; meanwhile another device saves newer progress.
+                DatabaseSaver.serverAnswerMaxAgeSeconds = 1f;
+                _svc.stored.Add(ServerSave("server-2", DateTime.UtcNow));
+                yield return Wait(1.5f);
+                _rig.loadEvent.Raise(0); // START GAME
+                yield return WaitUntil(() => _rig.testSaver.applied >= 1 && !_rig.saver.StartRunning, 10, "start");
+                Assert.AreEqual(2, _svc.LoadCount, "START asked again");
+                Assert.AreEqual("server-2", _rig.testSaver.lastApplied);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T23_ProgressMadeSinceADeviceCopyResumeIsNotRewoundByTheServicesAnswer()
+        {
+            yield return Setup();
+            try
+            {
+                _rig.testSaver.value = "local-1";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the save to be accepted");
+
+                _svc.mode = "down";
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the device copy");
+                // Played on: a checkpoint recorded (unsent) after the resume.
+                DateTime between = DateTime.UtcNow;
+                yield return Wait(0.2f);
+                _rig.testSaver.value = "local-2";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.HasUnsentSave, 5, "the new save to be recorded");
+                // The service comes back holding a save made elsewhere between the copy and the new progress.
+                _svc.stored.Clear();
+                _svc.stored.Add(ServerSave("server-between", between));
+                _svc.mode = "ok";
+                yield return WaitUntil(() => _rig.saver.ServerAnswered && !_rig.saver.StartRunning, 15, "the service to answer");
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 15, "the new save to be sent");
+                Assert.AreEqual(1, _rig.testSaver.applied, "the older service save was not applied over the progress made since");
+                StringAssert.Contains("\\\"v\\\":\\\"local-2\\\"", _svc.NewestStored);
+                Assert.AreEqual("", _rig.saver.StatusText);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T24_NoSaveServiceOnThePage_StartPlaysANewGameWithoutSaving()
+        {
+            yield return Setup();
+            try
+            {
+                GameSaveManager.saveConfigOverride = () => null;
+                GameSaveManager.loadConfigOverride = () => null;
+                DatabaseSaver.noServiceConfigStartSeconds = 1f;
+                _rig.loadEvent.Raise(0); // START GAME
+                yield return WaitUntil(() => _rig.saver.StatusText.Contains("waiting for the save service settings"), 5, "the waiting line");
+                yield return WaitUntil(() => _rig.saver.PlayingWithoutService && !_rig.saver.StartRunning, 10, "the decision");
+                Assert.AreEqual(1, _rig.saver.NewGamesStarted, "a new game");
+                StringAssert.Contains("without saving", _rig.saver.StatusText);
+                Assert.IsFalse(_rig.saver.ServerAnswered);
+                // Checkpoints are neither kept nor sent on such a page.
+                _rig.testSaver.value = "unsaved";
+                _rig.saveEvent.Raise(0);
+                yield return Wait(0.5f);
+                Assert.IsFalse(_rig.saver.HasUnsentSave);
+                Assert.AreEqual(0, _svc.SaveCount);
+                Assert.IsFalse(PlayerPrefs.HasKey("mhs_last_save"));
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T25_UnreadableNewestSave_TheNextReadableOneIsUsed_AndNoneAtAllIsAFailureNotANewGame()
+        {
+            yield return Setup();
+            try
+            {
+                _svc.stored.Add(ServerSave("readable-older", DateTime.UtcNow.AddMinutes(-10)));
+                _svc.stored.Add("{}"); // the newest document: not a save
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1 && !_rig.saver.StartRunning, 15, "resume from the readable save");
+                Assert.AreEqual("readable-older", _rig.testSaver.lastApplied);
+                Assert.AreEqual(2, _svc.LoadCount, "one request for the newest, one for the last few");
+                lock (_svc.loadBodies) StringAssert.Contains("\"limit\":5", _svc.loadBodies[1]);
+                Assert.AreEqual(0, _rig.saver.NewGamesStarted);
+
+                // Only unreadable documents: a failure that is retried, never a new game.
+                _svc.stored.Clear();
+                _svc.stored.Add("{}");
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.FetchFailures >= 1, 15, "the unreadable answer to count as a failure");
+                StringAssert.Contains("unreadable", _rig.saver.StatusText);
+                Assert.IsTrue(_rig.saver.StartRunning);
+                Assert.AreEqual(0, _rig.saver.NewGamesStarted);
+                Assert.AreEqual(0, _rig.testSaver.applied);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T26_RecoveredSaveWaitShowsTheFetchsCountdown_AndTheDeviceCopyLineHoldsAfterStart()
+        {
+            yield return Setup();
+            try
+            {
+                _svc.mode = "down";
+                _rig.testSaver.value = "kept";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.SaveAttempt >= 1 && _rig.saver.StatusText.Contains("Retrying in"), 10, "first attempt to be answered");
+                // Relaunch with the service still down: the recovered save waits for the service's answer.
+                yield return Launch();
+                yield return WaitUntil(() => _rig.saver.HasUnsentSave, 5, "the recovered save");
+                yield return WaitUntil(() => _rig.saver.FetchFailures >= 1, 10, "the first failed check");
+                yield return Wait(1.2f);
+                StringAssert.Contains("Saving an earlier checkpoint", _rig.saver.StatusText);
+                StringAssert.Contains("Retrying in", _rig.saver.StatusText);
+                // START GAME: the service has already failed, so the game resumes from the unsent
+                // copy at once; the line is the device-copy one from then on, and the recovered
+                // save's text does not come back over it.
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 5, "resume from the device copy");
+                yield return WaitUntil(() => _rig.saver.StatusText.Contains("Using the progress saved on this device"), 3, "the device-copy line");
+                for (int i = 0; i < 6; i++)
+                {
+                    yield return Wait(0.5f);
+                    StringAssert.Contains("Using the progress saved on this device", _rig.saver.StatusText);
+                }
+                _svc.mode = "ok";
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave && !_rig.saver.StartRunning, 15, "the recovered save sent and start done");
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T28_ANewerSaveDuringTheRetryWaitGoesOutAtOnce_WithItsOwnCount()
+        {
+            yield return Setup();
+            try
+            {
+                _svc.mode = "down";
+                _rig.testSaver.value = "one";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.SaveAttempt >= 1 && _rig.saver.StatusText.Contains("Retrying in"), 10, "first attempt to be answered");
+                // The next retry would be 5 s away; a newer save does not wait for it.
+                int before = _svc.SaveCount;
+                _rig.testSaver.value = "two";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _svc.SaveCount == before + 1, 3, "the newer save's first attempt");
+                Assert.AreEqual(1, _rig.saver.SaveAttempt, "its own attempt count");
+                _svc.mode = "ok";
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 15, "acceptance");
+                StringAssert.Contains("\\\"v\\\":\\\"two\\\"", _svc.NewestStored);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T29_ASecondSaverInTheSceneStaysInert()
+        {
+            yield return Setup();
+            try
+            {
+                var second = Rig.Build(Uid);
+                try
+                {
+                    yield return null;
+                    Assert.IsTrue(second.saver.IsDuplicate);
+                    Assert.IsFalse(_rig.saver.IsDuplicate);
+                    second.autoSave.Value = true;
+                    second.testSaver.value = "from-the-duplicate";
+                    second.saveEvent.Raise(0);
+                    yield return Wait(0.5f);
+                    Assert.IsFalse(second.saver.HasUnsentSave);
+                    Assert.AreEqual(0, _svc.SaveCount);
+                    second.saver.CallToTransitionToNextUnit();
+                    Assert.IsTrue(second.saver.ReadyToTransition);
+                }
+                finally { second.Destroy(); }
+                // The first one still works.
+                _rig.testSaver.value = "from-the-first";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the first saver's save to be accepted");
+                Assert.AreEqual(1, _svc.SaveCount);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T30_ACopyTheServiceAcceptedDoesNotBeatTheServicesAnswer()
+        {
+            yield return Setup();
+            try
+            {
+                _rig.testSaver.value = "device-clock-ahead";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the save to be accepted");
+                // The service's newest is an older save (another device's; this device's clock
+                // may simply be ahead). The accepted copy does not override the service.
+                _svc.stored.Clear();
+                _svc.stored.Add(ServerSave("service-says", DateTime.UtcNow.AddMinutes(-5)));
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1 && !_rig.saver.StartRunning, 15, "start");
+                Assert.AreEqual("service-says", _rig.testSaver.lastApplied);
+            }
+            finally { Cleanup(); }
         }
     }
 }

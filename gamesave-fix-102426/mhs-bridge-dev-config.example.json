@@ -1,0 +1,11 @@
+{
+  "identity": { "user_id": "000000000000000000000001", "name": "MHS Developer" },
+  "services": {
+    "log_submit":    { "url": "https://<log host>/api/log/submit",      "auth": "Bearer <developer key for the log service>" },
+    "state_save":    { "url": "https://<save host>/api/state/save",     "auth": "Bearer <developer key for the save service>" },
+    "state_load":    { "url": "https://<save host>/api/state/load",     "auth": "Bearer <developer key for the save service>" },
+    "settings_save": { "url": "https://<save host>/api/settings/save",  "auth": "Bearer <developer key for the save service>" },
+    "settings_load": { "url": "https://<save host>/api/settings/load",  "auth": "Bearer <developer key for the save service>" }
+  },
+  "navigation": {}
+}

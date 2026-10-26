@@ -58,11 +58,16 @@ mhs-updates/
 │   └── Game-Code/
 │       └── Systems/
 │           └── Logging/GameLogger.cs            # Drop-in (bounded cache, no wedging, batch sends)
-├── gamesave-fix-102426/                      # Dated package 8: the game's saving reviewed like logging and fixed (2026-10-24; v1.1 2026-10-25)
+├── gamesave-fix-102426/                      # Dated package 8: the game's saving reviewed like logging and fixed (2026-10-24; v1.2 2026-10-25)
 │   ├── README.md                                # Folder overview
-│   ├── 03-for-the-game-dev.md                   # Start here: four files, build + hand-over, the checks on a build, what students see, background
-│   ├── Game-Code/Systems/Save Load System/      # GameSaveManager.cs, CustomSavers/DatabaseSaver.cs, SettingsSaveManager.cs (drop-ins)
-│   ├── Game-Code/Systems/Logging/GameLogger.cs  # The logging fix's file with its unit-transition gate corrected (required; supersedes gamelogger-fix-093026's copy)
+│   ├── 03-for-the-game-dev.md                   # Start here: the files, the developer key, build + hand-over, the checks on a build, what students see, background
+│   ├── Game-Code/Scripts/Systems/Save Load System/  # GameSaveManager.cs, CustomSavers/DatabaseSaver.cs, SettingsSaveManager.cs (drop-ins)
+│   ├── Game-Code/Scripts/Systems/Logging/GameLogger.cs  # The logging fix's file with its unit-transition gate corrected (required; supersedes gamelogger-fix-093026's copy)
+│   ├── Game-Code/Scripts/Helpers/UI/UICanvasGroupFadeInOut.cs  # Real-time fade (a status set while paused still appears)
+│   ├── Game-Code/Sandbox/Brian/MHS Bridge Testing/MHSBridge.cs  # Editor defaults read mhs-bridge-dev-config.json; no key in source
+│   ├── Game-Code/WebGLTemplates/                # The two page templates: localhost defaults read the same file; no key
+│   ├── mhs-bridge-dev-config.example.json       # The developer config file, placeholders only
+│   ├── 04-review-102526.md                      # Review before the hand-off: 14 findings and their resolution in 1.2
 │   ├── 01-findings.md                           # Production evidence and each defect's verdict; proposals for the save service
 │   ├── 00-plan.md                               # The brief the work followed, with the decisions (§9)
 │   ├── tools/                                   # PlayMode tests + fake save service, how to run, browser recipe
