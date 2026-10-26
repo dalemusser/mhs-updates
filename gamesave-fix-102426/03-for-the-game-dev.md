@@ -1,9 +1,22 @@
 # Saving fix: what to do in the game code
 
-This bundle fixes the game's saving and loading (a failed save was lost, a failed load started the
-unit over, and more; the evidence is in `01-findings.md`). Applying it is: replace eight files,
-delete two dead ones, set up one developer config file, build, upload. No prefab, scene or asset
-changes; nothing changes in the save service or on the StrataHub page.
+**What this bundle changes:**
+
+- **Saving and loading.** A failed save was lost, a failed load started the unit over, and more
+  (the evidence is in `01-findings.md`). Saves and loads are now retried with a visible status,
+  the newest save is kept on the device, and only the service's explicit "no saves" starts a new
+  game.
+- **The logger's unit-transition gate.** The v1.3 logger could hold a unit transition for ever
+  while the log host was unreachable; one line fixes it.
+- **The service key.** The old key is removed from the game's source (`MHSBridge.cs` Editor
+  defaults) and from both page templates (localhost defaults); a developer config file kept
+  outside version control replaces it. Two dead files that still carry the key are deleted.
+- **The alert panel's fade** runs on real time, so a status line set while the game is paused is
+  visible.
+
+Applying it is: replace eight files, delete two dead ones, set up one developer config file,
+build, upload. No prefab, scene or asset changes; nothing changes in the save service or on the
+StrataHub page.
 
 ## Part 1: what to do
 
