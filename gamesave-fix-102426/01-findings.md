@@ -338,7 +338,13 @@ adopts or decides while START is deciding, a save made in that window waits for 
 and a superseded save that is accepted is followed by the current state (T43–T46). A second pass over
 the same logic (§10) closed four more: a superseded record came back as a resume candidate at the
 next launch; the follow-up save could record the menu scene; a held checkpoint froze the line; the
-checkpoint an apply re-fires counted as progress against newer saves from elsewhere (T47–T49). The fade helper's other users are named in `03` (V11); a record made
+checkpoint an apply re-fires counted as progress against newer saves from elsewhere (T47–T49). A third pass
+(§11) closed the holes two of those fixes had opened and three older ones: the launch's own save,
+sent after the five-minute hold ran out, came back through the reconcile as "newer progress"; a save
+accepted after START had refused another unit's progress lifted the refusal; the 60-second bound on
+the scene-load wait could be outrun by a slow Addressables load, and the wait ended a frame before the
+apply; the replay rule rested on a checkpoint number the re-fire need not repeat (T50–T51, with T47 and
+T48 reworked). The fade helper's other users are named in `03` (V11); a record made
 before the player id is known is documented as not counted by the reconcile (V12).
 
 Noted, not changed: the transition gates reset under frame gaps over one second in a hidden tab
@@ -392,7 +398,7 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 48 tests, all passing on
+or hanging; `tools/README.md` has the two temporary project settings): 50 tests, all passing on
 2026-10-26 in Unity 6000.0.74f1 (about three and a half minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an

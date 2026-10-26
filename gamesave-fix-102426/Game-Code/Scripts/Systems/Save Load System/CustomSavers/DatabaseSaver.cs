@@ -129,16 +129,21 @@ namespace MHS
         public static float noServiceConfigStartSeconds = 5f;
         // How many saves to ask for when the newest one cannot be read as a save.
         private const int LoadLimitWhenNewestUnreadable = 5;
-        // A checkpoint recorded this soon after a save was applied, at the same
-        // checkpoint number, is the apply re-firing the checkpoint: a replay of the
-        // resumed state, not progress made since.
+        // A checkpoint recorded this soon after a save was applied is the apply
+        // re-firing the checkpoint: a replay of the resumed state, not progress made
+        // since. (A real checkpoint inside the window costs at most that much play,
+        // and only when the service holds newer progress.)
         private const float ReplayWindowSeconds = 5f;
-        // A save made while START is still deciding waits for the service's first
-        // answer, but not for ever: a load-only outage must not keep progress on the
-        // device all session.
-        private const float HeldSaveMaxSeconds = 300f;
-        // The reconcile waits for a resume's scene load at most this long.
-        private const float ResumeLoadMaxWaitSeconds = 60f;
+        // The reconcile waits for a resume's scene load and apply without a clock
+        // while the transition scene is up (a load can take minutes on a filtered
+        // network); outside it, an apply that has not come after this long is not
+        // coming.
+        private const float ResumeApplyMaxWaitSeconds = 30f;
+        // A save of this launch made while START is still deciding waits for the
+        // service's first answer, but not for ever: a load-only outage must not keep
+        // progress on the device all session. Once expired, this launch's saves go
+        // out without the check. Settable so tests can shorten it.
+        public static float heldSaveMaxSeconds = 300f;
 
         // One id per launch of the game, and a counter for the saves it makes.
         private static readonly string launchId = Guid.NewGuid().ToString("N");
@@ -208,8 +213,9 @@ namespace MHS
         private ServerLatest baselineServer;    // the service answer this launch adopted as its base (resumed from, applied, or its own accepted save)
         private bool holdingSave;               // a save of this launch waits for the service's first answer (the fetch's line shows)
         private float heldSince = -1f;
+        private bool heldExpired;               // the hold ran out this launch: saves go out without the check
         private float lastApplyAtUnscaled = -1000f; // when a save was last applied in place or after a scene load
-        private int lastAppliedCheckpoint = -1;
+        private bool applyPending;              // a resume's scene load is pending and its data not yet applied
         private bool followUpSaveWanted;        // a superseded save was accepted: save the current state once the apply has landed
         // START's decision that the service's answer is further along elsewhere and
         // must not be adopted: saves of this session are dropped against it.
@@ -347,6 +353,12 @@ namespace MHS
             // A new scene means the transition that was waiting on us is over.
             transitionPending = false;
             resumeInProgress = false;
+            if (next.name != "Transition" && (saveData == null || next.name != saveData.sceneName))
+            {
+                // No apply will follow in this scene.
+                applyPending = false;
+                followUpSaveWanted = false;
+            }
         }
 
         public void InitializeDataAfterSceneLoaded(Scene scene)
@@ -443,7 +455,8 @@ namespace MHS
             PersistLocal(record);
 
             Print($"Save recorded: scene {record.scene}, checkpoint {record.checkpoint}, {record.save_json.Length} chars, seq {record.seq}.");
-            if (statusHideRoutine == null) ShowStatus("Saving Game..."); // a toast finishes first
+            bool willBeHeld = serverLatest == null && startRunning && !heldExpired; // the fetch's line shows meanwhile
+            if (statusHideRoutine == null && !willBeHeld) ShowStatus("Saving Game..."); // a toast finishes first
             EnsureSendLoop();
         }
 
@@ -513,16 +526,30 @@ namespace MHS
                         PersistLocal(item);
                     }
 
-                    if (serverLatest == null && (newestRecovered || startRunning)
-                        && (heldSince < 0 || Time.unscaledTime - heldSince < HeldSaveMaxSeconds))
+                    // No answer from the service yet this launch, and a reason to wait for
+                    // the first one before this save goes out: it is a save left over from
+                    // an earlier launch, or START is still deciding (the game resumed from
+                    // the device copy and a checkpoint fired since). Sent now it could
+                    // overwrite progress the service holds from elsewhere. The device keeps
+                    // it meanwhile; the fetch's lines own the display. A save of this launch
+                    // waits at most heldSaveMaxSeconds, once per launch.
+                    bool mustWait = serverLatest == null && (newestRecovered || startRunning);
+                    if (mustWait && !newestRecovered)
                     {
-                        // No answer from the service yet this launch, and a reason to wait
-                        // for the first one before this save goes out: it is a save left
-                        // over from an earlier launch, or START is still deciding (the game
-                        // resumed from the device copy and a checkpoint fired since). Sent
-                        // now it could overwrite progress the service holds from elsewhere.
-                        // The device keeps it meanwhile; the fetch's lines own the display.
-                        if (heldSince < 0) heldSince = Time.unscaledTime;
+                        if (heldExpired) mustWait = false;
+                        else
+                        {
+                            if (heldSince < 0) heldSince = Time.unscaledTime;
+                            if (Time.unscaledTime - heldSince >= heldSaveMaxSeconds)
+                            {
+                                heldExpired = true;
+                                mustWait = false;
+                                Debug.LogWarning($"DatabaseSaver: the service has not answered for {heldSaveMaxSeconds / 60f:F0} minutes; this launch's saves go out without the check.");
+                            }
+                        }
+                    }
+                    if (mustWait)
+                    {
                         EnsureFetch(false);
                         recoveredWaiting = newestRecovered;
                         holdingSave = !newestRecovered;
@@ -530,7 +557,6 @@ namespace MHS
                         yield return new WaitForSecondsRealtime(IdentityPollInterval);
                         continue;
                     }
-                    if (heldSince >= 0 && serverLatest == null) Debug.LogWarning($"DatabaseSaver: the service has not answered for {HeldSaveMaxSeconds / 60f:F0} minutes; the save goes out without the check.");
                     heldSince = -1f;
                     holdingSave = false;
                     recoveredWaiting = false;
@@ -647,6 +673,8 @@ namespace MHS
             {
                 sendLoopRunning = false;
                 recoveredWaiting = false;
+                holdingSave = false;
+                heldSince = -1f;
             }
         }
 
@@ -684,7 +712,7 @@ namespace MHS
                 timeFromDevice = true,
             };
             serverLatestAt = Time.unscaledTime;
-            baselineServer = serverLatest;
+            if (!ReferenceEquals(baselineServer, NotAdopted)) baselineServer = serverLatest; // a refusal stands
         }
 
         // An unsent record made before a newer service save is applied in place: the
@@ -707,7 +735,7 @@ namespace MHS
         // scene load is pending, never from the menu or the transition scene.
         private void RequestFollowUpSave()
         {
-            if (resumeInProgress)
+            if (applyPending)
             {
                 followUpSaveWanted = true; // WaitToApplyData saves once the scene is up and the data applied
                 return;
@@ -827,6 +855,7 @@ namespace MHS
         private IEnumerator StartFromSave()
         {
             startRunning = true;
+            followUpSaveWanted = false;
             try
             {
                 Print("Loading Game From Database...");
@@ -900,6 +929,14 @@ namespace MHS
 
                 if (usedLocal)
                 {
+                    if (serverLatest.hasSave && serverLatest.meta != null && serverLatest.meta.session_id == launchId)
+                    {
+                        // The service's newest is this launch's own save (sent after the hold
+                        // ran out): nothing to reconcile.
+                        if (!ReferenceEquals(baselineServer, NotAdopted)) baselineServer = serverLatest;
+                        HideStatusUnlessToast();
+                        yield break;
+                    }
                     // Progress made since the resume counts; the checkpoint an apply re-fires
                     // (a replay of the resumed state) does not. Progress made in this launch
                     // is never rewound on the server's clock alone (an old build's save
@@ -911,9 +948,20 @@ namespace MHS
                         && (serverLatest.timeFromDevice || !progressThisLaunch);
                     if (serverNewer && chosen == serverLatest.data)
                     {
-                        // Let the scene load that the local resume started finish first.
-                        float loadWaitEnd = Time.unscaledTime + ResumeLoadMaxWaitSeconds;
-                        while ((resumeInProgress || SceneManager.GetActiveScene().name == "Transition") && Time.unscaledTime < loadWaitEnd) yield return null;
+                        // Let the scene load that the local resume started finish, and its
+                        // data be applied, first; a load can take minutes on a filtered network.
+                        float outsideTransition = 0f;
+                        while (applyPending || SceneManager.GetActiveScene().name == "Transition")
+                        {
+                            if (SceneManager.GetActiveScene().name == "Transition") outsideTransition = 0f;
+                            else if ((outsideTransition += Time.unscaledDeltaTime) > ResumeApplyMaxWaitSeconds)
+                            {
+                                Debug.LogWarning("DatabaseSaver: the resume's data was not applied; going on without waiting for it.");
+                                applyPending = false;
+                                break;
+                            }
+                            yield return null;
+                        }
                         if (chosen.sceneName == SceneManager.GetActiveScene().name)
                         {
                             // Same scene: the newer state replaces what is on screen; an
@@ -1002,21 +1050,27 @@ namespace MHS
             Print("Resuming from save - " + saveData.sceneName);
             if (CheckIfSceneShouldLoad(SceneManager.GetActiveScene().name))
             {
+                var loader = FindFirstObjectByType<TransitionSceneLoader>();
+                if (loader == null)
+                {
+                    Debug.LogWarning($"DatabaseSaver: no TransitionSceneLoader in the scene to load '{saveData.sceneName}'; the resume cannot start.");
+                    return;
+                }
                 SceneManager.sceneLoaded -= ApplyDataAfterSceneLoaded;
                 SceneManager.sceneLoaded += ApplyDataAfterSceneLoaded;
                 resumeInProgress = true;
-                var loader = FindFirstObjectByType<TransitionSceneLoader>();
+                applyPending = true;
                 //Check if saved level exists in build settings
                 if (SceneLoadingUtilities.IsSceneInBuildSettings(saveData.sceneName) == false)
                 {
                     //If saved scene doesn't exist in build settings load next gameplay scene in build settings hierarchy
                     ConsoleLogManager.Instance?.PrintToConsole($"{saveData.sceneName} does not exist in Build Settings. Moving to next gameplay scene", true, ConsoleLogManager.ConsoleLogType.Warning);
-                    loader?.LoadNextGameplayScene();
+                    loader.LoadNextGameplayScene();
                 }
                 else
                 {
                     //If saved scene exists in build settings load it
-                    loader?.SetSceneToLoadThenLoadTransitionScene(saveData.sceneName);
+                    loader.SetSceneToLoadThenLoadTransitionScene(saveData.sceneName);
                 }
             }
             else
@@ -1026,19 +1080,19 @@ namespace MHS
             }
         }
 
-        // A save was applied: a checkpoint recorded right after it, at its checkpoint
-        // number, is the apply re-firing the checkpoint, not progress.
+        // A save was applied: a checkpoint recorded right after it is the apply
+        // re-firing the checkpoint, not progress. (The re-fire's checkpoint number can
+        // differ from the applied save's, so the window alone decides.)
         private void MarkApply(SavedGameData data)
         {
             lastApplyAtUnscaled = Time.unscaledTime;
-            lastAppliedCheckpoint = ReadCheckpoint(data);
         }
 
         private bool IsReplay(LocalSaveRecord record)
         {
-            return record != null && record.recordedAtUnscaled > 0f
-                && record.recordedAtUnscaled - lastApplyAtUnscaled <= ReplayWindowSeconds
-                && record.checkpoint == lastAppliedCheckpoint;
+            if (record == null || record.recordedAtUnscaled <= 0f) return false;
+            float sinceApply = record.recordedAtUnscaled - lastApplyAtUnscaled;
+            return sinceApply >= 0f && sinceApply <= ReplayWindowSeconds;
         }
 
         // A record dropped as superseded is never a resume candidate: the service
@@ -1221,7 +1275,7 @@ namespace MHS
                     // One line, one owner: the countdown shows while a player waits at
                     // START GAME (and the game has not resumed from the device copy), or
                     // while a recovered save waits for this answer.
-                    yield return Countdown(wait, remaining => FetchLineFailed(result.reason, remaining, attempt + 1), FetchLineVisible);
+                    yield return Countdown(wait, remaining => FetchLineFailed(result.reason, remaining, attempt + 1), FetchLineVisible, () => serverLatest != null);
                 }
             }
             finally
@@ -1489,6 +1543,7 @@ namespace MHS
             resumeInProgress = false;
             MarkApply(saveData);
             SaveSystem.ApplySavedGameData(saveData);
+            applyPending = false;
             Print("Data Applied!");
             if (followUpSaveWanted)
             {
@@ -1743,7 +1798,7 @@ namespace MHS
                 if (stopWhen != null && stopWhen()) break;
                 int remaining = Mathf.CeilToInt(end - Time.unscaledTime);
                 if (remaining <= 0) break;
-                if (keepShowing == null || keepShowing()) SetStatus(text(remaining));
+                if ((keepShowing == null || keepShowing()) && statusHideRoutine == null) SetStatus(text(remaining));
                 yield return new WaitForSecondsRealtime(Mathf.Min(1f, end - Time.unscaledTime));
             }
         }

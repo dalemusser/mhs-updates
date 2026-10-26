@@ -3,7 +3,7 @@
 // GameSaveManager and DatabaseSaver against a fake save service on localhost that can be
 // up, down (503), refusing (401), rejecting (400), answering HTML, or hanging; and the
 // GameLogger's unit-transition gate (T21), with no log endpoint so nothing is sent; and the
-// findings of the second review of 2026-10-25 (T22-T30) and of the reviews of versions 1.2 (T31-T38) and 1.3 (T39-T42), and the focused reviews of the base logic (T43-T49).
+// findings of the second review of 2026-10-25 (T22-T30) and of the reviews of versions 1.2 (T31-T38) and 1.3 (T39-T42), and the focused reviews of the base logic (T43-T51).
 //
 // Setup and cleanup are inline (not [UnitySetUp]/[UnityTearDown]): in this project those made the
 // editor's test runner overflow its stack (see unit4-gardenbox-crash-102326/tools/README.md).
@@ -54,6 +54,8 @@ namespace MHS.SaveFixTests
         public volatile string mode = "ok"; // ok | down | refuse | reject | html | hang | toolarge | empty | savesdown (saves 503, loads ok) | saveshang (saves sleep hangMs, loads at once)
         public volatile string loadTimestamp = null; // when set, the "timestamp" of every save in a load answer
         public volatile int hangMs = 6000;
+        public volatile bool loadsDown;      // loads answer 503 whatever the mode (saves as the mode says)
+        public volatile int saveSleepMs;     // saves sleep this long before answering as the mode says
         public readonly List<string> saveBodies = new List<string>();
         public readonly List<string> loadBodies = new List<string>();
         public readonly List<string> stored = new List<string>(); // save_data json, oldest first
@@ -101,8 +103,10 @@ namespace MHS.SaveFixTests
             string text;
             string type = "application/json";
             if (m == "saveshang" && isSave) Thread.Sleep(hangMs);
+            if (isSave && saveSleepMs > 0) Thread.Sleep(saveSleepMs);
             string eff = (m == "hang" || m == "saveshang") ? "ok" : m;
             if (eff == "savesdown") eff = isSave ? "down" : "ok";
+            if (!isSave && loadsDown) eff = "down";
             switch (eff)
             {
                 case "down": status = 503; text = "{\"error\":\"down\"}"; break;
@@ -243,6 +247,7 @@ namespace MHS.SaveFixTests
             PlayerPrefs.Save();
             DatabaseSaver.serverAnswerMaxAgeSeconds = 60f;
             DatabaseSaver.noServiceConfigStartSeconds = 5f;
+            DatabaseSaver.heldSaveMaxSeconds = 300f;
             EnsureConsole();
             _svc = new FakeSaveService();
             GameSaveManager.saveConfigOverride = () => new MHSBridge.ServiceConfig { url = _svc.BaseUrl + "api/state/save", auth = Auth };
@@ -278,6 +283,7 @@ namespace MHS.SaveFixTests
             _console = null;
             DatabaseSaver.serverAnswerMaxAgeSeconds = 60f;
             DatabaseSaver.noServiceConfigStartSeconds = 5f;
+            DatabaseSaver.heldSaveMaxSeconds = 300f;
             PlayerPrefs.DeleteKey("mhs_last_save");
             PlayerPrefs.DeleteKey("mhs_pending_save_" + Uid);
             PlayerPrefs.DeleteKey("mhs_pending_index");
@@ -1518,7 +1524,7 @@ namespace MHS.SaveFixTests
                 typeof(DatabaseSaver).GetMethod("ApplyGameProgressFromDatabase", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(_rig.saver, null);
                 yield return WaitUntil(() => _rig.saver.ServerAnswered, 10, "the menu's fetch");
                 DatabaseSaver.serverAnswerMaxAgeSeconds = 1f;
-                yield return Wait(5.5f); // past the age limit, and past the replay window of the menu's apply
+                yield return Wait(1.5f); // past the age limit (the menu applies nothing through this saver, so no replay window is in play)
                 _svc.mode = "hang"; _svc.hangMs = 2000; // the refetch stays in flight for 2 s
                 _rig.loadEvent.Raise(0);
                 yield return Wait(0.3f);
@@ -1597,6 +1603,7 @@ namespace MHS.SaveFixTests
                 yield return Launch();
                 _rig.loadEvent.Raise(0);
                 yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the device copy");
+                yield return Wait(5.5f); // beyond the replay window: the next checkpoint is progress made since the resume
                 _rig.testSaver.value = "played-on";
                 _rig.saveEvent.Raise(0);
                 yield return WaitUntil(() => _rig.saver.HasUnsentSave, 5, "the new save recorded");
@@ -1642,7 +1649,9 @@ namespace MHS.SaveFixTests
                 yield return Wait(2f);
                 Assert.AreEqual(0, _rig.saver.SaveAttempt, "held while START decides");
                 StringAssert.Contains("Still checking the save service", _rig.saver.StatusText);
-                StringAssert.Contains("attempt", _rig.saver.StatusText);
+                StringAssert.DoesNotContain("Saving Game", _rig.saver.StatusText, "a held save shows no save line of its own");
+                yield return WaitUntil(() => _rig.saver.StatusText.Contains("attempt"), 5, "the device-copy countdown with the attempt count");
+                Assert.AreEqual(0, _rig.saver.SaveAttempt, "still held");
                 _svc.mode = "ok";
                 yield return WaitUntil(() => !_rig.saver.HasUnsentSave && !_rig.saver.StartRunning, 15, "the checkpoint decided once the service answers");
             }
@@ -1680,6 +1689,81 @@ namespace MHS.SaveFixTests
                 Assert.AreEqual(1, _svc.stored.Count, "nothing of R's state was sent over B");
                 var rec = JsonUtility.FromJson<DatabaseSaver.LocalSaveRecord>(PlayerPrefs.GetString("mhs_last_save"));
                 Assert.IsTrue(rec.dropped && rec.superseded);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T50_AfterTheHoldRunsOutTheOwnSaveGoesOutAndIsNotTakenForNewerProgress()
+        {
+            yield return Setup();
+            try
+            {
+                _rig.testSaver.value = "copy";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the copy accepted");
+                // Loads fail, saves work (a load-only outage); the hold is short for the test.
+                DatabaseSaver.heldSaveMaxSeconds = 1f;
+                _svc.loadsDown = true;
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the device copy");
+                yield return Wait(5.5f); // beyond the replay window: the next checkpoint is progress
+                _rig.testSaver.value = "played-on";
+                _rig.saveEvent.Raise(0);
+                yield return Wait(0.5f);
+                Assert.AreEqual(0, _rig.saver.SaveAttempt, "held at first");
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the hold runs out and the save is accepted");
+                Assert.AreEqual(2, _svc.stored.Count);
+                yield return WaitUntil(() => !_rig.saver.StartRunning, 5, "START ends on the launch's own save");
+                yield return Wait(1f);
+                Assert.AreEqual(1, _rig.testSaver.applied, "the own save is not applied back as newer progress");
+                Assert.AreEqual("copy", _rig.testSaver.lastApplied);
+                // The fetch's countdown ends with the own save known as the newest, and the line clears after the toast.
+                yield return WaitUntil(() => _rig.saver.StatusText == "", 6, "the line clears");
+                yield return Wait(1f);
+                Assert.AreEqual("", _rig.saver.StatusText, "no fetch countdown lingers");
+                // Later saves of this launch go out at once, with the loads still down.
+                _rig.testSaver.value = "more";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _svc.stored.Count == 3, 3, "the next save goes out without a hold");
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T51_ASaveAcceptedAfterSTARTRefusedAnotherUnitsProgressDoesNotLiftTheRefusal()
+        {
+            yield return Setup();
+            try
+            {
+                _rig.testSaver.value = "copy";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the copy accepted");
+                DatabaseSaver.heldSaveMaxSeconds = 1f;
+                _svc.loadsDown = true;
+                _svc.saveSleepMs = 8000; // the save sent after the hold stays in flight while START decides
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the device copy");
+                yield return Wait(5.5f);
+                _rig.testSaver.value = "played-on";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _svc.SaveCount == 2, 10, "the save goes out after the hold (in flight)");
+                // Meanwhile the student is further along in another unit; the loads come back.
+                _svc.stored.Add(ServerSave("elsewhere", DateTime.UtcNow.AddMinutes(5), "Another Unit"));
+                _svc.loadsDown = false;
+                yield return WaitUntil(() => !_rig.saver.StartRunning, 15, "START decides");
+                StringAssert.Contains("another unit", _rig.saver.StatusText);
+                Assert.AreEqual(1, _rig.testSaver.applied, "the player stays where they are");
+                // The in-flight save is accepted afterwards; the refusal stands: nothing else of this session is sent.
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 15, "the in-flight save accepted");
+                int sentSoFar = _svc.stored.Count; // copy, elsewhere, played-on (sent before the answer, unavoidably)
+                _rig.testSaver.value = "more";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the next checkpoint decided");
+                Assert.AreEqual(sentSoFar, _svc.stored.Count, "not sent over the other unit's progress");
+                StringAssert.Contains("Not saved: the save service has newer progress", _rig.saver.StatusText);
             }
             finally { Cleanup(); }
         }
