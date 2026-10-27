@@ -3,7 +3,7 @@
 // GameSaveManager and DatabaseSaver against a fake save service on localhost that can be
 // up, down (503), refusing (401), rejecting (400), answering HTML, or hanging; and the
 // GameLogger's unit-transition gate (T21), with no log endpoint so nothing is sent; and the
-// findings of the second review of 2026-10-25 (T22-T30) and of the reviews of versions 1.2 (T31-T38) and 1.3 (T39-T42), and the focused reviews of the base logic (T43-T54).
+// findings of the second review of 2026-10-25 (T22-T30) and of the reviews of versions 1.2 (T31-T38) and 1.3 (T39-T42), and the focused reviews of the base logic (T43-T56).
 //
 // Setup and cleanup are inline (not [UnitySetUp]/[UnityTearDown]): in this project those made the
 // editor's test runner overflow its stack (see unit4-gardenbox-crash-102326/tools/README.md).
@@ -1411,7 +1411,7 @@ namespace MHS.SaveFixTests
                 yield return WaitUntil(() => _rig.testSaver.applied == 2, 10, "resume from the earlier answer");
                 _svc.mode = "savesdown"; // the refetch answers with the other unit's save; saves still fail
                 yield return WaitUntil(() => !_rig.saver.StartRunning, 15, "the reconcile");
-                StringAssert.Contains("another unit", _rig.saver.StatusText);
+                StringAssert.Contains("another device", _rig.saver.StatusText);
                 Assert.AreEqual(2, _rig.testSaver.applied, "the other unit's save is not applied here");
                 // A checkpoint here is newer by the clock than the other unit's save, and is still not sent.
                 _svc.mode = "ok";
@@ -1503,7 +1503,7 @@ namespace MHS.SaveFixTests
                 _svc.stored.Add(ServerSave("elsewhere", DateTime.UtcNow.AddMinutes(1), "Unit 9 Dev"));
                 _svc.mode = "savesdown";
                 yield return WaitUntil(() => !_rig.saver.StartRunning, 15, "the reconcile");
-                StringAssert.Contains("another unit", _rig.saver.StatusText);
+                StringAssert.Contains("another device", _rig.saver.StatusText);
                 _svc.mode = "ok";
                 _rig.testSaver.value = "played-here";
                 _rig.saveEvent.Raise(0);
@@ -1764,7 +1764,7 @@ namespace MHS.SaveFixTests
                 _svc.stored.Add(ServerSave("elsewhere", DateTime.UtcNow.AddMinutes(5), "Another Unit"));
                 _svc.loadsDown = false;
                 yield return WaitUntil(() => !_rig.saver.StartRunning, 15, "START decides");
-                StringAssert.Contains("another unit", _rig.saver.StatusText);
+                StringAssert.Contains("another device", _rig.saver.StatusText);
                 Assert.AreEqual(1, _rig.testSaver.applied, "the player stays where they are");
                 // The in-flight save is accepted afterwards (the service's newest for a moment); the
                 // refusal stands: the further progress is posted again, and nothing else of this session is sent.
@@ -1795,6 +1795,66 @@ namespace MHS.SaveFixTests
         }
 
         [UnityTest]
+        public IEnumerator T55_ASecondSTARTAfterARefusal_WithTheLoadsDown_HoldsItsSavesAndSendsThemWhenTheHoldRunsOut()
+        {
+            yield return Setup();
+            try
+            {
+                _rig.testSaver.value = "copy";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the copy accepted");
+                DatabaseSaver.heldSaveMaxSeconds = 2f;
+                _svc.loadsDown = true;
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the device copy");
+                _svc.stored.Add(ServerSave("elsewhere", DateTime.UtcNow.AddMinutes(5), "Another Unit"));
+                _svc.loadsDown = false;
+                yield return WaitUntil(() => !_rig.saver.StartRunning, 20, "START refuses the further progress");
+                yield return WaitUntil(() => _rig.saver.StatusText.Contains("another device"), 5, "the refusal said");
+                // Back at the menu, START again after the age limit with the loads down again.
+                _svc.loadsDown = true;
+                DatabaseSaver.serverAnswerMaxAgeSeconds = 0.01f;
+                yield return Wait(2.5f);
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 2, 15, "the second START resumes from the earlier answer");
+                yield return Wait(5.5f);
+                int before = _svc.stored.Count;
+                _rig.testSaver.value = "second";
+                _rig.saveEvent.Raise(0);
+                yield return Wait(0.5f);
+                Assert.AreEqual(before, _svc.stored.Count, "held while the second START decides, not dropped by the earlier refusal");
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 15, "sent once the hold runs out");
+                Assert.AreEqual(before + 1, _svc.stored.Count);
+                lock (_logs) foreach (var l in _logs) StringAssert.DoesNotContain("NullReferenceException", l);
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
+        public IEnumerator T56_AnUnsentCopyAndANoSavesAnswerAfterALocalResume_TheSessionStillSaves()
+        {
+            yield return Setup();
+            try
+            {
+                // A copy the service never accepted (saves and loads down), and a launch while still down.
+                _svc.mode = "down";
+                _rig.testSaver.value = "only-here";
+                _rig.saveEvent.Raise(0);
+                yield return WaitUntil(() => _rig.saver.SaveAttempt >= 1, 10, "first attempt answered");
+                yield return Launch();
+                _rig.loadEvent.Raise(0);
+                yield return WaitUntil(() => _rig.testSaver.applied == 1, 15, "resume from the unsent copy");
+                _svc.mode = "ok"; // the service answers: no saves
+                yield return WaitUntil(() => !_rig.saver.StartRunning, 20, "START decides");
+                StringAssert.DoesNotContain("cleared", _rig.saver.StatusText);
+                yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 20, "the unsent copy goes out");
+                Assert.AreEqual(1, _svc.stored.Count, "progress that exists only here is saved");
+            }
+            finally { Cleanup(); }
+        }
+
+        [UnityTest]
         public IEnumerator T53_SavesClearedWhileTheLoadsWereDown_TheSessionIsNotSavedAndTheNextLaunchStartsAnew()
         {
             yield return Setup();
@@ -1813,7 +1873,7 @@ namespace MHS.SaveFixTests
                 _rig.saveEvent.Raise(0); // held while START decides
                 _svc.loadsDown = false;  // the service answers: no saves
                 yield return WaitUntil(() => !_rig.saver.StartRunning, 15, "START decides");
-                StringAssert.Contains("Your saved progress was cleared", _rig.saver.StatusText);
+                StringAssert.Contains("saved progress was cleared", _rig.saver.StatusText);
                 yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 10, "the held checkpoint decided");
                 Assert.AreEqual(0, _svc.stored.Count, "nothing of this session recreates the cleared progress");
                 var rec = JsonUtility.FromJson<DatabaseSaver.LocalSaveRecord>(PlayerPrefs.GetString("mhs_last_save"));
@@ -1860,13 +1920,15 @@ namespace MHS.SaveFixTests
                 _rig.loadEvent.Raise(0);
                 yield return WaitUntil(() => _rig.testSaver.applied == 2 && !_rig.saver.StartRunning, 15, "the second START resumes");
                 Assert.AreEqual("elsewhere", _rig.testSaver.lastApplied, "the further progress, not the stale save");
-                // The re-post is moot now (the further progress is what the session plays from) and stops.
+                // The re-post goes on while the further progress is the adopted base, so the stale save is not the service's newest.
                 _svc.mode = "ok";
+                yield return WaitUntil(() => _svc.stored.Count == 4, 15, "the further progress posted again");
+                StringAssert.Contains("\\\"v\\\":\\\"elsewhere\\\"", _svc.NewestStored);
                 yield return Wait(6.5f);
-                Assert.AreEqual(3, _svc.stored.Count, "no re-post after the second START adopted the further progress");
+                Assert.AreEqual(4, _svc.stored.Count, "posted once, then the re-post ends");
                 _rig.testSaver.value = "after";
                 _rig.saveEvent.Raise(0);
-                yield return WaitUntil(() => _svc.stored.Count == 4, 10, "the session saves from the further progress");
+                yield return WaitUntil(() => _svc.stored.Count == 5, 10, "the session saves from the further progress");
                 StringAssert.Contains("\\\"v\\\":\\\"after\\\"", _svc.NewestStored);
             }
             finally { Cleanup(); }

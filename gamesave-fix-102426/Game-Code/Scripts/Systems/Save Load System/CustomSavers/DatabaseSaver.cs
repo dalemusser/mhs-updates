@@ -372,11 +372,12 @@ namespace MHS
             // A new scene means the transition that was waiting on us is over.
             transitionPending = false;
             resumeInProgress = false;
-            if (saveData == null || (SceneNumber(next.name) >= 0 && next.name != saveData.sceneName))
+            if (saveData == null || (next.name != saveData.sceneName && next.name != SceneNameReference.MainMenu
+                && (SceneNumber(next.name) >= 0 || KnownScene(next.name))))
             {
-                // A unit scene other than the saved one: no apply will follow. (The
-                // loading scene, whatever it is named, and the menu do not end a
-                // pending resume.)
+                // A scene of the game other than the saved one (a redirected resume
+                // lands there): no apply will follow. The loading scene, whatever it
+                // is named, and the menu do not end a pending resume.
                 applyPending = false;
                 followUpSaveWanted = false;
                 SceneManager.sceneLoaded -= ApplyDataAfterSceneLoaded;
@@ -594,7 +595,7 @@ namespace MHS
                     if (serverLatest != null && baselineServer == null) baselineServer = serverLatest; // the launch's first knowledge of the service
 
                     bool superseded = false;
-                    if (ReferenceEquals(baselineServer, NotAdopted))
+                    if (ReferenceEquals(baselineServer, NotAdopted) && !startRunning)
                     {
                         // START refused the service's state (further progress elsewhere, or
                         // the saved progress cleared): nothing of this session is sent.
@@ -624,7 +625,7 @@ namespace MHS
                         bool cleared = serverLatest != null && !serverLatest.hasSave;
                         Debug.LogWarning(cleared
                             ? $"DatabaseSaver: the saved progress was cleared on the service; the unsent save from {item.saved_at} is dropped."
-                            : $"DatabaseSaver: the save service already holds newer progress ({serverLatest.time}) than the unsent save from {item.saved_at}; the unsent save is dropped.");
+                            : $"DatabaseSaver: the save service already holds newer progress ({serverLatest?.time ?? "refused earlier"}) than the unsent save from {item.saved_at}; the unsent save is dropped.");
                         item.dropped = true;
                         item.superseded = true;
                         PersistAfterRequest(item);
@@ -740,8 +741,15 @@ namespace MHS
                 // request was in flight at the time): the service's newest is now this
                 // session's stale state. The refusal stands, and the further progress
                 // is posted again so that it is the newest once more.
-                Debug.LogWarning("DatabaseSaver: a save that was in flight when START refused the service's further progress was accepted; the further progress is posted again, and this session stays unsaved.");
-                if (!repostRunning && serverLatest != null && serverLatest.hasSave && isActiveAndEnabled) StartCoroutine(RepostRefusedAnswer(serverLatest));
+                if (serverLatest != null && serverLatest.hasSave)
+                {
+                    Debug.LogWarning("DatabaseSaver: a save that was in flight when START refused the service's further progress was accepted; the further progress is posted again, and this session stays unsaved.");
+                    if (!repostRunning && isActiveAndEnabled) StartCoroutine(RepostRefusedAnswer(serverLatest));
+                }
+                else
+                {
+                    Debug.LogWarning("DatabaseSaver: a save that was in flight when the cleared progress was found was accepted; the service holds that one save again (it cannot be deleted from the game), and this session stays unsaved.");
+                }
                 return;
             }
             var data = ParseSave(item.save_json);
@@ -758,10 +766,11 @@ namespace MHS
             baselineServer = serverLatest;
         }
 
-        // Posts the service's further progress again, over a save of this session
-        // that reached the service after START refused that progress. Retried
-        // until the service accepts it (no line for the player: the session was
-        // already told it is not saved); a rejection for good is a defect and loud.
+        // Posts a service answer again (the further progress START refused, or the
+        // base adopted at the menu), over a save of this session that reached the
+        // service afterwards. Retried until accepted, as long as that answer is
+        // still the refusal or the base (no line for the player); a rejection for
+        // good is a defect and loud.
         private IEnumerator RepostRefusedAnswer(ServerLatest refused)
         {
             repostRunning = true;
@@ -775,9 +784,9 @@ namespace MHS
                 int attempt = 0;
                 while (true)
                 {
-                    if (!ReferenceEquals(baselineServer, NotAdopted))
+                    if (!startRunning && !ReferenceEquals(refusedAnswer, refused) && !ReferenceEquals(baselineServer, refused))
                     {
-                        Print("The refusal was replaced by a later START's decision; the further progress is not posted again.");
+                        Print("A later decision replaced the answer being posted again; it is not posted.");
                         yield break;
                     }
                     string uid = ResolveUserId();
@@ -839,7 +848,13 @@ namespace MHS
             string scene = SceneManager.GetActiveScene().name;
             if (scene == SceneNameReference.MainMenu || scene == LoadingSceneName)
             {
-                Debug.LogWarning("DatabaseSaver: no gameplay scene to save from; the next checkpoint will overwrite the superseded save.");
+                // No gameplay state to save from: the adopted base is posted again
+                // instead, so the service's newest is not the superseded save.
+                if (baselineServer != null && !ReferenceEquals(baselineServer, NotAdopted) && baselineServer.hasSave && !repostRunning && isActiveAndEnabled)
+                {
+                    Debug.LogWarning("DatabaseSaver: no gameplay scene to save from; the adopted progress is posted again over the superseded save.");
+                    StartCoroutine(RepostRefusedAnswer(baselineServer));
+                }
                 return;
             }
             SaveGameToDatabase();
@@ -882,6 +897,16 @@ namespace MHS
             return Int32.TryParse(sceneName[5].ToString(), out int n) ? n : -1;
         }
 
+        // A lesson or the character customization: scenes entered from a unit that
+        // end on their own (the game's own scene lists).
+        private static bool InSideScene(string sceneName) =>
+            SceneNameReference.ToppoLessonScenes.Contains(sceneName) || SceneNameReference.OtherScenes.Contains(sceneName);
+
+        // A scene the game names in its lists (units, menu, lessons, customization).
+        // The loading scene is not one of them, whatever it is called.
+        private static bool KnownScene(string sceneName) =>
+            SceneNameReference.GameScenes.Contains(sceneName) || InSideScene(sceneName);
+
         // Whether a save's scene is further on than where this launch is. Only an
         // earlier unit by number is known not to be; any other scene is taken as
         // further on (a later unit, or another scene of the same unit, whose order
@@ -897,7 +922,7 @@ namespace MHS
         // it is about, not over the loading scene.
         private IEnumerator ToastOnceApplied(string text)
         {
-            while (applyPending) yield return null;
+            while (applyPending) yield return null; // cleared by the apply, or by a scene that will not apply
             ShowToast(text);
         }
 
@@ -961,6 +986,15 @@ namespace MHS
             }
             if (startRunning)
             {
+                if (resumedLocally && !applyPending && saveData != null && SceneManager.GetActiveScene().name == SceneNameReference.MainMenu)
+                {
+                    // Back at the menu while the service is still not answering: play on
+                    // from the state this launch resumed; the running START still decides
+                    // when the service answers.
+                    Print("START again while the service is not answering; resuming the device's progress again.");
+                    ResumeWith(saveData);
+                    return;
+                }
                 Print("Start already in progress; ignoring a second request.");
                 return;
             }
@@ -973,8 +1007,8 @@ namespace MHS
             followUpSaveWanted = false;
             heldExpired = false;
             heldSince = -1f;
-            var refused = refusedAnswer; // a refusal still standing from an earlier START this launch
-            refusedAnswer = null;
+            var refused = refusedAnswer; // a refusal still standing from an earlier START this launch (still re-posted meanwhile)
+            if (ReferenceEquals(baselineServer, NotAdopted)) baselineServer = null; // this START decides afresh; its saves are held, not dropped
             try
             {
                 Print("Loading Game From Database...");
@@ -1039,7 +1073,7 @@ namespace MHS
                     yield break;
                 }
 
-                if (refused != null && ReferenceEquals(baselineServer, NotAdopted) && serverLatest.hasSave && serverLatest.meta != null && serverLatest.meta.session_id == launchId)
+                if (refused != null && serverLatest.hasSave && serverLatest.meta != null && serverLatest.meta.session_id == launchId)
                 {
                     // The service's newest is a save of this session that was accepted
                     // after the refusal (the further progress is being posted again over
@@ -1078,7 +1112,7 @@ namespace MHS
                         Debug.LogWarning("DatabaseSaver: the save service has no saves for this player although it had accepted this device's copy; the saved progress was cleared. This session's saves are not sent; the next launch starts a new game.");
                         baselineServer = NotAdopted;
                         refusedAnswer = serverLatest;
-                        ShowToast("Your saved progress was cleared.\nThis session is not saved.");
+                        ShowToast("Your saved progress was cleared.\nReload the page to start over.");
                         yield break;
                     }
 
@@ -1095,8 +1129,9 @@ namespace MHS
                     {
                         // Where this launch is, or is going: the scene a pending resume is
                         // loading (it applies saveData once that scene is up), else the one
-                        // on screen; not the loading scene (it ends on its own).
-                        while (!applyPending && SceneManager.GetActiveScene().name == LoadingSceneName) yield return null;
+                        // on screen; not the loading scene, a lesson or the customization
+                        // (they end on their own; the device-copy line stays meanwhile).
+                        while (!applyPending && (SceneManager.GetActiveScene().name == LoadingSceneName || InSideScene(SceneManager.GetActiveScene().name))) yield return null;
                         bool loadPending = applyPending;
                         string here = loadPending ? saveData.sceneName : SceneManager.GetActiveScene().name;
                         if (!loadPending && here == SceneNameReference.MainMenu)
@@ -1120,7 +1155,7 @@ namespace MHS
                             Debug.LogWarning($"DatabaseSaver: the save service holds newer progress further on ({chosen.sceneName}); the player stays in {here}, this session's saves are not sent, and the next launch uses the service's save.");
                             baselineServer = NotAdopted;
                             refusedAnswer = serverLatest;
-                            StartCoroutine(ToastOnceApplied("The save service has newer progress in another unit.\nThis session is not saved."));
+                            StartCoroutine(ToastOnceApplied("Newer progress was saved on another device.\nThis session is not saved."));
                         }
                         else if (chosen.sceneName == here)
                         {
@@ -1181,6 +1216,7 @@ namespace MHS
             }
             finally
             {
+                if (!ReferenceEquals(baselineServer, NotAdopted)) refusedAnswer = null; // the refusal ended with this decision
                 startRunning = false;
                 resumedLocally = false;
             }

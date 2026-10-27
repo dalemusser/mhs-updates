@@ -354,7 +354,9 @@ scenes broke the unit-order rule (any other scene is further on again unless its
 the loading scene's name had crept into the resume's bookkeeping (unit scenes are now told by their number),
 that a second START during the re-post adopted the stale save, and that saves cleared on purpose while the
 loads were down were recreated by the next checkpoint (the session now plays on unsaved and the next launch
-starts anew; T53, T54). The fade helper's other users are named in `03` (V11); a record made
+starts anew; T53, T54). A focused read of that pass (§14) found a crash in the send loop when a
+second START followed a refusal, a lesson not waited through, START ignored at the menu during an outage,
+and loose ends in the re-post; all fixed (T55, T56). The fade helper's other users are named in `03` (V11); a record made
 before the player id is known is documented as not counted by the reconcile (V12).
 
 Noted, not changed: the transition gates reset under frame gaps over one second in a hidden tab
@@ -408,8 +410,8 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 53 tests, all passing on
-2026-10-26 in Unity 6000.0.74f1 (about four minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
+or hanging; `tools/README.md` has the two temporary project settings): 55 tests, all passing on
+2026-10-26 in Unity 6000.0.74f1 (about four and a half minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an
 unsent save dropped when the service already holds newer progress; a refused key retried, not
