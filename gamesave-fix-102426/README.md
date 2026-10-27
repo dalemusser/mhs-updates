@@ -72,7 +72,7 @@ review before the hand-off (`04-review-102526.md`) closed three more rollback pa
 handling (a newer save lost while an older one was in flight, a stale answer resumed from a
 long-open tab, progress rewound after a device-copy resume), made a page without save settings
 play unsaved instead of waiting for ever, and took the developer key out of the Editor defaults
-and the page templates (a developer config file replaces it). Fifty-one PlayMode tests against
+and the page templates (a developer config file replaces it). Fifty-three PlayMode tests against
 a fake save service cover the rules; Unit 1 builds of the files were run on the dev site (see the
 verification record in `03-for-the-game-dev.md`).
 

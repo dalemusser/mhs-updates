@@ -349,7 +349,12 @@ the transition scene was up (the decision is now made against the scene a pendin
 wait), that keeping the refusal after an in-flight save was accepted left the service's newest stale (the
 further progress is posted again), that unit order was not part of the refusal, and that the hold's expiry
 survived into a second START; T50 and T51 were reworked to reach the paths they name, and the session id is
-new per launch in the tests as in the game (T52 added). The fade helper's other users are named in `03` (V11); a record made
+new per launch in the tests as in the game (T52 added). A fifth pass (§13) found that units with several
+scenes broke the unit-order rule (any other scene is further on again unless its unit number is lower), that
+the loading scene's name had crept into the resume's bookkeeping (unit scenes are now told by their number),
+that a second START during the re-post adopted the stale save, and that saves cleared on purpose while the
+loads were down were recreated by the next checkpoint (the session now plays on unsaved and the next launch
+starts anew; T53, T54). The fade helper's other users are named in `03` (V11); a record made
 before the player id is known is documented as not counted by the reconcile (V12).
 
 Noted, not changed: the transition gates reset under frame gaps over one second in a hidden tab
@@ -403,8 +408,8 @@ the service could order saves by it later (§7).
 
 **Editor PlayMode tests** (`tools/SaveFixTests.cs`, the real `GameSaveManager` and `DatabaseSaver`
 against a fake save service on localhost that can be up, down, refusing, rejecting, answering HTML
-or hanging; `tools/README.md` has the two temporary project settings): 51 tests, all passing on
-2026-10-26 in Unity 6000.0.74f1 (about three and a half minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
+or hanging; `tools/README.md` has the two temporary project settings): 53 tests, all passing on
+2026-10-26 in Unity 6000.0.74f1 (about four minutes; 21 of them from 2026-10-24, 8 from 2026-10-25). They cover: the payload helpers; save retried with a
 countdown until accepted and no auth value in any log line; a newer save replacing an unsent one
 (one request once the service is back); an unsent save surviving a relaunch and sent then; an
 unsent save dropped when the service already holds newer progress; a refused key retried, not
