@@ -171,6 +171,40 @@ browser's request interception (recipe in `tools/README.md`):
    and loads go to the services with the key from the file; without it the page reports
    *developer identity only, no services* and the game behaves as in check 8.
 
+## Running the Editor tests
+
+The fix comes with 55 PlayMode tests in `tools/SaveFixTests.cs`. They run the real
+`GameSaveManager` and `DatabaseSaver` against a fake save service on your own machine, so they test
+every rule of the fix without the dev site. You don't need them to apply the fix. They are there
+if you want to check the files in your project, or check later changes to the save code. Full
+instructions are in `tools/README.md`. In short:
+
+1. In the Unity Editor, open **Window → General → Test Runner**, and from its **⋮** menu choose
+   **Enable playmode tests for all assemblies** (Unity restarts).
+2. Put `SaveFixTests.cs` anywhere under `Assets/` that is not inside an assembly definition.
+3. If it compiles, run the tests from the Test Runner's PlayMode tab. If it does not compile, with
+   *The type or namespace name 'UnityTest' could not be found*, add a file `Assets/csc.rsp`
+   containing this one line, then let Unity recompile:
+
+   ```
+   -r:"<full path to your project>/Library/ScriptAssemblies/UnityEngine.TestRunner.dll"
+   ```
+
+**Why `csc.rsp` may be needed.** The tests use the game's own classes. Those compile into Unity's
+default `Assembly-CSharp`, because the game code has no assembly definitions. A test assembly
+(`.asmdef`) cannot reference `Assembly-CSharp`, so the tests have to compile inside it. The setting
+in step 1 gives `Assembly-CSharp` NUnit, but in Unity 6000.0 with Test Framework 1.3.9 it did not
+add `UnityEngine.TestRunner`, where `[UnityTest]` lives. The Editor has no other way to add that
+reference, and `csc.rsp` passes it to the compiler. A newer Test Framework may add it by itself.
+
+**Before a release build**, remove the test file and `csc.rsp` and turn the setting in step 1 back
+off. Don't commit `csc.rsp` to the shared project: its path is specific to one machine.
+
+**How long it takes.** A full run takes about four and a half minutes. That is expected: many tests
+simulate the save service being down and wait through the game's real retry delays (5 seconds,
+10 seconds and so on). You can also run the tests from a terminal without opening the Editor,
+using the command in `tools/README.md`.
+
 ## What changes for students
 
 - Saving looks the same when the service answers: "Saving Game..." then "Game Saved!" in the same
