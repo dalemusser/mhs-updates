@@ -2,7 +2,7 @@
 
 **Date opened:** 2026-10-24. **Fix written, verified in the editor and on the dev site:** 2026-10-24 (version 1.0; 1.1 of 2026-10-25 made the `GameLogger.cs` change a required file of the bundle; 1.2 of 2026-10-25 applies the findings of a second review, `04-review-102526.md`, and takes the developer key out of the game's source; 1.3 of 2026-10-26 applies the findings of a review of 1.2, §7 of the same document). **Test builds on the dev site:** collections `20261024-savefix1-SaveFixTest` (unit1 v2.9.5), `20261024-savefix2-SaveFixTest` (unit1 v2.9.6, version 1.0), `20261025-savefix3-SaveFixTest` (unit1 v2.9.7, version 1.2) and `20261026-savefix4-SaveFixTest` (unit1 v2.9.8, version 1.3, the delivered files), not active for students.
 **Start with `03-for-the-game-dev.md`**: Part 1 is what to do (the files, the developer config file, build and
-hand-over); Part 2 is the supporting information (checks, what students see, what each change does). `01-findings.md`
+hand-over); Part 2 is how to run the Editor tests (with `csc.rsp`); Part 3 is the supporting information (checks, what students see, what each change does). `01-findings.md`
 holds the production evidence and each defect's verdict; `00-plan.md` is the brief the work
 followed, with Dale's decisions in §9.
 
@@ -35,7 +35,7 @@ Working directory for the session: the workspace that holds `mhs-updates`, `stra
 
 | File | Purpose |
 |---|---|
-| `03-for-the-game-dev.md` | The page for the developer applying the fix. Part 1 is what to do (replace eight files, diffing first; delete two dead ones; the developer config file; build and hand over). Part 2 is the supporting information: compatibility notes, the checks we run, what students see, what each file fixes, the verification record. |
+| `03-for-the-game-dev.md` | The page for the developer applying the fix. Part 1 is what to do (replace eight files, diffing first; delete two dead ones; the developer config file; build and hand over). Part 2 is how to run the Editor tests, `csc.rsp` included. Part 3 is the supporting information: compatibility notes, the checks we run, what students see, what each file fixes, the verification record. |
 | `Game-Code/` | The changed files, mirroring `Assets/`: `Scripts/Systems/Save Load System/{GameSaveManager.cs, CustomSavers/DatabaseSaver.cs, SettingsSaveManager.cs}`, `Scripts/Systems/Logging/GameLogger.cs` (supersedes the copy in `../gamelogger-fix-093026/`), `Scripts/Helpers/UI/UICanvasGroupFadeInOut.cs`, `Sandbox/Brian/MHS Bridge Testing/MHSBridge.cs`, and the two `WebGLTemplates/.../index.html`. |
 | `mhs-bridge-dev-config.example.json` | The developer config file (identity, service URLs, key) the Editor and a localhost page read from 1.2 on; placeholders only. |
 | `04-review-102526.md` | The review of the delivered files before the hand-off: fourteen findings with their resolution in 1.2, caveats for the documentation, what was checked. |
