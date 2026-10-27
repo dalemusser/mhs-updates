@@ -23,6 +23,17 @@ Neither belongs in a release build; remove both afterwards.
    -r:"<absolute path to the project>/Library/ScriptAssemblies/UnityEngine.TestRunner.dll"
    ```
 
+   **Where it goes and how Unity finds it.** The file must be named exactly `csc.rsp` and sit at the
+   root of `Assets` (not in a subfolder). When Unity compiles the default assemblies
+   (`Assembly-CSharp` and the others without an `.asmdef`), it reads `Assets/csc.rsp` and passes
+   each line to the compiler; no other configuration is needed. The path in the line is the full
+   path to your project folder followed by `/Library/ScriptAssemblies/UnityEngine.TestRunner.dll`,
+   in double quotes (macOS example: `-r:"/Users/yourname/Projects/MHS 2.0/Library/ScriptAssemblies/UnityEngine.TestRunner.dll"`;
+   on Windows forward slashes work: `-r:"C:/Users/yourname/Projects/MHS 2.0/Library/ScriptAssemblies/UnityEngine.TestRunner.dll"`).
+   Unity does not always recompile when only `csc.rsp` changes: right-click any script and choose
+   *Reimport*. It has worked when the `UnityTest` error is gone and the Test Runner lists
+   `MHS.SaveFixTests` with 55 tests. To remove it, delete `Assets/csc.rsp` and `Assets/csc.rsp.meta`.
+
    **Why the file is needed at all.** The tests use the game's own classes (`DatabaseSaver`,
    `GameSaveManager`), which compile into Unity's default `Assembly-CSharp`, because the game code
    has no assembly definitions. A normal test assembly (an `.asmdef` marked as a test assembly) cannot

@@ -94,23 +94,62 @@ instructions are in `tools/README.md`. In short:
 1. In the Unity Editor, open **Window → General → Test Runner**, and from its **⋮** menu choose
    **Enable playmode tests for all assemblies** (Unity restarts).
 2. Put `SaveFixTests.cs` anywhere under `Assets/` that is not inside an assembly definition.
-3. If it compiles, run the tests from the Test Runner's PlayMode tab. If it does not compile, with
-   *The type or namespace name 'UnityTest' could not be found*, add a file `Assets/csc.rsp`
-   containing this one line, then let Unity recompile:
+3. If it compiles, run the tests from the Test Runner's PlayMode tab.
+4. If it does not compile, and the Console shows *The type or namespace name 'UnityTest' could not
+   be found*, set up `csc.rsp` as described next, then run the tests.
 
-   ```
-   -r:"<full path to your project>/Library/ScriptAssemblies/UnityEngine.TestRunner.dll"
-   ```
+## Setting up csc.rsp
 
-**Why `csc.rsp` may be needed.** The tests use the game's own classes. Those compile into Unity's
+**Where it goes.** Create a plain text file named exactly `csc.rsp` directly in the project's
+`Assets` folder, at `Assets/csc.rsp`, next to the top-level folders such as `Scripts`. It must be
+at the root of `Assets`, not in a subfolder.
+
+**How Unity uses it.** When Unity compiles the project's default assemblies (`Assembly-CSharp`,
+`Assembly-CSharp-Editor` and their `firstpass` versions), it looks for `Assets/csc.rsp` and passes
+each line to the C# compiler as an extra option. Nothing else needs to be configured: the file's
+name and place are how Unity finds it. (A `csc.rsp` next to an `.asmdef` file applies to that
+assembly instead; this project's game code has no assembly definitions, so the root file is the
+one that matters.)
+
+**What goes in it.** One line: `-r:` followed by the full path to the Test Framework's compiled
+assembly inside your project's `Library` folder, in double quotes because the path may contain
+spaces. For example:
+
+```
+-r:"/Users/yourname/Projects/MHS 2.0/Library/ScriptAssemblies/UnityEngine.TestRunner.dll"
+```
+
+On Windows, forward slashes work too:
+
+```
+-r:"C:/Users/yourname/Projects/MHS 2.0/Library/ScriptAssemblies/UnityEngine.TestRunner.dll"
+```
+
+To get your project's full path, copy it from the file manager: on macOS, right-click the project
+folder in Finder while holding Option and choose *Copy … as Pathname*; on Windows, Shift-right-click
+it in Explorer and choose *Copy as path*. Then add `/Library/ScriptAssemblies/UnityEngine.TestRunner.dll`.
+The file exists once Unity has compiled the Test Framework package, which it does on its own (the
+package is part of every new project; if `Library/ScriptAssemblies` has no such file, install
+*Test Framework* from the Package Manager first).
+
+**Making Unity pick it up.** Unity does not always recompile when only `csc.rsp` changes. To force
+it, right-click any script in the Project window and choose *Reimport*. When it has worked, the
+`UnityTest` error is gone from the Console and the Test Runner's PlayMode tab lists
+`MHS.SaveFixTests` with 55 tests.
+
+**Removing it.** Delete `Assets/csc.rsp` and the `Assets/csc.rsp.meta` file Unity created for it.
+
+**Why `csc.rsp` may be needed at all.** The tests use the game's own classes. Those compile into Unity's
 default `Assembly-CSharp`, because the game code has no assembly definitions. A test assembly
 (`.asmdef`) cannot reference `Assembly-CSharp`, so the tests have to compile inside it. The setting
 in step 1 gives `Assembly-CSharp` NUnit, but in Unity 6000.0 with Test Framework 1.3.9 it did not
 add `UnityEngine.TestRunner`, where `[UnityTest]` lives. The Editor has no other way to add that
 reference, and `csc.rsp` passes it to the compiler. A newer Test Framework may add it by itself.
 
-**Before a release build**, remove the test file and `csc.rsp` and turn the setting in step 1 back
-off. Don't commit `csc.rsp` to the shared project: its path is specific to one machine.
+## After testing
+
+**Before a release build**, remove the test file, `csc.rsp` and its `.meta` file, and turn the
+setting in step 1 back off. Don't commit `csc.rsp` to the shared project: its path is specific to one machine.
 
 **How long it takes.** A full run takes about four and a half minutes. That is expected: many tests
 simulate the save service being down and wait through the game's real retry delays (5 seconds,
