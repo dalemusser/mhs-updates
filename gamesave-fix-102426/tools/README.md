@@ -11,14 +11,32 @@ The project has no play-mode test assembly for its game code (`Assembly-CSharp`)
 need two temporary project settings (the same two as `../../unit4-gardenbox-crash-102326/tools/README.md`).
 Neither belongs in a release build; remove both afterwards.
 
-1. `ProjectSettings/ProjectSettings.asset`: `playModeTestRunnerEnabled: 1` (the Test Runner
-   window's *Enable playmode tests for all assemblies*).
-2. `Assets/csc.rsp` with one line, so `Assembly-CSharp` also sees `UnityEngine.TestTools`:
+1. In the Unity Editor, open **Window → General → Test Runner**, and in its **⋮** menu choose
+   **Enable playmode tests for all assemblies** (Unity asks to restart). This writes
+   `playModeTestRunnerEnabled: 1` into `ProjectSettings/ProjectSettings.asset` and gives
+   `Assembly-CSharp` the NUnit reference.
+2. Only if the tests then fail to compile with *The type or namespace name 'UnityTest' could not be
+   found* (or `UnityEngine.TestTools` is missing): add a file `Assets/csc.rsp` with this one line, then
+   let Unity recompile (switch back to the Editor, or right-click a script → Reimport):
 
    ```
    -r:"<absolute path to the project>/Library/ScriptAssemblies/UnityEngine.TestRunner.dll"
    ```
 
+   **Why the file is needed at all.** The tests use the game's own classes (`DatabaseSaver`,
+   `GameSaveManager`), which compile into Unity's default `Assembly-CSharp`, because the game code
+   has no assembly definitions. A normal test assembly (an `.asmdef` marked as a test assembly) cannot
+   reference `Assembly-CSharp`; Unity does not allow assembly definitions to reference the default
+   assemblies. So the tests have to compile inside `Assembly-CSharp`. The Editor setting in step 1
+   adds NUnit there, but in Unity 6000.0 with Test Framework 1.3.9 it did not add
+   `UnityEngine.TestRunner`, where `[UnityTest]` lives. The Editor has no other place to add a
+   reference to `Assembly-CSharp`; a `csc.rsp` file in `Assets/` passes extra compiler options to it.
+   A newer Test Framework may add the reference itself, which is why step 2 is conditional.
+
+   The path is absolute and specific to one machine, so the file should not be committed to the
+   shared project. Remove it, and turn the setting in step 1 back off, before making a release build.
+   The longer-term alternative is to move the game code into assembly definitions, after which a
+   standard test assembly works with neither step; that is a larger change than this bundle.
 3. Put `SaveFixTests.cs` anywhere under `Assets/` outside an assembly definition (we used
    `Assets/Scripts/_Dev/SaveFixTests/`). It is wrapped in `#if UNITY_EDITOR`.
 4. Run from the Test Runner window (PlayMode), or headless:
