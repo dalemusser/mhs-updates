@@ -397,3 +397,7 @@ browser's request interception (recipe in `tools/README.md`):
 - 1.3 (2026-10-26): the findings of a review of 1.2 and of three passes over the base logic
   applied (`04-review-102526.md` §7–§14); eighteen tests added. If you applied an earlier
   version, replace all eight files again.
+- 1.3.1 (2026-10-29): test file only. T34 checked for the unsent save one frame after the save,
+  and on a fast machine the save could be sent and accepted within that frame, so the test
+  failed although the game behaved correctly. T34 now holds the save request open while it
+  checks. The eight game files are unchanged; replace only `tools/SaveFixTests.cs`.

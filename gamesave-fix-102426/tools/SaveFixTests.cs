@@ -1219,10 +1219,12 @@ namespace MHS.SaveFixTests
                 Assert.AreEqual("", PlayerPrefs.GetString("mhs_pending_index"));
                 Assert.IsFalse((bool)evict.Invoke(null, null), "nothing left to evict");
 
-                // A record over the ceiling stays in memory only, and is still sent.
+                // A record over the ceiling stays in memory only, and is still sent. The save request is
+                // held for 3 s so the checks below run before the service answers.
+                _svc.mode = "saveshang"; _svc.hangMs = 3000;
                 _rig.testSaver.value = new string('x', 140 * 1024);
                 _rig.saveEvent.Raise(0);
-                yield return null;
+                yield return WaitUntil(() => _svc.SaveCount == 1, 10, "the save's request to be in flight");
                 Assert.IsTrue(_rig.saver.HasUnsentSave);
                 Assert.IsFalse(PlayerPrefs.HasKey("mhs_last_save"), "not written to the device");
                 yield return WaitUntil(() => !_rig.saver.HasUnsentSave, 15, "still sent to the service");
