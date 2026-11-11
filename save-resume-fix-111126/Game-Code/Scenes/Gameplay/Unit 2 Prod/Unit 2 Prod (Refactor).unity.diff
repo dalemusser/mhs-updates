@@ -1,0 +1,47 @@
+--- a/Assets/Scenes/Gameplay/Unit 2 Prod/Unit 2 Prod (Refactor).unity
++++ b/Assets/Scenes/Gameplay/Unit 2 Prod/Unit 2 Prod (Refactor).unity
+@@ -2514,7 +2514,7 @@
+       QuestEntry: 1
+       Title: Find Toppo on a high ridge near Anderson.
+       Waypoints: []
+-      SaveOnActivation: 0
++      SaveOnActivation: 1
+       doUpdateCheckPointInt: 1
+       AutoCheckpointOnActivation: 3
+       OnQuestEntryActivated:
+@@ -2743,7 +2743,7 @@
+       QuestEntry: 3
+       Title: Find Aryn in a mountain pass.
+       Waypoints: []
+-      SaveOnActivation: 0
++      SaveOnActivation: 1
+       doUpdateCheckPointInt: 1
+       AutoCheckpointOnActivation: 5
+       OnQuestEntryActivated:
+@@ -3163,7 +3163,7 @@
+       QuestEntry: 2
+       Title: Take the scrap to Anderson so she can fix the hoverboard.
+       Waypoints: []
+-      SaveOnActivation: 0
++      SaveOnActivation: 1
+       doUpdateCheckPointInt: 1
+       AutoCheckpointOnActivation: 2
+       OnQuestEntryActivated:
+@@ -43671,7 +43671,7 @@
+       QuestEntry: 1
+       Title: Please retrain my argumentation algorithm.
+       Waypoints: []
+-      SaveOnActivation: 0
++      SaveOnActivation: 1
+       doUpdateCheckPointInt: 1
+       AutoCheckpointOnActivation: 9
+       OnQuestEntryActivated:
+@@ -43787,7 +43787,7 @@
+       Waypoints:
+       - ObjectToAttachWaypointTo: {fileID: 1366387479}
+         PositionOffset: {x: 0, y: 0, z: 0}
+-      SaveOnActivation: 0
++      SaveOnActivation: 1
+       doUpdateCheckPointInt: 1
+       AutoCheckpointOnActivation: 11
+       OnQuestEntryActivated:

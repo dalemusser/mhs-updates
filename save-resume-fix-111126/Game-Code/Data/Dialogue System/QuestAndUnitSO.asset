@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b07e1463f94b077970a38485d63756, type: 3}
+  m_Name: QuestAndUnitSO
+  m_EditorClassIdentifier: 
+  _questsByUnit:
+  - Quest: '?'
+    QuestDescription: '[em6]<ERROR: OBJECTIVES INTERFACE UNAVAILABLE>[/em6]'
+    UnitNumber: 1
+  - Quest: A Word from Our Sponsors
+    QuestDescription: 
+    UnitNumber: 2
+  - Quest: Checking In
+    QuestDescription: 'Speak with everyone before calling it a night. '
+    UnitNumber: 2
+  - Quest: Chief of Reasoning
+    QuestDescription: Unit 4 Supplemental Argumentation
+    UnitNumber: 4
+  - Quest: Claim of Command
+    QuestDescription: Unit 2 Supplemental Argumentation
+    UnitNumber: 2
+  - Quest: Creating a Catalogue
+    QuestDescription: 
+    UnitNumber: 2
+  - Quest: Defend the Expedition
+    QuestDescription: Use the information you gathered to construct an argument in
+      defense of the WAT247 expedition.
+    UnitNumber: 1
+  - Quest: Desert Delicacies
+    QuestDescription: Planter Quest
+    UnitNumber: 4
+  - Quest: Escape the Ruin
+    QuestDescription: It appears that we crashed into a broken-down facility of some
+      kind. Our first priority is to make contact with the rest of the team by exiting
+      to the surface.
+    UnitNumber: 2
+  - Quest: Examine Nanowall
+    QuestDescription: Crash room feedback
+    UnitNumber: 2
+  - Quest: Foraged Forging
+    QuestDescription: I am afraid I cannot allow you to use that hoverboard in its
+      current state. Have Anderson fix it up for you before we track down the others.
+    UnitNumber: 2
+  - Quest: Forsaken Facility
+    QuestDescription: Jasper has a lead on a so-called "facility" which may be useful
+      to us. Might as well check it out.
+    UnitNumber: 3
+  - Quest: Gear Up
+    QuestDescription: Now that you have completed your entry evaluation, it is time
+      to retrieve your personal effects from the equipment room.
+    UnitNumber: 1
+  - Quest: Getting the Band Back Together
+    QuestDescription: Now that we have reached the surface, our first priority is
+      to verify the status of the rest of the team. Follow Anderson's directions
+      and we will track them down in no time.
+    UnitNumber: 2
+  - Quest: Getting Your Space Legs
+    QuestDescription: Per standard protocol, a physical evaluation is necessary upon
+      arrival on the Copernicus.
+    UnitNumber: 1
+  - Quest: Guru of Arguments
+    QuestDescription: Unit 5 Supplemental Argumentation
+    UnitNumber: 5
+  - Quest: If I had a Nickel... - Floor 1
+    QuestDescription: Traverse the ruins and search for Aryn
+    UnitNumber: 5
+  - Quest: If I had a Nickel... - Floor 2
+    QuestDescription: Traverse the ruins and search for Aryn
+    UnitNumber: 5
+  - Quest: If I had a Nickel... - Floor 3
+    QuestDescription: Traverse the ruins and search for Aryn
+    UnitNumber: 5
+  - Quest: If I had a Nickel... - Floor 4
+    QuestDescription: Traverse the ruins and search for Aryn
+    UnitNumber: 5
+  - Quest: Info and Intros
+    QuestDescription: Now that you have reported to the captain, introduce yourself
+      to your peers. In the process, you can collect information to use in a scientific
+      argument for mission control.
+    UnitNumber: 1
+  - Quest: Investigate the Temple
+    QuestDescription: If Anderson's tracking information is correct, Jasper was last
+      detected in this alien facility. We should look around and ensure that he is
+      alright.
+    UnitNumber: 2
+  - Quest: Leader of Evidence
+    QuestDescription: Unit 3 Supplemental Argumentation
+    UnitNumber: 3
+  - Quest: Morning Briefing
+    QuestDescription: 
+    UnitNumber: 5
+  - Quest: Part of a Balanced Ecosystem
+    QuestDescription: Tera asked you to find places to plant the seeds from the alien
+      facility.
+    UnitNumber: 3
+  - Quest: Pollution Solution
+    QuestDescription: You agreed to determine the source of the pollution in the
+      river near Tera's garden.
+    UnitNumber: 3
+  - Quest: Power Play
+    QuestDescription: Dungeon Quest
+    UnitNumber: 4
+  - Quest: Power Play - Floor 1
+    QuestDescription: Find the drill component
+    UnitNumber: 4
+  - Quest: Power Play - Floor 2
+    QuestDescription: Find the drill component
+    UnitNumber: 4
+  - Quest: Power Play - Floor 3
+    QuestDescription: Find the drill component
+    UnitNumber: 4
+  - Quest: Power Play - Floor 4
+    QuestDescription: Find the drill component
+    UnitNumber: 4
+  - Quest: Power Play - Floor 5
+    QuestDescription: Find the drill component
+    UnitNumber: 4
+  - Quest: Reduce, Reuse, Recycle
+    QuestDescription: Anderson said scrap can be repurposed into new tools and material.
+    UnitNumber: 2
+  - Quest: Saving Cadet Anderson
+    QuestDescription: In order to save Anderson from her lab, we need to build a
+      convincing argument to persuade her to leave.
+    UnitNumber: 4
+  - Quest: Secrets of the Lost Society
+    QuestDescription: 
+    UnitNumber: 2
+  - Quest: Supply Run
+    QuestDescription: You offerred to collect Tera's scattered supplies while she
+      sets up camp and plants seeds.
+    UnitNumber: 3
+  - Quest: The Measure of a Mutt
+    QuestDescription: 
+    UnitNumber: 2
+  - Quest: The Most Important Meal of the Day
+    QuestDescription: Eat breakfast
+    UnitNumber: 1
+  - Quest: TK, Reporting In!
+    QuestDescription: Captain Toppo needs to see you to finalize your orientation.
+    UnitNumber: 1
+  - Quest: Topographic Character Hunt
+    QuestDescription: Feedback from Getting the Band Back Together
+    UnitNumber: 2
+  - Quest: WAT Happened Here?
+    QuestDescription: 
+    UnitNumber: 5
+  - Quest: Water Problems Require Water Solutions
+    QuestDescription: 
+    UnitNumber: 5
+  - Quest: Water Whereabouts
+    QuestDescription: "Take the teleporter to Anderson\u2019s desert base"
+    UnitNumber: 4
+  - Quest: Well, What Have We Here?
+    QuestDescription: 
+    UnitNumber: 4
+  - Quest: What Was That?
+    QuestDescription: "The Copernicus has encountered unknown turbulence. Please
+      investigate\u2014and be careful, TK."
+    UnitNumber: 1
+  - Quest: Which Watershed?
+    QuestDescription: Captain Toppo tasked us with determining the larger of the
+      two watersheds near our crash site, which we will use to establish a base of
+      operations. We need to survey the area for data to back up our position.
+    UnitNumber: 2
