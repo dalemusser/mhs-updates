@@ -61,9 +61,10 @@ saved was then compared with that save resumed in a fresh Editor. The difference
 | No quest waypoint and Jasper talkable at 14 | resume at 14 | follows from *Claim of Command* being reset |
 
 Production confirms the quest table finding. In the logs *Claim of Command* only ever starts in Unit 2, and real
-Unit 2 saves hold the four side quests active. Of 85 students with a checkpoint 14 save, 15 reloaded Unit 2 afterwards
-and resumed with *Claim of Command* unassigned. 11 still reached the end of the unit, 3 were moved on by their teacher,
-and 1 reloaded about 20 times without the quest ever starting again.
+Unit 2 saves hold the four side quests active. Of 85 students with a checkpoint 14 save, 15 reloaded Unit 2
+afterwards; the reset runs on every Unit 2 load, so each of those resumes set *Claim of Command* back to unassigned.
+11 still reached the end of the unit, 3 were moved on by their teacher, and 1 reloaded about 20 times without the
+quest ever starting again.
 
 After the fix, all 16 pairs were run again: none of these differences remain. What does remain is listed in Part 3 of
 `03-for-the-game-dev.md` ("Found and not changed"): cosmetic scene states, and play the harness does not do (walking

@@ -180,8 +180,9 @@ quest as Unit 1, and these five were never corrected. Production logs show *Clai
 Unit 2 saves show the four side quests active. The two other Unit 1 rows that might look wrong ("The Most Important
 Meal of the Day" and "?") are never active in any save, so they are left alone.
 
-Seen in production: of 85 students with a checkpoint 14 save, 15 reloaded Unit 2 afterwards. Each of them resumed
-with *Claim of Command* unassigned. 11 of them still reached the end of the unit, and 3 were moved on by their teacher.
+In production, of 85 students with a checkpoint 14 save, 15 reloaded Unit 2 afterwards; the reset runs on every Unit 2
+load, so each of those resumes set *Claim of Command* back to unassigned. 11 of them still reached the end of the unit,
+3 were moved on by their teacher, and 1 reloaded about 20 times without the quest starting again.
 
 **Fog of war (`FOWMapSwitcher.cs`, `MapDataProcessor.cs`).** `BoolVariable_WorldSpaceMap_FOWIsActive` is not reset on
 scene load, and both scripts flipped it rather than setting it. Live play and a resume call the fog switch a different
@@ -229,6 +230,11 @@ using a test harness that is not part of this bundle:
   13 fail, each on the problem it is about. The six that pass without the fix are T03, which guards the new apply path
   (the replay runs once, not twice), and T15 to T19, which show that a save made at a new save point resumes there.
   The existing replay events already support those numbers.
+- **Test build on the dev site.** Units 2, 3 and 4 built from that copy (release profiles) are on the dev site as the
+  collection `20261111-saveresume-SaveResumeFixTest` (Unit 2 v3.0.8, Unit 3 v3.0.4, Unit 4 v3.0.3; Units 1 and 5 are
+  the 2026-11-02 builds). It is not active for students. With the test member, Unit 2 loads, renders and starts with no
+  game errors, and the unit-change reset logs the five quests as Unit 2 ("… is part of Unit2. Skipping"). Anyone with a
+  dev account can be put on it to play and comment.
 
 ## Found and not changed
 
