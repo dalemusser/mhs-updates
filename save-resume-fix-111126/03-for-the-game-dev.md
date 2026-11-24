@@ -274,7 +274,10 @@ using a test harness that is not part of this bundle:
   collection `20261111-saveresume-SaveResumeFixTest` (Unit 2 v3.0.8, Unit 3 v3.0.4, Unit 4 v3.0.3; Units 1 and 5 are
   the 2026-11-02 builds). It is not active for students. With the test member, Unit 2 loads, renders and starts with no
   game errors, and the unit-change reset logs the five quests as Unit 2 ("… is part of Unit2. Skipping"). Anyone with a
-  dev account can be put on it to play and comment.
+  dev account can be put on it to play and comment. **Version 1.1:** the collection
+  `20261124-saveresume-SaveResumeFixTest-1.1` adds Unit 1 v3.0.7 with the three save points (Units 2, 3 and 4 as
+  above, Unit 5 your 2026-11-19 build). With the test member, Unit 1 loads, starts and plays its opening with no game
+  errors. Both collections are marked as test collections on the dev site, so your uploads don't take units from them.
 
 ## Found and not changed
 
@@ -327,4 +330,4 @@ or quest progress, and each needs a decision about what the scene is meant to sh
 - **1.0 (2026-11-11).** First version.
 - **1.1 (2026-11-24).** Three new save points in Unit 1 (checkpoints 1, 2 and 4): Step 5, tests T20 to T25 and five
   Unit 1 fixtures, the Unit 1 scene diff, Part 3 sections on what they fix and how they were checked, item 6 of
-  "Found and not changed", check 5. Steps 5 and 6 of 1.0 are now Steps 6 and 7. Nothing in 1.0's changes is different.
+  "Found and not changed", check 5, the dev-site collection `20261124-saveresume-SaveResumeFixTest-1.1`. Steps 5 and 6 of 1.0 are now Steps 6 and 7. Nothing in 1.0's changes is different.

@@ -2,7 +2,8 @@
 
 **Date:** 2026-11-11, updated 2026-11-24. **Version:** 1.1. **Verified** in a copy of the game team's 2026-10-29 project (changelist
 12527) with the changes applied. **Test build on the dev site:** collection `20261111-saveresume-SaveResumeFixTest`
-(Units 2, 3 and 4 with the fix; not active for students).
+(Units 2, 3 and 4 with the fix; not active for students); for 1.1, `20261124-saveresume-SaveResumeFixTest-1.1` (Unit 1
+with its save points as well).
 
 **Start with `03-for-the-game-dev.md`.** Part 1 is what to do: four scripts, the quest table, the Unit 2 replay
 prefab, five boxes in the Unit 2 scene, the tests, build and hand-over. Part 2 is the Editor tests. Part 3 is the
