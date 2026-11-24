@@ -1,0 +1,29 @@
+--- a/Assets/Scenes/Gameplay/Unit 1 Dev/Unit 1 Dev.unity
++++ b/Assets/Scenes/Gameplay/Unit 1 Dev/Unit 1 Dev.unity
+@@ -6563,7 +6563,7 @@
+     Waypoints:
+     - ObjectToAttachWaypointTo: {fileID: 1598629445891993799}
+       PositionOffset: {x: 0, y: 4, z: 0}
+-    SaveOnActivation: 0
++    SaveOnActivation: 1
+     doUpdateCheckPointInt: 1
+     AutoCheckpointOnActivation: 1
+     OnQuestActivated:
+@@ -8145,7 +8145,7 @@
+       Waypoints:
+       - ObjectToAttachWaypointTo: {fileID: 1545190912}
+         PositionOffset: {x: 0, y: 4, z: 0}
+-      SaveOnActivation: 0
++      SaveOnActivation: 1
+       doUpdateCheckPointInt: 1
+       AutoCheckpointOnActivation: 4
+       OnQuestEntryActivated:
+@@ -10669,7 +10669,7 @@
+       Waypoints:
+       - ObjectToAttachWaypointTo: {fileID: 8422407101291641070}
+         PositionOffset: {x: 0, y: 4, z: 0}
+-      SaveOnActivation: 0
++      SaveOnActivation: 1
+       doUpdateCheckPointInt: 1
+       AutoCheckpointOnActivation: 2
+       OnQuestEntryActivated:

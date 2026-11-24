@@ -18,10 +18,14 @@
 - **Five new save points in Unit 2**, at checkpoints 2, 3, 5, 9 and 11. They already have their checkpoint numbers
   and replay events; only saving was switched off. They split the longest stretches between saves (medians of 7 to
   12.5 minutes in production), so a student who has to stop loses less.
+- **Three new save points in Unit 1**, at checkpoints 1, 2 and 4. Unit 1 saves only at 0 and 3 today, and in between
+  only while *Gear Up* is still running. A student who stops after *Gear Up* and before checkpoint 3 (a median of 18.5
+  minutes, up to 35) goes back to *Gear Up*. As in Unit 2, the steps already have their numbers and replay events; only
+  saving was switched off.
 
 Applying it is: replace four scripts, change one asset and one prefab (in the Inspector, or by replacing the files),
-tick five boxes in the Unit 2 scene, build every unit, upload. Nothing changes in the save format, the save service
-or StrataHub.
+tick five boxes in the Unit 2 scene and three in the Unit 1 scene, build every unit, upload. Nothing changes in the
+save format, the save service or StrataHub.
 
 ## Part 1: what to do
 
@@ -99,13 +103,28 @@ Save the scene. `Game-Code/Scenes/Gameplay/Unit 2 Prod/Unit 2 Prod (Refactor).un
 `SaveOnActivation: 0` lines become `1`, and nothing else changes. The scene is not shipped whole because yours may
 have moved on since 2026-10-29.
 
-### Step 5. Run the Editor tests
+### Step 5. The Unit 1 scene: three save points
 
-Put the tests in your project and run them, as Part 2 describes. All 19 must pass. They check the four scripts, the
-quest table, the replay events and the five save points in your project, so they catch a step that was missed.
+Open `Assets/Scenes/Gameplay/Unit 1 Dev/Unit 1 Dev.unity`. The three objects are under
+`===== Quest Objects ========`. On each one's Quest Event Value Listener, tick **Save On Activation** where the table
+says:
+
+| Object | Where | Entry | Auto Checkpoint On Activation (already set; check it) |
+|---|---|---|---|
+| `Quest3-TK Reporting In` | **Value Responses → Element 0** itself (the quest, not a quest entry: this quest has no entries) | TK, Reporting In! | 1 |
+| `Quest4-Info and Intros` | Value Responses → Element 0 → **Quest Entries → Element 3** | Info and Intros, entry 4 (*Talk to Jasper*) | 2 |
+| `Quest6-What was that?` | Value Responses → Element 0 → **Quest Entries → Element 0** | What Was That?, entry 1 (*Follow Captain Toppo*) | 4 |
+
+Save the scene. `Game-Code/Scenes/Gameplay/Unit 1 Dev/Unit 1 Dev.unity.diff` shows the result: three
+`SaveOnActivation: 0` lines become `1`, and nothing else changes. Like the Unit 2 scene, it is not shipped whole.
+
+### Step 6. Run the Editor tests
+
+Put the tests in your project and run them, as Part 2 describes. All 25 must pass. They check the four scripts, the
+quest table, the replay events and the eight save points in your project, so they catch a step that was missed.
 Remove them again before the release build.
 
-### Step 6. Build and hand over
+### Step 7. Build and hand over
 
 1. Build **every unit** (release profiles) with a distinct version string. The scripts are shared by all units, so
    every unit changes, not only Unit 2.
@@ -119,7 +138,7 @@ That is all there is to do. Part 2 covers the Editor tests; Part 3 is reference 
 
 # Part 2: running the Editor tests
 
-`tools/SaveResumeTests.cs` holds 19 tests, and `tools/Fixtures/` holds the 15 game saves they resume. Each scene test
+`tools/SaveResumeTests.cs` holds 25 tests, and `tools/Fixtures/` holds the 20 game saves they resume. Each scene test
 resumes a real save the way the game does: the unit's scene, the save applied through
 `CheckpointSaver.ApplySaveCheckpointFirst`, the resume finished. It then checks one guarantee of the fix. Details are
 in `tools/README.md`. In short:
@@ -128,7 +147,7 @@ in `tools/README.md`. In short:
    to `Assets/Tests/SaveResume/Fixtures/`. The `Editor` folder matters: these are **Edit Mode** tests, because each one
    needs a play session of its own.
 2. Open **Window → General → Test Runner**, **EditMode** tab, and run **MHS.SaveResumeTests**. Each test enters and
-   leaves play mode, so the Editor goes in and out of play mode 18 times; a full run takes about three minutes.
+   leaves play mode, so the Editor goes in and out of play mode 24 times; a full run takes about four minutes.
 3. If the file does not compile and the Console shows *The type or namespace name 'UnityTest' could not be found*,
    your `Assets/csc.rsp` is missing or points at another machine. Your 2026-10-29 copy has one with a
    `/home/...` path, so it is set up as in the saving fix: one line, `-r:"<your project>/Library/ScriptAssemblies/UnityEngine.TestRunner.dll"`.
@@ -206,6 +225,22 @@ Activation was off. In production, Unit 2's longest stretches between saves cont
 A Unit 2 playthrough now saves 14 times instead of 9. Saves made before the change load as before: the format is the
 same, and an old save resumes at its own checkpoint number.
 
+**Save points (Unit 1 scene).** Unit 1 has five checkpoints (0 to 4) and a replay event for each, but saves only at 0
+(*Gear Up* entry 1) and 3 (*Info and Intros* entry 5), plus once when *What Was That?* succeeds at the end of the unit
+(that save keeps the number it finds, 3). Of 1,219 Unit 1 saves kept in production since 2026-10-01 (428 students),
+715 were made while *Gear Up* was running, 296 at checkpoint 3 and 202 at the end of the unit; only 6 fall in between.
+So a student who stops anywhere after *Gear Up* and before checkpoint 3 goes back to *Gear Up*, and one who stops after
+3 goes back to 3. In production, 0→3 takes a median of 18.5 minutes (up to 35), and 3→end a median of 7.3 (up to 31).
+
+The three new save points sit in those stretches: the start of *TK, Reporting In!* (1), *Talk to Jasper* (2) and
+*Follow Captain Toppo* (4). A Unit 1 playthrough now saves at 0, 1, 2, 3, 4 and the end, and the end-of-unit save
+records 4.
+
+Checkpoint 1 also fixes a resume. Replay event 1 turns on `ToppoRoom`, the trigger that starts Toppo's conversation
+when the student walks into the room. A save made after *TK, Reporting In!* starts but recorded as checkpoint 0 (in
+production, rare: 4 of the 1,219 saves) skips that event, so the conversation only starts if the student talks to
+Toppo directly.
+
 ## How it was checked
 
 All of this was run in a copy of your 2026-10-29 project with the changes applied (Unity 6000.0.74f1, batch mode),
@@ -224,12 +259,17 @@ using a test harness that is not part of this bundle:
   no errors. Resuming that save and playing on to the next save point gives the same world as playing the whole
   stretch without a resume. The only exceptions are a cutscene that was playing at the moment of the save (3) and an
   inactive timer (5).
+- **The new Unit 1 save points.** From a real checkpoint 0 save and a real checkpoint 3 save, the quest steps up to 1,
+  2 and 4 were played through the quest log. Each step saved exactly once, at the right number, and nothing saved in
+  between. Each of those saves was then resumed in a fresh Editor and compared with the world at the moment of the
+  save: at 1 and 2 they are the same; at 4 the only difference is Jasper's animator ("Found and not changed", item 6).
+  The same saves resumed with the old number (0, or 3) differ only in `ToppoRoom` at 1, as described above.
 - **No new errors.** The exceptions the Editor logs in Units 3 to 5 are the same ones as before the change
   (a DOTween material tween, the camera invert setting, the chat log display), and none come from the changed scripts.
-- **The Editor tests** of Part 2: 19 of 19 pass in our copy. Run against your original files (the fix taken out),
-  13 fail, each on the problem it is about. The six that pass without the fix are T03, which guards the new apply path
-  (the replay runs once, not twice), and T15 to T19, which show that a save made at a new save point resumes there.
-  The existing replay events already support those numbers.
+- **The Editor tests** of Part 2: 25 of 25 pass in our copy. Run against your original files (the fix taken out),
+  T01, T02, T04 to T14 and T20 to T22 fail, each on the problem it is about. The nine that pass without the fix are
+  T03, which guards the new apply path (the replay runs once, not twice), and T15 to T19 and T23 to T25, which show
+  that a save made at a new save point resumes there. The existing replay events already support those numbers.
 - **Test build on the dev site.** Units 2, 3 and 4 built from that copy (release profiles) are on the dev site as the
   collection `20261111-saveresume-SaveResumeFixTest` (Unit 2 v3.0.8, Unit 3 v3.0.4, Unit 4 v3.0.3; Units 1 and 5 are
   the 2026-11-02 builds). It is not active for students. With the test member, Unit 2 loads, renders and starts with no
@@ -267,6 +307,10 @@ or quest progress, and each needs a decision about what the scene is meant to sh
    Adding a call to one of these events in the prefab brings the scene's call at that position back, which is why
    Step 3 only appends to events 4 and 5. Removing the dead overrides (Inspector: right-click the event list on the
    scene instance → *Revert*) is safe and would make the list read as it runs.
+6. **Jasper's animator in Unit 1 after a resume at 4.** After *Follow Captain Toppo* starts, live play has the
+   `Animator` on `Jasper-Unit1/Visuals_Jasper/JasperRigModel-Master` on; after a resume at 4 it is off, so Jasper holds
+   one pose. It is the same when that save is resumed with the old number (3), so it does not come from this change;
+   we did not trace what turns it off.
 
 ## The checks we run on your build
 
@@ -275,7 +319,12 @@ or quest progress, and each needs a decision about what the scene is meant to sh
    the game resumes there with the step active and the map hint as it was.
 3. Resume at 14 and check that *Claim of Command* is in the quest log.
 4. Resume a Unit 3 save at checkpoint 5 or later and check that the first supply crate is shown.
+5. On the dev site, with the test member: play Unit 1 to each new save point (1, 2, 4), reload, and check that the game
+   resumes there with the step active; at 1, walking into Toppo's room starts his conversation.
 
 ## Version history
 
 - **1.0 (2026-11-11).** First version.
+- **1.1 (2026-11-24).** Three new save points in Unit 1 (checkpoints 1, 2 and 4): Step 5, tests T20 to T25 and five
+  Unit 1 fixtures, the Unit 1 scene diff, Part 3 sections on what they fix and how they were checked, item 6 of
+  "Found and not changed", check 5. Steps 5 and 6 of 1.0 are now Steps 6 and 7. Nothing in 1.0's changes is different.

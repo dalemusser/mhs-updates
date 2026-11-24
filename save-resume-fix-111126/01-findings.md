@@ -88,7 +88,35 @@ played on to the next existing save, and compared with playing the whole stretch
 apart from a cutscene that plays at the moment of the save at 3 (it does not replay on resume) and an inactive timer
 at 5.
 
-## 5. Things measured on the way
+## 5. Unit 1: two save points for five checkpoints
+
+Unit 1 has checkpoints 0 to 4 with a replay event each (no skip list), and saves at 0 (*Gear Up* entry 1), at 3
+(*Info and Intros* entry 5) and when *What Was That?* succeeds at the end of the unit (that save does not update the
+number, so it records 3). The steps that set 1 (the start of *TK, Reporting In!*), 2 (*Info and Intros* entry 4) and
+4 (*What Was That?* entry 1) have their numbers but do not save.
+
+Of 1,219 Unit 1 saves kept in production since 2026-10-01 (428 students; the save service keeps each student's newest
+five), sorted by the furthest quest each one holds:
+
+| Stage at the save | Saves | Checkpoint recorded |
+|---|---|---|
+| *Gear Up* running | 715 | 0 |
+| *TK, Reporting In!* or *Info and Intros* 1 to 4 | 6 | 0 |
+| *Info and Intros* entry 5 | 296 | 3 (2 with 0) |
+| *Defend the Expedition* or *What Was That?* running | 0 | – |
+| End of the unit | 202 | 3 (2 with 0) |
+
+Between the saves of one student on one day, 0→3 took a median of 18.5 minutes (p75 22.9, up to 35.4; 167 pairs) and
+3→end a median of 7.3 (p75 9.0, up to 31.0; 213 pairs). New students this month made their first save a median of 11
+active minutes after starting (90 % within 41).
+
+With saving on at 1, 2 and 4, each step saved once at its number, and nothing saved in between (steps played through
+the quest log from a real 0 and a real 3 save). Resumed in a fresh Editor, the saves at 1 and 2 give the same world as
+at the moment of the save; at 4 Jasper's animator is off (live: on), and it is the same with the old number. Resumed
+with the old number instead, the save at 1 leaves `ToppoRoom` off (replay event 1 turns it on), the trigger that
+starts Toppo's conversation as the student walks in; Toppo can still be talked to directly.
+
+## 6. Things measured on the way
 
 - **The game decides its unit from the build's scene list** (`SceneLoadingUtilities.GetUnitNumberForThisBuild`: the
   first scene with "unit" in its name). In the Editor that list holds every unit, so a Unit 2 scene played in the Editor

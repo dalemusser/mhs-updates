@@ -1,6 +1,6 @@
 # Editor tests for the save/resume fix
 
-`SaveResumeTests.cs` holds 19 Edit Mode tests; `Fixtures/` holds the 15 game saves they resume.
+`SaveResumeTests.cs` holds 25 Edit Mode tests; `Fixtures/` holds the 20 game saves they resume.
 
 ## Install
 
@@ -48,18 +48,20 @@ and only there, the test runs the checkpoint saver's end-of-frame step (`ApplyWa
 | T09 | 2, checkpoint 6 | Map hint panel off, text on. |
 | T10–T14 | 2, the save before each | Starting the step saves exactly once, with checkpoint 2, 3, 5, 9 or 11. |
 | T15–T19 | 2, checkpoints 2, 3, 5, 9, 11 | A save made there resumes at that checkpoint with the step active. |
+| T20–T22 | 1, the save before each | Starting the step saves exactly once, with checkpoint 1, 2 or 4. |
+| T23–T25 | 1, checkpoints 1, 2, 4 | A save made there resumes at that checkpoint with the step active; at 1, Toppo's room trigger is on. |
 
 ## With and without the fix
 
-In a copy of the 2026-10-29 project: 19 of 19 pass with the fix. With the team's original files, 13 fail, each on the
-problem it is about. T03 and T15–T19 pass either way: T03 guards the new apply path, and T15–T19 show that saves made
-at the new save points resume there, which the existing replay events already support.
+In a copy of the 2026-10-29 project: 25 of 25 pass with the fix. With the team's original files, 16 fail, each on the
+problem it is about. T03, T15–T19 and T23–T25 pass either way: T03 guards the new apply path, and the others show that
+saves made at the new save points resume there, which the existing replay events already support.
 
 ## The fixtures
 
 Game saves in the game's own JSON form (`SavedGameData`): quest states, Dialogue System variables, saver data,
-positions. Units 3 and 4 are real student saves; the Unit 2 ones were recorded by the game in the Editor, starting from
-real student saves. They hold no user id, no name and no typed text.
+positions. Units 3 and 4 and Unit 1's checkpoints 0 and 3 are real student saves; the Unit 2 ones and Unit 1's 1, 2
+and 4 were recorded by the game in the Editor, starting from real student saves. They hold no user id, no name and no typed text.
 
 ## Unity notes
 

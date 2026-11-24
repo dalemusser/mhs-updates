@@ -34,9 +34,9 @@ namespace MHS.SaveResumeTests
         const string SavedScenesKey = "MHS.SaveResumeTests.BuildScenes";
 
         // Each test runs in its own play session with only its unit's scene in the build list, so the game sees that unit.
-        // The unit comes from the test's name (_Unit3_, _Unit4_; Unit 2 otherwise).
+        // The unit comes from the test's name (_Unit1_, _Unit3_, _Unit4_; Unit 2 otherwise).
         static string SceneFor(string testName) =>
-            testName.Contains("_Unit3_") ? Unit3Scene : testName.Contains("_Unit4_") ? Unit4Scene : Unit2Scene;
+            testName.Contains("_Unit1_") ? Unit1Scene : testName.Contains("_Unit3_") ? Unit3Scene : testName.Contains("_Unit4_") ? Unit4Scene : Unit2Scene;
 
         const string CheckedKey = "MHS.SaveResumeTests.Checked";
 
@@ -74,6 +74,7 @@ namespace MHS.SaveResumeTests
             }
             Assert.IsFalse(passedWithoutItsChecks, "the test ended before its checks ran (play mode ended during the test); run it again");
         }
+        const string Unit1Scene = "Assets/Scenes/Gameplay/Unit 1 Dev/Unit 1 Dev.unity";
         const string Unit2Scene = "Assets/Scenes/Gameplay/Unit 2 Prod/Unit 2 Prod (Refactor).unity";
         const string Unit3Scene = "Assets/Scenes/Gameplay/Unit 3/Unit 3 Dev.unity";
         const string Unit4Scene = "Assets/Scenes/Gameplay/Unit 4/Unit 4 Dev.unity";
@@ -203,6 +204,36 @@ namespace MHS.SaveResumeTests
         [UnityTest] public IEnumerator T18_Unit2_ResumesAtCheckpoint9() { yield return Resume(Unit2Scene, "u2-ck9.json"); CheckResumedAt(9, "Which Watershed?", 1); Checked(); }
         [UnityTest] public IEnumerator T19_Unit2_ResumesAtCheckpoint11() { yield return Resume(Unit2Scene, "u2-ck11.json"); CheckResumedAt(11, "Which Watershed?", 5); Checked(); }
 
+        // ---------------------------------------------------------------- the three new Unit 1 save points
+
+        // From the save before it, starting the step makes the game save with that checkpoint number. Checkpoint 1 is the
+        // start of the quest "TK, Reporting In!" (no steps of its own), 2 is Info and Intros step 4, 4 is What Was That? step 1.
+        static readonly string[] U1To1 = { "Q|Gear Up|1|success", "Q|Gear Up|2|active", "Q|Gear Up|2|success", "Q|Gear Up|3|active", "Q|Gear Up|3|success", "QS|Gear Up|success" };
+        static readonly string[] U1To2 = { "QS|TK, Reporting In!|success", "QS|Info and Intros|active", "Q|Info and Intros|1|active", "Q|Info and Intros|2|active", "Q|Info and Intros|3|active",
+                                           "Q|Info and Intros|1|success", "Q|Info and Intros|2|success", "Q|Info and Intros|3|success" };
+        static readonly string[] U1To4 = { "Q|Info and Intros|5|success", "QS|Info and Intros|success", "QS|Defend the Expedition|active", "Q|Defend the Expedition|1|active",
+                                           "Q|Defend the Expedition|1|success", "Q|Defend the Expedition|2|active", "Q|Defend the Expedition|2|success",
+                                           "QS|Defend the Expedition|success", "QS|What Was That?|active" };
+        [UnityTest] public IEnumerator T20_Unit1_SavesAtCheckpoint1() { var r = new Saves(); yield return SavesAt(Unit1Scene, "u1-ck0.json", "QS|TK, Reporting In!|active", U1To1, r); r.Check("TK, Reporting In!", 0, 1); Checked(); }
+        [UnityTest] public IEnumerator T21_Unit1_SavesAtCheckpoint2() { var r = new Saves(); yield return SavesAt(Unit1Scene, "u1-ck1.json", "Q|Info and Intros|4|active", U1To2, r); r.Check("Info and Intros", 4, 2); Checked(); }
+        [UnityTest] public IEnumerator T22_Unit1_SavesAtCheckpoint4() { var r = new Saves(); yield return SavesAt(Unit1Scene, "u1-ck3.json", "Q|What Was That?|1|active", U1To4, r); r.Check("What Was That?", 1, 4); Checked(); }
+
+        // A save made at a new save point resumes at that checkpoint with its step active. At 1, Toppo's room trigger
+        // (which starts his conversation when the student walks in) is on, as in live play; replay event 1 turns it on.
+        [UnityTest]
+        public IEnumerator T23_Unit1_ResumesAtCheckpoint1()
+        {
+            yield return Resume(Unit1Scene, "u1-ck1.json");
+            Assert.AreEqual(1, CheckpointNow(), "checkpoint after the resume");
+            Assert.AreEqual(QuestState.Active, QuestLog.GetQuestState("TK, Reporting In!"), "TK, Reporting In!");
+            var room = Find("===== Environment ========/TriggersAndTimelines-Unit1/ToppoRoom");
+            Assert.IsNotNull(room, "ToppoRoom not found");
+            Assert.IsTrue(room.activeInHierarchy, "Toppo's room trigger should be on while TK, Reporting In! is active");
+            Checked();
+        }
+        [UnityTest] public IEnumerator T24_Unit1_ResumesAtCheckpoint2() { yield return Resume(Unit1Scene, "u1-ck2.json"); CheckResumedAt(2, "Info and Intros", 4); Checked(); }
+        [UnityTest] public IEnumerator T25_Unit1_ResumesAtCheckpoint4() { yield return Resume(Unit1Scene, "u1-ck4.json"); CheckResumedAt(4, "What Was That?", 1); Checked(); }
+
         // The saves the game raised: before the step, and when the step started. Checked in the test body: a failed check
         // inside a nested coroutine leaves Unity's Edit Mode runner unable to give the next test a clean play session.
         class Saves
@@ -211,14 +242,19 @@ namespace MHS.SaveResumeTests
             public void Check(string quest, int entry, int checkpoint)
             {
                 Assert.IsEmpty(Before, "a save was raised before the step");
-                Assert.AreEqual(new List<int> { checkpoint }, AtStep, $"starting {quest} step {entry} should save once, at checkpoint {checkpoint}");
+                Assert.AreEqual(new List<int> { checkpoint }, AtStep, $"starting {quest}{(entry > 0 ? " step " + entry : "")} should save once, at checkpoint {checkpoint}");
             }
         }
 
         // Resume the save before the new save point, play the steps up to it, start the step, and record the saves raised.
         static IEnumerator SavesAt(string fixture, string quest, int entry, string[] stepsBefore, Saves r)
         {
-            yield return Resume(Unit2Scene, fixture);
+            yield return SavesAt(Unit2Scene, fixture, "Q|" + quest + "|" + entry + "|active", stepsBefore, r);
+        }
+
+        static IEnumerator SavesAt(string scene, string fixture, string step, string[] stepsBefore, Saves r)
+        {
+            yield return Resume(scene, fixture);
             var ev = SaveEvent();
             if (ev == null) yield break; // r stays empty: Check fails on it
             var current = r.Before;
@@ -226,7 +262,7 @@ namespace MHS.SaveResumeTests
             ev.OnRaised += onSave;
             foreach (var s in stepsBefore) { Step(s); yield return null; }
             current = r.AtStep;
-            QuestLog.SetQuestEntryState(quest, entry, QuestState.Active);
+            Step(step);
             for (int i = 0; i < 5; i++) yield return null;
             ev.OnRaised -= onSave;
         }
